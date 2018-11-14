@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import SlouchSlider from './App';
+import SlouchSlider from './SlouchSlider';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<SlouchSlider />, document.getElementById('root'));
