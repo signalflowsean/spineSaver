@@ -46,18 +46,14 @@ export default class SlouchSlider extends React.Component{
     image.width = 200; 
     image.height = 200; 
   
-    this.setState({capture})
-    
-    this.findPose(this.image);
+    this.setState({capture}, this.findPose(this.image)); 
   };
   
   findPose = (img) => {     
-      this.state.posenet.estimateSinglePose(img, 
-      this.imageScaleFactor, 
-      this.flipHorizontal, 
-      this.outputStride)
-      .then((pose) => { 
-        this.calculateSlouch(pose);     
+      this.state.posenet.estimateSinglePose(img, this.imageScaleFactor, 
+        this.flipHorizontal, this.outputStride)
+          .then((pose) => { 
+            this.calculateSlouch(pose);     
       })
   }
 
@@ -68,7 +64,7 @@ export default class SlouchSlider extends React.Component{
     const rightShoulder = pose.keypoints[5].position; 
     const slouch = (((leftEye.y - leftShoulder.y) + (rightEye.y - rightShoulder.y))/2) + 34; 
     
-    console.log('slouch', slouch);
+    //console.log('slouch', slouch);
     this.setState({slouch}); 
   } 
 
@@ -113,6 +109,8 @@ export default class SlouchSlider extends React.Component{
           onChange={(e) => console.log(e.currentTarget.value) }
           >
         </input>
+        {/* <br> elements are temp so the img element which is needed
+        for the pose detection is off the screen / not viewable */}
         <br></br>
         <br></br>
         <br></br>
