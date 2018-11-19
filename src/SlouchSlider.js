@@ -24,7 +24,7 @@ export default class SlouchSlider extends React.Component{
     this.height = 500; 
 
     //calibration rect size
-    this.sizeDecrease = 100; 
+    this.sizeDecrease = (this.width /2); 
     this.calibWidth = this.width - this.sizeDecrease; 
     this.calibHeight = this.width - this.sizeDecrease; 
 
@@ -108,14 +108,11 @@ export default class SlouchSlider extends React.Component{
   drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
     this.boundingBoxWidth = rightEye.x - leftEye.x; 
     this.boundingBoxHeight = leftEye.y - leftShoulder.y;
-    //console.log(leftEye.y, leftShoulder.y);
-    //console.log(this.height - leftEye.y, this.height - leftShoulder.y);
-    
-    //console.log('leftEye.y', leftEye.y, 'leftShoulder.y', leftShoulder.y);
     
     this.boundingBoxX = leftEye.x; 
-    this.boundingBoxY = leftEye.y; 
+    this.boundingBoxY = (leftEye.y - this.boundingBoxHeight); 
   }
+
   onWebcamloaded = () => { 
     setInterval(this.capture, this.frameRate); 
   }
