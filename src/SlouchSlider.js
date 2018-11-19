@@ -25,6 +25,12 @@ export default class SlouchSlider extends React.Component{
     this.sizeDecrease = 100; 
     this.calibWidth = this.width - this.sizeDecrease; 
     this.calibHeight = this.width - this.sizeDecrease; 
+
+    //bounding box
+    this.boundingBoxHeight = 0;  
+    this.boundingBoxWidth = 0; 
+    this.boundingBoxX = 0; 
+    this.boundingBoxY = 0;
     
     //constants for webcam
     this.videoConstraints = { 
@@ -36,6 +42,7 @@ export default class SlouchSlider extends React.Component{
     this.state = { 
       slouch : 0, 
       isLoaded : false, 
+      isCalibrating : true, 
       posenet : null,
       capture : null, 
       feedback : null
@@ -89,7 +96,31 @@ export default class SlouchSlider extends React.Component{
     
     //console.log('slouch', slouch);
     this.setState({slouch}); 
+
+    if(this.state.isCalibrating){ 
+      this.drawBoundingBox(leftEye, rightEye, leftShoulder, rightShoulder)
+    } 
   } 
+
+  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => { 
+    this.boundingBoxWidth = rightShoulder.x - leftShoulder.x; 
+    this.boundingBoxHeight = leftEye.y - leftShoulder.y; 
+    
+    this.boundingBoxX = this.normalizeValue(leftEye.x, [0, 207], [0, this.width]); 
+    this.boundingBoxY = this.normalizeValue(leftEye.y, [0, 211], [0,this.height]);
+    console.log('joints:', 
+    'leftEyeX', leftEye.x, 'leftEyeY', leftEye.y, 
+    'rightEyeX', rightEye.x, 'rightEyeY', rightEye.y);
+    console.log('boundingbox:',
+      'width', this.boundingBoxWidth, 
+      'height', this.boundingBoxHeight, 
+      'x', this.boundingBoxX, 
+      'y', this.boundingBoxY);
+  }
+
+  normalizeValue = (value, r1, r2) => { 
+    return ( value - r1[ 0 ] ) * ( r2[ 1 ] - r2[ 0 ] ) / ( r1[ 1 ] - r1[ 0 ] ) + r2[ 0 ];
+  }
 
   onWebcamloaded = () => { 
     setInterval(this.capture, this.frameRate); 
@@ -114,6 +145,7 @@ export default class SlouchSlider extends React.Component{
           width={this.width} 
           height={this.height}>
           <Layer>
+            {/* TARGET CALIBRATION */}
             <Rect
               // id={'calibration-rect'}
               x={this.sizeDecrease/2}
@@ -122,6 +154,18 @@ export default class SlouchSlider extends React.Component{
               height={this.calibHeight}
               stroke={'black'}
               shadowBlur={5}
+            />
+            {/* USER BOUNDING BOX */}
+            <Rect
+              x={this.boundingBoxX}
+              y={this.boundingBoxY}
+              width={this.boundingBoxWidth}
+              height={this.boundingBoxHeight}
+              // x={200}
+              // y={200}
+              // width={50}
+              // height={50}
+              stroke={'green'}
             />
           </Layer>
         </Stage>
