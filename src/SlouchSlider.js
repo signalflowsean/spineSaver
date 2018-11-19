@@ -4,6 +4,7 @@ import * as posenet from '@tensorflow-models/posenet';
 import { Stage, Layer, Rect } from 'react-konva';
 import './Styles/camCalibStack.css'; 
 import {CalculateSlouch} from './Utils/pose'; 
+import DataContainer from './Utils/dataContainer'; 
  
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
@@ -88,8 +89,9 @@ export default class SlouchSlider extends React.Component{
       const newRatio = CalculateSlouch(pose);
   
       const slouch = (this.tempRatio / newRatio) -1; 
-      console.log(newRatio, this.tempRatio, slouch); 
+      //console.log(newRatio, this.tempRatio, slouch); 
       this.setState({slouch, feedback: 'is showing realtime slouch amount'}); 
+      DataContainer(this.state.slouch); 
     }
     else if (this.state.isCalibrating){ 
       this.drawBoundingBox(pose.keypoints[1].position, pose.keypoints[2].position, pose.keypoints[5].position, pose.keypoints[6].position); 
