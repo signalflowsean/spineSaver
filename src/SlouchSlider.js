@@ -55,9 +55,9 @@ export default class SlouchSlider extends React.Component{
   }
   
   componentDidMount(){ 
-    this.setState({feedback : "isLoading"});
+    this.setState({feedback : "is Loading"});
     posenet.load().then(posenet => this.setState(
-      {posenet, isLoaded : true, feedback : 'Posenet is loaded', instructions: 'Hit the calibrate button to get started'}));  
+      {posenet, isLoaded : true, instructions: 'Hit the calibrate button to get started'}));  
   }
 
   ///WEBCAM METHODS START
@@ -72,6 +72,7 @@ export default class SlouchSlider extends React.Component{
 
   onWebcamloaded = () => { 
     setInterval(this.capture, this.frameRate); 
+    this.setState({feedback : 'everything is loaded'}); 
   }
 
   setImage = (image) => { 
