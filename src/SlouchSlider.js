@@ -56,7 +56,7 @@ export default class SlouchSlider extends React.Component{
   componentDidMount(){ 
     this.setState({feedback : "isLoading"});
     posenet.load().then(posenet => this.setState(
-      {posenet, isLoaded : true, feedback : 'Posenet is loaded'}));  
+      {posenet, isLoaded : true, feedback : 'Posenet is loaded', instructions: 'Hit the calibrate button to get started'}));  
   }
 
   ///WEBCAM METHODS START
@@ -104,7 +104,7 @@ export default class SlouchSlider extends React.Component{
       isCalibrating: !this.state.isCalibrating,
       feedback: 'Is calibrating'  
     }, () => (this.state.isCalibrating) ? 
-      this.setState({instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button'}) : 
+      this.setState({instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 
       this.setState({instructions: null, ratio: this.tempRatio, hasCalibrated: true})); 
   }
 
@@ -159,8 +159,9 @@ export default class SlouchSlider extends React.Component{
           ref={this.setRef}
         />
         <p>{this.state.feedback}</p>
-        <p>{this.state.instructions}</p>
-        <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+        <p>{this.state.instructions}
+          <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+        </p>
         <br></br>
         <p>Slouch Amount: 
           <input 
