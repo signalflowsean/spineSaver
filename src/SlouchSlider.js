@@ -15,7 +15,9 @@ export default class SlouchSlider extends React.Component{
     this.imageScaleFactor = 0.5; 
     this.flipHorizontal = false; 
     this.outputStride = 16;
-    this.frameRate = 150;  
+
+    //TODO: figure out a reasonable frame rate
+    this.frameRate = 50;  
 
     //constant height and widths
     this.width = 500; 
@@ -86,10 +88,11 @@ export default class SlouchSlider extends React.Component{
   }
 
   calculateSlouch = (pose) => { 
-    const leftEye = pose.keypoints[0].position; 
-    const rightEye = pose.keypoints[1].position; 
-    const leftShoulder = pose.keypoints[4].position; 
-    const rightShoulder = pose.keypoints[5].position; 
+    //console.log(pose.keypoints); 
+    const leftEye = pose.keypoints[1].position; 
+    const rightEye = pose.keypoints[2].position; 
+    const leftShoulder = pose.keypoints[5].position; 
+    const rightShoulder = pose.keypoints[6].position; 
 
     //TODO: better calculation fro slouch
     const slouch = (((leftEye.y - leftShoulder.y) + (rightEye.y - rightShoulder.y))/2) + 34; 
@@ -102,26 +105,17 @@ export default class SlouchSlider extends React.Component{
     } 
   } 
 
-  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => { 
-    this.boundingBoxWidth = rightShoulder.x - leftShoulder.x; 
-    this.boundingBoxHeight = leftEye.y - leftShoulder.y; 
+  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
+    this.boundingBoxWidth = rightEye.x - leftEye.x; 
+    this.boundingBoxHeight = leftEye.y - leftShoulder.y;
+    //console.log(leftEye.y, leftShoulder.y);
+    //console.log(this.height - leftEye.y, this.height - leftShoulder.y);
     
-    this.boundingBoxX = this.normalizeValue(leftEye.x, [0, 207], [0, this.width]); 
-    this.boundingBoxY = this.normalizeValue(leftEye.y, [0, 211], [0,this.height]);
-    console.log('joints:', 
-    'leftEyeX', leftEye.x, 'leftEyeY', leftEye.y, 
-    'rightEyeX', rightEye.x, 'rightEyeY', rightEye.y);
-    console.log('boundingbox:',
-      'width', this.boundingBoxWidth, 
-      'height', this.boundingBoxHeight, 
-      'x', this.boundingBoxX, 
-      'y', this.boundingBoxY);
+    //console.log('leftEye.y', leftEye.y, 'leftShoulder.y', leftShoulder.y);
+    
+    this.boundingBoxX = leftEye.x; 
+    this.boundingBoxY = leftEye.y; 
   }
-
-  normalizeValue = (value, r1, r2) => { 
-    return ( value - r1[ 0 ] ) * ( r2[ 1 ] - r2[ 0 ] ) / ( r1[ 1 ] - r1[ 0 ] ) + r2[ 0 ];
-  }
-
   onWebcamloaded = () => { 
     setInterval(this.capture, this.frameRate); 
   }
@@ -161,10 +155,6 @@ export default class SlouchSlider extends React.Component{
               y={this.boundingBoxY}
               width={this.boundingBoxWidth}
               height={this.boundingBoxHeight}
-              // x={200}
-              // y={200}
-              // width={50}
-              // height={50}
               stroke={'green'}
             />
           </Layer>
@@ -226,7 +216,7 @@ export default class SlouchSlider extends React.Component{
         <br></br>
         <br></br>
         <br></br>
-        <img src={this.state.capture} alt="pose" ref={this.setImage} width="200" height="200"></img>
+        <img src={this.state.capture} alt="pose" ref={this.setImage} width={this.width} height={this.height}></img>
       </div>
     ); 
   }
