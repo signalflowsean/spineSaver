@@ -1,6 +1,9 @@
 import React from 'react';
 import Webcam from 'react-webcam'; 
 import * as posenet from '@tensorflow-models/posenet';
+import { Stage, Layer, Rect } from 'react-konva';
+import Konva from 'konva'; 
+
 
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
@@ -9,7 +12,17 @@ export default class SlouchSlider extends React.Component{
     this.image = null; 
     this.imageScaleFactor = 0.5; 
     this.flipHorizontal = false; 
-    this.outputStride = 16; 
+    this.outputStride = 16;
+    this.frameRate = 150;  
+
+    this.width = 200; 
+    this.height = 200; 
+
+    this.videoConstraints = { 
+      width : this.width,  
+      height : this.height, 
+      facingMode: "user"
+    }; 
 
     this.state = { 
       slouch : 0, 
@@ -69,7 +82,7 @@ export default class SlouchSlider extends React.Component{
   } 
 
   onWebcamloaded = () => { 
-    setInterval(this.capture, 300); 
+    setInterval(this.capture, this.frameRate); 
   }
 
   setImage = (image) => { 
@@ -77,12 +90,6 @@ export default class SlouchSlider extends React.Component{
   }
 
   render() { 
-    const videoConstraints = { 
-      width : 200, 
-      height: 200, 
-      facingMode: "user"
-    }; 
-
     if (this.state.isLoaded === false){ 
       return ( 
         <p>{this.state.feedback}</p>
@@ -92,10 +99,22 @@ export default class SlouchSlider extends React.Component{
     return ( 
       <div>
         <p>{this.state.feedback}</p>
+        <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Layer>
+            <Rect
+              x={20}
+              y={20}
+              width={50}
+              height={50}
+              fill={'green'}
+              shadowBlur={5}
+            />
+          </Layer>
+        </Stage>
         <Webcam 
           audio={false}
           screenshotFormat="image/png"
-          videoConstraints={videoConstraints}
+          videoConstraints={this.videoConstraints}
           onUserMedia={this.onWebcamloaded}
           ref={this.setRef}
         />
@@ -104,6 +123,7 @@ export default class SlouchSlider extends React.Component{
           name="slouchSlider" 
           value={this.state.slouch} 
           step="1" 
+          // The min and max will be provided from the calibration
           min="0" 
           max="40"
           onChange={(e) => console.log(e.currentTarget.value) }
