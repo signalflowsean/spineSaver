@@ -23,11 +23,6 @@ export default class SlouchSlider extends React.Component{
     this.width = 500; 
     this.height = 500; 
 
-    //calibration rect size
-    this.sizeDecrease = (this.width /2); 
-    this.calibWidth = this.width - this.sizeDecrease - (this.sizeDecrease /3); 
-    this.calibHeight = this.width - this.sizeDecrease; 
-
     //bounding box
     this.boundingBoxHeight = 0;  
     this.boundingBoxWidth = 0; 
@@ -43,8 +38,10 @@ export default class SlouchSlider extends React.Component{
 
     this.state = { 
       slouch : 0, 
+      ratio : 0, 
       isLoaded : false, 
       isCalibrating : false, 
+      distanceToCalibration : null, 
       posenet : null,
       capture : null, 
       feedback : null, 
@@ -72,7 +69,7 @@ export default class SlouchSlider extends React.Component{
 
   capture = () => { 
     const capture = this.webcam.getScreenshot(); 
-  
+
     //set the screenshot to the state, set the src of html image
     //to the capture, find the pose from the reference of the 
     //html image element
@@ -97,13 +94,14 @@ export default class SlouchSlider extends React.Component{
     const rightShoulder = pose.keypoints[6].position; 
 
     //TODO: better calculation fro slouch
-    const slouch = (((leftEye.y - leftShoulder.y) + (rightEye.y - rightShoulder.y))/2) + 34; 
+    const slouch = Math.abs((((leftEye.y - leftShoulder.y) + (rightEye.y - rightShoulder.y))/2)+235); 
     
     //console.log('slouch', slouch);
     this.setState({slouch}); 
 
     if(this.state.isCalibrating){ 
-      this.drawBoundingBox(leftEye, rightEye, leftShoulder, rightShoulder)
+      this.drawBoundingBox(leftEye, rightEye, leftShoulder, rightShoulder); 
+      this.findDistanceToCalibration();
     } 
   } 
 
@@ -111,7 +109,7 @@ export default class SlouchSlider extends React.Component{
     this.setState({
       isCalibrating: !this.state.isCalibrating, 
       feedback: 'Spine Save is calibrating', 
-      instructions : 'Move your body so that the green box matches the black box'}); 
+      instructions : 'Move your body into a upright position, then click the calibrate button again'}); 
   }
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
@@ -120,6 +118,11 @@ export default class SlouchSlider extends React.Component{
     
     this.boundingBoxX = leftEye.x; 
     this.boundingBoxY = (leftEye.y - this.boundingBoxHeight); 
+  }
+
+  findDistanceToCalibration = () => { 
+    const ratio = this.boundingBoxHeight / this.boundingBoxWidth; 
+    this.setState({ratio}); 
   }
 
   onWebcamloaded = () => { 
@@ -145,23 +148,13 @@ export default class SlouchSlider extends React.Component{
           width={this.width} 
           height={this.height}>
           <Layer>
-            {/* TARGET CALIBRATION */}
-            <Rect
-              // id={'calibration-rect'}
-              x={this.sizeDecrease/2 + this.sizeDecrease/6}
-              y={this.sizeDecrease/2}
-              width={this.calibWidth}
-              height={this.calibHeight}
-              stroke={'black'}
-              shadowBlur={5}
-            />
             {/* USER BOUNDING BOX */}
             <Rect
               x={this.boundingBoxX}
               y={this.boundingBoxY}
               width={this.boundingBoxWidth}
               height={this.boundingBoxHeight}
-              stroke={'green'}
+              stroke={'red'}
             />
           </Layer>
         </Stage>
@@ -177,55 +170,22 @@ export default class SlouchSlider extends React.Component{
         />
         <p>{this.state.feedback}</p>
         <p>{this.state.instructions}</p>
-        <input type="button" value="caibrate" onClick={() => this.handleCalibrateButtonClick()}></input>
+        <input type="button" value="CALIBRATE" onClick={() => this.handleCalibrateButtonClick()}></input>
         <br></br>
-        <input 
-          type="range" 
-          name="slouchSlider" 
-          value={this.state.slouch} 
-          step="1" 
-          // The min and max will be provided from the calibration
-          min="0" 
-          max="40"
-          onChange={(e) => console.log(e.currentTarget.value) }
-          >
-        </input>
-        {/* <br> elements are temp so the img element which is needed
-        for the pose detection is off the screen / not viewable */}
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <img src={this.state.capture} alt="pose" ref={this.setImage} width={this.width} height={this.height}></img>
+        <p>Slouch Amount: 
+          <input 
+            type="range" 
+            name="slouchSlider" 
+            value={this.state.slouch} 
+            step="1" 
+            // The min and max will be provided from the calibration
+            min="0" 
+            max="60"
+            onChange={(e) => console.log(e.currentTarget.value) }
+            >
+          </input>
+        </p>
+        <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setImage} width={this.width} height={this.height}></img>
       </div>
     ); 
   }
