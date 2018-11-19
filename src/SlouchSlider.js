@@ -44,7 +44,7 @@ export default class SlouchSlider extends React.Component{
     this.state = { 
       slouch : 0, 
       isLoaded : false, 
-      isCalibrating : true, 
+      isCalibrating : false, 
       posenet : null,
       capture : null, 
       feedback : null
@@ -167,6 +167,9 @@ export default class SlouchSlider extends React.Component{
           ref={this.setRef}
         />
         <p>{this.state.feedback}</p>
+        <input type="button" value="caibrate" onClick={() => 
+          this.setState({isCalibrating: !this.state.isCalibrating, feedback: 'Spine Save is calibrating'})}></input>
+        <br></br>
         <input 
           type="range" 
           name="slouchSlider" 
