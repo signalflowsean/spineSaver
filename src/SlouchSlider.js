@@ -3,6 +3,7 @@ import Webcam from 'react-webcam';
 import * as posenet from '@tensorflow-models/posenet';
 import { Stage, Layer, Rect } from 'react-konva';
 import './Styles/camCalibStack.css'; 
+import {CalculateSlouch} from './Utils/pose'; 
  
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
@@ -10,6 +11,8 @@ export default class SlouchSlider extends React.Component{
     
     //image element
     this.image = null;
+
+    this.tempRatio = null; 
     
     //posenet constants
     this.imageScaleFactor = 0.5; 
@@ -41,6 +44,7 @@ export default class SlouchSlider extends React.Component{
       ratio : 0, 
       isLoaded : false, 
       isCalibrating : false, 
+      hasCalibrated : false, 
       distanceToCalibration : null, 
       posenet : null,
       capture : null, 
@@ -51,79 +55,19 @@ export default class SlouchSlider extends React.Component{
   
   componentDidMount(){ 
     this.setState({feedback : "isLoading"});
-    this.loadPoseNet(); 
+    posenet.load().then(posenet => this.setState(
+      {posenet, isLoaded : true, feedback : 'Posenet is loaded'}));  
   }
 
-  loadPoseNet(){ 
-    posenet.load()
-      .then((posenet) => { 
-        this.setState({
-          posenet, isLoaded : true, 
-          feedback : 'Posenet is loaded'}); 
-      }); 
-  }
-
+  ///WEBCAM METHODS START
   setRef = webcam => { 
     this.webcam = webcam; 
   }; 
 
   capture = () => { 
     const capture = this.webcam.getScreenshot(); 
-
-    //set the screenshot to the state, set the src of html image
-    //to the capture, find the pose from the reference of the 
-    //html image element
     this.setState({capture}, this.findPose(this.image)); 
   };
-  
-  findPose = (img) => {     
-      this.state.posenet.estimateSinglePose(img, 
-        this.imageScaleFactor, 
-        this.flipHorizontal, 
-        this.outputStride)
-          .then((pose) => { 
-            this.calculateSlouch(pose);     
-      })
-  }
-
-  calculateSlouch = (pose) => { 
-    //console.log(pose.keypoints); 
-    const leftEye = pose.keypoints[1].position; 
-    const rightEye = pose.keypoints[2].position; 
-    const leftShoulder = pose.keypoints[5].position; 
-    const rightShoulder = pose.keypoints[6].position; 
-
-    //TODO: better calculation fro slouch
-    const slouch = Math.abs((((leftEye.y - leftShoulder.y) + (rightEye.y - rightShoulder.y))/2)+235); 
-    
-    //console.log('slouch', slouch);
-    this.setState({slouch}); 
-
-    if(this.state.isCalibrating){ 
-      this.drawBoundingBox(leftEye, rightEye, leftShoulder, rightShoulder); 
-      this.findDistanceToCalibration();
-    } 
-  } 
-
-  handleCalibrateButtonClick = () => { 
-    this.setState({
-      isCalibrating: !this.state.isCalibrating, 
-      feedback: 'Spine Save is calibrating', 
-      instructions : 'Move your body into a upright position, then click the calibrate button again'}); 
-  }
-
-  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
-    this.boundingBoxWidth = rightEye.x - leftEye.x; 
-    this.boundingBoxHeight = leftEye.y - leftShoulder.y;
-    
-    this.boundingBoxX = leftEye.x; 
-    this.boundingBoxY = (leftEye.y - this.boundingBoxHeight); 
-  }
-
-  findDistanceToCalibration = () => { 
-    const ratio = this.boundingBoxHeight / this.boundingBoxWidth; 
-    this.setState({ratio}); 
-  }
 
   onWebcamloaded = () => { 
     setInterval(this.capture, this.frameRate); 
@@ -131,6 +75,52 @@ export default class SlouchSlider extends React.Component{
 
   setImage = (image) => { 
     this.image = image; 
+  }
+  //WEBCAM MTHODS STOP
+  
+  findPose = (img) => {     
+      this.state.posenet.estimateSinglePose(img, this.imageScaleFactor, this.flipHorizontal, this.outputStride)
+        .then((pose) => this.calculateSlouch(pose))
+  }
+
+  calculateSlouch = (pose) => {
+    if (this.state.hasCalibrated && !this.state.isCalibrating){
+      const newRatio = CalculateSlouch(pose);
+  
+      const slouch = (this.tempRatio / newRatio) -1; 
+      console.log(newRatio, this.tempRatio, slouch); 
+      this.setState({slouch, feedback: 'is showing realtime slouch amount'}); 
+    }
+    else if (this.state.isCalibrating){ 
+      this.drawBoundingBox(pose.keypoints[1].position, pose.keypoints[2].position, pose.keypoints[5].position, pose.keypoints[6].position); 
+    }
+  } 
+
+  handleCalibrateButtonClick = () => { 
+    if (this.state.isCalibrating){ 
+      this.resetValues(); 
+    }
+    this.setState({
+      isCalibrating: !this.state.isCalibrating,
+      feedback: 'Is calibrating'  
+    }, () => (this.state.isCalibrating) ? 
+      this.setState({instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button'}) : 
+      this.setState({instructions: null, ratio: this.tempRatio, hasCalibrated: true})); 
+  }
+
+  resetValues = () => { 
+    this.boundingBoxWidth = 0; this.boundingBoxHeight = 0; 
+    this.boundingBoxX = 0; this.boundingBoxY = 0;  
+  }
+
+  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
+    if (this.state.isCalibrating){ 
+      this.boundingBoxWidth = rightEye.x - leftEye.x; 
+      this.boundingBoxHeight = leftEye.y - leftShoulder.y;
+      this.boundingBoxX = leftEye.x; 
+      this.boundingBoxY = (leftEye.y - this.boundingBoxHeight); 
+      this.tempRatio = this.boundingBoxHeight / this.boundingBoxWidth; 
+    } 
   }
 
   render() { 
@@ -170,17 +160,16 @@ export default class SlouchSlider extends React.Component{
         />
         <p>{this.state.feedback}</p>
         <p>{this.state.instructions}</p>
-        <input type="button" value="CALIBRATE" onClick={() => this.handleCalibrateButtonClick()}></input>
+        <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
         <br></br>
         <p>Slouch Amount: 
           <input 
             type="range" 
             name="slouchSlider" 
             value={this.state.slouch} 
-            step="1" 
-            // The min and max will be provided from the calibration
+            step=".01" 
             min="0" 
-            max="60"
+            max="0.5"
             onChange={(e) => console.log(e.currentTarget.value) }
             >
           </input>
