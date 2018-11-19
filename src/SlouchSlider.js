@@ -25,7 +25,7 @@ export default class SlouchSlider extends React.Component{
 
     //calibration rect size
     this.sizeDecrease = (this.width /2); 
-    this.calibWidth = this.width - this.sizeDecrease; 
+    this.calibWidth = this.width - this.sizeDecrease - (this.sizeDecrease /3); 
     this.calibHeight = this.width - this.sizeDecrease; 
 
     //bounding box
@@ -47,7 +47,8 @@ export default class SlouchSlider extends React.Component{
       isCalibrating : false, 
       posenet : null,
       capture : null, 
-      feedback : null
+      feedback : null, 
+      instructions : null
     }; 
   }
   
@@ -59,8 +60,9 @@ export default class SlouchSlider extends React.Component{
   loadPoseNet(){ 
     posenet.load()
       .then((posenet) => { 
-        this.setState(
-          {posenet, isLoaded : true, feedback : "Posenet is loaded"}); 
+        this.setState({
+          posenet, isLoaded : true, 
+          feedback : 'Posenet is loaded'}); 
       }); 
   }
 
@@ -105,6 +107,13 @@ export default class SlouchSlider extends React.Component{
     } 
   } 
 
+  handleCalibrateButtonClick = () => { 
+    this.setState({
+      isCalibrating: !this.state.isCalibrating, 
+      feedback: 'Spine Save is calibrating', 
+      instructions : 'Move your body so that the green box matches the black box'}); 
+  }
+
   drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
     this.boundingBoxWidth = rightEye.x - leftEye.x; 
     this.boundingBoxHeight = leftEye.y - leftShoulder.y;
@@ -139,7 +148,7 @@ export default class SlouchSlider extends React.Component{
             {/* TARGET CALIBRATION */}
             <Rect
               // id={'calibration-rect'}
-              x={this.sizeDecrease/2}
+              x={this.sizeDecrease/2 + this.sizeDecrease/6}
               y={this.sizeDecrease/2}
               width={this.calibWidth}
               height={this.calibHeight}
@@ -167,8 +176,8 @@ export default class SlouchSlider extends React.Component{
           ref={this.setRef}
         />
         <p>{this.state.feedback}</p>
-        <input type="button" value="caibrate" onClick={() => 
-          this.setState({isCalibrating: !this.state.isCalibrating, feedback: 'Spine Save is calibrating'})}></input>
+        <p>{this.state.instructions}</p>
+        <input type="button" value="caibrate" onClick={() => this.handleCalibrateButtonClick()}></input>
         <br></br>
         <input 
           type="range" 
