@@ -91,7 +91,6 @@ export default class SlouchSlider extends React.Component{
       if(!this.state.isCalibrating) {
         //Done calibrating reset values
         this.zeroOutBBoxValues(); 
-        
       }     
       this.state.isCalibrating ? 
       this.setState({feedback : 'Calibrating...', instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 

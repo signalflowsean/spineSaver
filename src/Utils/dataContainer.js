@@ -1,32 +1,23 @@
 const API_URL = 'http://localhost:8080/api'; 
+const size = 10; 
 let slouchData = []; 
 
 export default function DataContainer(data) { 
   slouchData.push(data); 
   
-  printData(); 
-  if (slouchData.length === 10){ 
-    console.log('making a post request');
-    //POST REQUEST
-    postData(`${API_URL}/slouchData`, {slouchData})
-      .then(data => { 
-        console.log(data.data)
-        //clearData
-        slouchData = []; 
-      })
-      .catch(error => { 
-        console.log('there is an error:', error);
-      }); 
+  if (slouchData.length === size){ 
+
+    fetch(`${API_URL}/slouchData`, { 
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({slouchData})
+    }).then(res => { 
+      return res.json(); 
+    }).then(slouchData => {  
+      console.log('slouch data', slouchData);
+    }).catch(error => { 
+      console.log('Error:', error);
+    });   
   }
 }
-function postData(url = '', data = {}) { 
-  return fetch(url, { 
-    method: "POST", 
-    mode: "cors"
-  })
-  .then(res => res.json()); 
-}
 
-function printData(){ 
-  //console.log(JSON.stringify(slouchData));
-}
