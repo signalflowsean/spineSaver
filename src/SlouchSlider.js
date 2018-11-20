@@ -89,13 +89,22 @@ export default class SlouchSlider extends React.Component{
       isCalibrating: !this.state.isCalibrating, feedback: 'Calibrated'  
     }, () => {
       if(!this.state.isCalibrating) {
-        this.drawBoundingBox(0, 0, 0); 
+        //Done calibrating reset values
+        this.zeroOutBBoxValues(); 
+        
       }     
       this.state.isCalibrating ? 
       this.setState({feedback : 'Calibrating...', instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 
       this.setState({instructions: null, hasCalibrated: true }) 
     });
   } 
+
+  zeroOutBBoxValues(){ 
+    const leftEye = {x: 0, y: 0}; 
+    const rightEye = {x: 0, y: 0}; 
+    const leftShoulder = {x: 0, y: 0}; 
+    this.drawBoundingBox(leftEye, rightEye, leftShoulder); 
+  }
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
       this.setState( {
