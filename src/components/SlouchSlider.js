@@ -148,22 +148,24 @@ export default class SlouchSlider extends React.Component{
           onUserMedia={() => this.onWebcamLoaded()}
           ref={this.setWebcamRef}
         />
-        <p>{this.state.feedback}</p>
-        <p>{this.state.instructions}
-          <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
-        </p>
-        <br></br>
-        <p>Slouch Amount: 
-          <input 
-            type="range" 
-            name="slouchSlider" 
-            value={this.state.slouch} 
-            step=".01" 
-            min="0" 
-            max="0.5"
-            >
-          </input>
-        </p>
+        <div className="feedback">
+          <p>{this.state.feedback}</p>
+          <p>{this.state.instructions}
+            <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+          </p>
+          <br></br>
+          <p>Slouch Amount: 
+            <input 
+              type="range" 
+              name="slouchSlider" 
+              value={this.state.slouch} 
+              step=".01" 
+              min="0" 
+              max="0.5"
+              >
+            </input>
+          </p>
+        </div>
         <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
     ); 
