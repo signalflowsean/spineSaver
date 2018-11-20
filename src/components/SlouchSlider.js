@@ -2,10 +2,10 @@ import React from 'react';
 import Webcam from 'react-webcam'; 
 import * as posenet from '@tensorflow-models/posenet';
 import { Stage, Layer, Rect } from 'react-konva';
-import './Styles/camCalibStack.css'; 
-import {CalculateSlouch} from './Utils/pose'; 
-import Constants from './Utils/constants'; 
-import DataContainer from './Utils/dataContainer'; 
+import '../Styles/camCalibStack.css'; 
+import {CalculateSlouch} from '../Utils/pose'; 
+import Constants from '../Utils/constants'; 
+import DataContainer from '../Utils/dataContainer'; 
 
 
 export default class SlouchSlider extends React.Component{
@@ -54,7 +54,6 @@ export default class SlouchSlider extends React.Component{
   };
 
   onWebcamLoaded = () => { 
-    console.log('hi');
     this.setState(
       {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
       () => setInterval(this.capture, Constants.frameRate)); 

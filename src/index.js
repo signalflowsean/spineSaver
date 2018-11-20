@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SlouchSlider from './components/SlouchSlider';
+import Display from './components/Display'; 
 import './Styles/index.css';
-import SlouchSlider from './SlouchSlider';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<SlouchSlider />, document.getElementById('root'));
+ReactDOM.render(<Display />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
