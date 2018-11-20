@@ -14,7 +14,7 @@ export default function DataContainer(data) {
     }).then(res => {
       return res.json(); 
     }).then(slouchData => {  
-      //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
+      console.log('Slouch Data: ', JSON.stringify(slouchData)); 
     }).catch(error => { 
       console.log('Error:', error);
     });
