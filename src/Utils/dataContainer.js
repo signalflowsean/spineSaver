@@ -1,13 +1,10 @@
-
-import React from 'react'; 
-
 const API_URL = 'http://localhost:8080/api'; 
 let slouchData = []; 
 
 export default function DataContainer(data) { 
   slouchData.push(data); 
   
-  //printData(); 
+  printData(); 
   if (slouchData.length === 10){ 
     console.log('making a post request');
     //POST REQUEST
@@ -20,7 +17,6 @@ export default function DataContainer(data) {
       .catch(error => { 
         console.log('there is an error:', error);
       }); 
-
   }
 }
 function postData(url = '', data = {}) { 
@@ -32,5 +28,5 @@ function postData(url = '', data = {}) {
 }
 
 function printData(){ 
-  console.log(JSON.stringify(slouchData));
+  //console.log(JSON.stringify(slouchData));
 }

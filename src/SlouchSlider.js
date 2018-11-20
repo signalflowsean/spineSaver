@@ -4,75 +4,60 @@ import * as posenet from '@tensorflow-models/posenet';
 import { Stage, Layer, Rect } from 'react-konva';
 import './Styles/camCalibStack.css'; 
 import {CalculateSlouch} from './Utils/pose'; 
+import Constants from './Utils/constants'; 
 import DataContainer from './Utils/dataContainer'; 
- 
+
+
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
     
-    //image element
-    this.image = null;
-
-    this.tempRatio = null; 
-    
-    //posenet constants
-    this.imageScaleFactor = 0.5; 
-    this.flipHorizontal = false; 
-    this.outputStride = 16;
-
-    //TODO: figure out a reasonable frame rate
-    this.frameRate = 50;  
-
-    //constant height and widths
-    this.width = 500; 
-    this.height = 500; 
-
-    //bounding box
-    this.boundingBoxHeight = 0;  
-    this.boundingBoxWidth = 0; 
-    this.boundingBoxX = 0; 
-    this.boundingBoxY = 0;
-    
-    //constants for webcam
-    this.videoConstraints = { 
-      width : this.width,  
-      height : this.height, 
-      facingMode: "user"
-    }; 
-
     this.state = { 
+      HTMLImage : null, 
+      screenCap : null, 
+      webcam : null,
+      tempSlouch : null, 
       slouch : 0, 
-      ratio : 0, 
-      isLoaded : false, 
-      isCalibrating : false, 
-      hasCalibrated : false, 
-      distanceToCalibration : null, 
+      bBoxHeight : 0, 
+      bBoxWidth : 0, 
+      bBoxX: 0, 
+      bBoxY: 0, 
+      isCalibrating: false, 
+      hasCalibrated: false, 
+      isLoaded : false,  
       posenet : null,
-      capture : null, 
       feedback : null, 
       instructions : null
     }; 
   }
   
   componentDidMount(){ 
-    this.setState({feedback : "is Loading"});
-    posenet.load().then(posenet => this.setState(
-      {posenet, isLoaded : true, instructions: 'Hit the calibrate button to get started'}));  
+    this.setState({feedback : "Loading...", isLoaded : false});
+
+    posenet.load().then(posenet => this.setState({posenet, feedback: 'Loaded', isLoaded: true}));  
   }
 
   ///WEBCAM METHODS START
-  setRef = webcam => { 
-    this.webcam = webcam; 
-  }; 
-
-  capture = () => { 
-    const capture = this.webcam.getScreenshot(); 
-    this.setState({capture}, this.findPose(this.image)); 
+  setWebcamRef = webcam => { 
+    this.setState({webcam}); 
+  };
+  
+  setScreenShotRef = screenCapHTML => { 
+    this.setState({HTMLImage : screenCapHTML}); 
   };
 
-  onWebcamloaded = () => { 
-    setInterval(this.capture, this.frameRate); 
-    this.setState({feedback : 'everything is loaded'}); 
+  capture = () => { 
+    const capture = this.state.webcam.getScreenshot(); 
+
+    this.setState({capture}, 
+      () => this.findPose(this.state.HTMLImage)); 
+  };
+
+  onWebcamLoaded = () => { 
+    console.log('hi');
+    this.setState(
+      {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
+      () => setInterval(this.capture, Constants.frameRate)); 
   }
 
   setImage = (image) => { 
@@ -81,17 +66,17 @@ export default class SlouchSlider extends React.Component{
   //WEBCAM MTHODS STOP
   
   findPose = (img) => {     
-      this.state.posenet.estimateSinglePose(img, this.imageScaleFactor, this.flipHorizontal, this.outputStride)
-        .then((pose) => this.calculateSlouch(pose))
+      this.state.posenet.estimateSinglePose(img, 
+        Constants.imageScaleFactor, 
+        Constants.flipHorizontal, 
+        Constants.outputStride)
+          .then((pose) => this.calculateSlouch(pose))
   }
 
   calculateSlouch = (pose) => {
     if (this.state.hasCalibrated && !this.state.isCalibrating){
-      const newRatio = CalculateSlouch(pose);
-  
-      const slouch = (this.tempRatio / newRatio) -1; 
-      //console.log(newRatio, this.tempRatio, slouch); 
-      this.setState({slouch, feedback: 'is showing realtime slouch amount'}); 
+      const slouch = (this.state.tempSlouch / CalculateSlouch(pose)) -1; 
+      this.setState({slouch, feedback: 'Realtime slouch amount is showing.'}); 
       DataContainer(this.state.slouch); 
     }
     else if (this.state.isCalibrating){ 
@@ -100,30 +85,26 @@ export default class SlouchSlider extends React.Component{
   } 
 
   handleCalibrateButtonClick = () => { 
-    if (this.state.isCalibrating){ 
-      this.resetValues(); 
-    }
     this.setState({
-      isCalibrating: !this.state.isCalibrating,
-      feedback: 'Is calibrating'  
-    }, () => (this.state.isCalibrating) ? 
-      this.setState({instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 
-      this.setState({instructions: null, ratio: this.tempRatio, hasCalibrated: true})); 
-  }
+      isCalibrating: !this.state.isCalibrating, feedback: 'Calibrated'  
+    }, () => {
+      if(!this.state.isCalibrating) {
+        this.drawBoundingBox(0, 0, 0); 
+      }     
+      this.state.isCalibrating ? 
+      this.setState({feedback : 'Calibrating...', instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 
+      this.setState({instructions: null, hasCalibrated: true }) 
+    });
+  } 
 
-  resetValues = () => { 
-    this.boundingBoxWidth = 0; this.boundingBoxHeight = 0; 
-    this.boundingBoxX = 0; this.boundingBoxY = 0;  
-  }
-
-  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
-    if (this.state.isCalibrating){ 
-      this.boundingBoxWidth = rightEye.x - leftEye.x; 
-      this.boundingBoxHeight = leftEye.y - leftShoulder.y;
-      this.boundingBoxX = leftEye.x; 
-      this.boundingBoxY = (leftEye.y - this.boundingBoxHeight); 
-      this.tempRatio = this.boundingBoxHeight / this.boundingBoxWidth; 
-    } 
+  drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
+      this.setState( {
+        boundingBoxWidth : (rightEye.x - leftEye.x),  
+        boundingBoxHeight :(leftEye.y - leftShoulder.y),
+        boundingBoxX : leftEye.x, 
+        boundingBoxY : (leftEye.y - this.state.boundingBoxHeight), 
+        tempSlouch : (this.state.boundingBoxHeight / this.state.boundingBoxWidth)
+      }); 
   }
 
   render() { 
@@ -135,31 +116,30 @@ export default class SlouchSlider extends React.Component{
 
     return ( 
       <div>
-        {/* Stage, Layer and Rect is for rendering calibration visuals */}
         <Stage 
           className={'calibration-stage'} 
-          width={this.width} 
-          height={this.height}>
+          width={Constants.width} 
+          height={Constants.height}>
           <Layer>
             {/* USER BOUNDING BOX */}
             <Rect
-              x={this.boundingBoxX}
-              y={this.boundingBoxY}
-              width={this.boundingBoxWidth}
-              height={this.boundingBoxHeight}
+              x={this.state.boundingBoxX}
+              y={this.state.boundingBoxY}
+              width={this.state.boundingBoxWidth}
+              height={this.state.boundingBoxHeight}
               stroke={'red'}
             />
-          </Layer>
+          </Layer>  
         </Stage>
         <Webcam 
           className={'webcam'}
           audio={false}
-          height={this.height}
-          width={this.width}
+          height={Constants.height}
+          width={Constants.width}
           screenshotFormat="image/png"
-          videoConstraints={this.videoConstraints}
-          onUserMedia={this.onWebcamloaded}
-          ref={this.setRef}
+          videoConstraints={Constants.videoConstraints}
+          onUserMedia={() => this.onWebcamLoaded()}
+          ref={this.setWebcamRef}
         />
         <p>{this.state.feedback}</p>
         <p>{this.state.instructions}
@@ -174,11 +154,10 @@ export default class SlouchSlider extends React.Component{
             step=".01" 
             min="0" 
             max="0.5"
-            onChange={(e) => console.log(e.currentTarget.value) }
             >
           </input>
         </p>
-        <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setImage} width={this.width} height={this.height}></img>
+        <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
     ); 
   }

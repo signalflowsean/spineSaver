@@ -12,7 +12,6 @@ export function CalculateSlouch(pose){
   
   const newRatio = currBoundingBoxHeight/currBoundingBoxWidth;  
   return newRatio; 
-  
 }
 
 export function CalculatePose(img){ 
