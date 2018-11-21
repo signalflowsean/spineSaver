@@ -41,7 +41,7 @@ export default class Display extends React.Component {
         <p>This is a {this.state.improvement}% improvement.</p>
         <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input>
       </div>
-    )
+    );
   }
 
 } 
