@@ -38,7 +38,7 @@ export default class Display extends React.Component {
         <p>Hi {this.state.username}!</p>
         <p>You've logged {this.state.loggedHours} hours.</p>
         <p>You've slouched for {this.state.slouchedHours} hours.</p>
-        <p>This is a {this.state.improvement}% improvement.</p>
+        {/* <p>This is a {this.state.improvement}% improvement.</p> */}
         <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input>
       </div>
     );
