@@ -18,7 +18,7 @@ export default class Display extends React.Component {
     fetch(`${API_BASE_URL}/display`)
     .then(res=> { return res.json(); })
     .then(data => { 
-      console.log(data); 
+      console.log('display', data); 
       this.setState({
       loggedHours : data.timeElapsed, 
       slouchedHours : data.slouchElapsed, 
