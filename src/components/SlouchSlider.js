@@ -12,6 +12,7 @@ export default class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
     this.interval = null; 
+    this.isSlouching =''; 
 
     this.state = { 
       HTMLImage : null, 
@@ -77,6 +78,18 @@ export default class SlouchSlider extends React.Component{
         Constants.flipHorizontal, 
         Constants.outputStride)
           .then((pose) => this.calculateSlouch(pose))
+
+    this.alert(); 
+  }
+
+  alert(){ 
+    const thresh = 0.5; 
+    if (this.state.slouch > thresh ){ 
+      this.isSlouching = 'Sit up straight!'; 
+    }
+    else { 
+      this.isSlouching = 'Good job sitting!'; 
+    }
   }
 
   calculateSlouch = (pose) => {
@@ -173,6 +186,7 @@ export default class SlouchSlider extends React.Component{
               >
             </input>
         </div>
+        <p>{this.isSlouching}</p>
         <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
     ); 
