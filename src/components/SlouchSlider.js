@@ -72,11 +72,14 @@ export default class SlouchSlider extends React.Component{
   //WEBCAM MTHODS STOP
   
   findPose = (img) => {     
-      this.state.posenet.estimateSinglePose(img, 
-        Constants.imageScaleFactor, 
-        Constants.flipHorizontal, 
-        Constants.outputStride)
-          .then((pose) => this.calculateSlouch(pose))
+    this.state.posenet.estimateSinglePose(img, 
+      Constants.imageScaleFactor, 
+      Constants.flipHorizontal, 
+      Constants.outputStride)
+        .then((pose) => this.calculateSlouch(pose))
+    
+    this.alertBox(this.state.slouch); 
+
   }
 
   calculateSlouch = (pose) => {
@@ -119,6 +122,10 @@ export default class SlouchSlider extends React.Component{
         boundingBoxY : (leftEye.y - this.state.boundingBoxHeight), 
         tempSlouch : (this.state.boundingBoxHeight / this.state.boundingBoxWidth)
       }); 
+  }
+
+  alertBox = (slouch) => {
+    //if (slouch > 0.3)  alert('Sit up straight!'); 
   }
 
   render() { 
@@ -169,7 +176,7 @@ export default class SlouchSlider extends React.Component{
               step=".01" 
               min="0" 
               max="0.5"
-              onChange={() => console.log('')}
+              onChange={()=> console.log('hi')}
               >
             </input>
         </div>

@@ -11,10 +11,9 @@ export default function DataContainer(data) {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({slouchData})
     }).then(res => {
-      console.log('res', res);
       return res.json(); 
     }).then(slouchData => {  
-      console.log('Slouch Data: ', JSON.stringify(slouchData)); 
+      //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
     }).catch(error => { 
       console.log('Error:', error);
     });
