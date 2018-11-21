@@ -84,11 +84,13 @@ export default class SlouchSlider extends React.Component{
 
   alert(){ 
     const thresh = 0.5; 
-    if (this.state.slouch > thresh ){ 
-      this.isSlouching = 'Sit up straight!'; 
-    }
-    else { 
-      this.isSlouching = 'Good job sitting!'; 
+    if (this.state.feedback === 'Realtime slouch amount is showing.') {
+      if (this.state.slouch > thresh ){ 
+        this.isSlouching = 'Sit up straight!'; 
+      }
+      else { 
+        this.isSlouching = 'Good job sitting!'; 
+      }
     }
   }
 
