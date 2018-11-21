@@ -1,13 +1,12 @@
 .webcam{ 
   position: relative; 
-  top: 100px;  
- 
+  top: 120px;  
 }
 
 .calibration-stage{ 
   position: absolute; 
   z-index: 1; 
-  top: 100px; 
+  top: 120px; 
 }
 
 .screen-shots{ 

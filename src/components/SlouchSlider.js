@@ -11,7 +11,8 @@ import DataContainer from '../Utils/dataContainer';
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
-    
+    this.interval = null; 
+
     this.state = { 
       HTMLImage : null, 
       screenCap : null, 
@@ -30,7 +31,11 @@ export default class SlouchSlider extends React.Component{
       instructions : null
     }; 
   }
-  
+
+  componentWillUnmount(){ 
+    clearInterval(this.interval);  
+  }
+
   componentDidMount(){ 
     this.setState({feedback : "Loading...", isLoaded : false});
 
@@ -56,7 +61,9 @@ export default class SlouchSlider extends React.Component{
   onWebcamLoaded = () => { 
     this.setState(
       {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
-      () => setInterval(this.capture, Constants.frameRate)); 
+      () => {
+        this.interval = setInterval(this.capture, Constants.frameRate); 
+      }); 
   }
 
   setImage = (image) => { 
@@ -154,7 +161,7 @@ export default class SlouchSlider extends React.Component{
             <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
           </p>
           <br></br>
-          <p>Slouch Amount: 
+          <p>Slouch Amount:  </p>
             <input 
               type="range" 
               name="slouchSlider" 
@@ -162,9 +169,9 @@ export default class SlouchSlider extends React.Component{
               step=".01" 
               min="0" 
               max="0.5"
+              onChange={() => console.log('')}
               >
             </input>
-          </p>
         </div>
         <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
