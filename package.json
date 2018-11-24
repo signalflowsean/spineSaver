@@ -5,14 +5,19 @@
   "dependencies": {
     "@tensorflow-models/posenet": "^0.2.3",
     "@tensorflow/tfjs": "^0.13.4",
+    "jwt-decode": "^2.2.0",
     "konva": "^2.5.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-konva": "^16.6.31",
+    "react-redux": "^5.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
-    "react-webcam": "^1.0.4"
+    "react-webcam": "^1.0.4",
+    "redux": "^4.0.1",
+    "redux-form": "^7.4.2",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

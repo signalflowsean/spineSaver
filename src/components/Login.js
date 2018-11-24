@@ -1,66 +1,52 @@
 import React from 'react'; 
-import {API_BASE_URL} from '../config';
+import {Field, reduxForm, focus} from 'redux-form'; 
+import Input from './input'; 
+import {login} from '../actions/auth'; 
+import {required, nonEmpty} from '../validators'; 
 
-export let user = null; 
-
-export default class Login extends React.Component{ 
-  constructor(props){ 
-    super(props); 
-
-    this.state = { 
-      username : '', 
-      password : '', 
-      id : ''
-    }
-    
-    // user = {
-    //   username: this.state.username, 
-    //   password: this.state.password, 
-    //   id : this.state.id
-    // }
-  }
-
-  handleUsernameChange(username){ 
-    this.setState({username}); 
-  }
-
-  handlePasswordChange(password){ 
-    this.setState({password}); 
-  }
-
-  handleSubmit(){ 
-    const login = { 
-      username : this.state.username, 
-      password : this.state.password, 
-      id : this.state.id
-    }
-    this.postSubmitData(login); 
-  }
-
-  postSubmitData(login){
-    fetch(`${API_BASE_URL}/auth/login`, { 
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(login)
-    }).then(res => {
-      //console.log('res', res);
-      return res.json(); 
-    }).then(signup => {  
-      console.log('Login: ', JSON.stringify(signup)); 
-    }).catch(error => { 
-      console.log('Error:', error);
-    });
+export class Login extends React.Component{ 
+  onSubmit(values) { 
+    return this.props.dispatch(login(values.username, values.password)); 
   }
 
   render(){ 
+    let error; 
+    if (this.props.error) { 
+      error = (
+        <div>{this.props.error}</div>
+      )
+    }
+
     return (
-      <form>
-        <label>Username</label>
-        <input type="text" placeholder="urUsername" value={this.state.username} onChange={e => this.handleUsernameChange(e.target.value)}></input>
-        <label>Password</label>
-        <input type="password" placeholder="urPassword" value={this.state.password} onChange={e => this.handlePasswordChange(e.target.value)}></input>
-        <input type="button" value="submit" onClick={() => this.handleSubmit()}></input>
+      <form onSubmit={this.props.handleSubmit(values => this.onSubmit(values))}>
+        {error}
+        <label htmlFor="username">Username</label>
+        <Field 
+          component={Input} 
+          type="text" 
+          placeholder="urUsername" 
+          name="username"
+          id="username"
+          validate ={[required, nonEmpty]}>
+        </Field>
+        <label htmlFor="password">Password</label>
+        <Field 
+          component={Input}
+          type="password" 
+          placeholder="urPassword" 
+          name="password"
+          id="password"
+          validate ={[required, nonEmpty]}>
+        </Field>
+        <button disabled={this.props.pristine || this.props.submitting}>
+          Log in
+        </button>
       </form>
     ); 
   }
 }
+
+export default reduxForm({ 
+ form: 'login', 
+ onSubmitFail: (errors, dispatch) => dispatch(focus('login', 'username')) 
+})(Login); 

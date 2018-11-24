@@ -24,18 +24,7 @@ export default class SignUp extends React.Component{
   }
 
   postSubmitData(user){
-    fetch(`${API_BASE_URL}/signup`, { 
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(user)
-    }).then(res => {
-      //console.log('res', res);
-      return res.json(); 
-    }).then(signup => {  
-      console.log('Signup: ', JSON.stringify(signup)); 
-    }).catch(error => { 
-      console.log('Error:', error);
-    });
+   
   }
 
   handleFullnameChange(fullname){ 
