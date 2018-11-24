@@ -8,6 +8,7 @@ export default function Login(){
       <input type="text" placeholder="urUsername"></input>
       <label>Password</label>
       <input type="password" placeholder="urPassword"></input>
+      <input type="submit"></input>
     </from>
   ); 
 }

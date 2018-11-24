@@ -21,10 +21,10 @@ export default function App(props) {
           <Link to="/settings">Settings</Link>
         </header>
         <main>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
           <Route exact path="/home" component={Display} />
           <Route exact path="/settings" component={SlouchSlider} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
         </main>
       </div>
     </Router>
