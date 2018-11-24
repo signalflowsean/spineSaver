@@ -34,8 +34,7 @@ export default class SlouchSlider extends React.Component{
   }
 
   componentWillUnmount(){ 
-    this.setState({interval : clearInterval(this.state.interval)}); 
-    //clearInterval(this.interval);  
+    this.setState({interval : clearInterval(this.state.interval)});   
   }
 
   componentDidMount(){ 
@@ -65,7 +64,6 @@ export default class SlouchSlider extends React.Component{
       {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
       () => {
         this.setState({interval : setInterval(this.capture, Constants.frameRate)})
-        //this.interval = setInterval(this.capture, Constants.frameRate); 
       }); 
   }
 
