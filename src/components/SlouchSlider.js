@@ -11,10 +11,10 @@ import DataContainer from '../Utils/dataContainer';
 export default class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
-    this.interval = null; 
-    this.isSlouching =''; 
 
     this.state = { 
+      interval : null,
+      isSlouching : '', 
       HTMLImage : null, 
       screenCap : null, 
       webcam : null,
@@ -34,7 +34,8 @@ export default class SlouchSlider extends React.Component{
   }
 
   componentWillUnmount(){ 
-    clearInterval(this.interval);  
+    this.setState({interval : clearInterval(this.state.interval)}); 
+    //clearInterval(this.interval);  
   }
 
   componentDidMount(){ 
@@ -63,7 +64,8 @@ export default class SlouchSlider extends React.Component{
     this.setState(
       {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
       () => {
-        this.interval = setInterval(this.capture, Constants.frameRate); 
+        this.setState({interval : setInterval(this.capture, Constants.frameRate)})
+        //this.interval = setInterval(this.capture, Constants.frameRate); 
       }); 
   }
 
@@ -86,10 +88,10 @@ export default class SlouchSlider extends React.Component{
     const thresh = 0.5; 
     if (this.state.feedback === 'Realtime slouch amount is showing.') {
       if (this.state.slouch > thresh ){ 
-        this.isSlouching = 'Sit up straight!'; 
+        this.setState({isSlouching : 'Sit up straight!'}); 
       }
-      else { 
-        this.isSlouching = 'Good job sitting!'; 
+      else {
+        this.setState({isSlouching : 'Good job sitting'});  
       }
     }
   }
@@ -188,7 +190,7 @@ export default class SlouchSlider extends React.Component{
               >
             </input>
         </div>
-        <p>{this.isSlouching}</p>
+        <p>{this.state.isSlouching}</p>
         <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
     ); 
