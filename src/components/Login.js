@@ -1,19 +1,27 @@
 import React from 'react'; 
 import {API_BASE_URL} from '../config';
 
+export let user = null; 
+
 export default class Login extends React.Component{ 
   constructor(props){ 
     super(props); 
 
     this.state = { 
       username : '', 
-      password : ''
+      password : '', 
+      id : ''
     }
+    
+    // user = {
+    //   username: this.state.username, 
+    //   password: this.state.password, 
+    //   id : this.state.id
+    // }
   }
 
   handleUsernameChange(username){ 
     this.setState({username}); 
-
   }
 
   handlePasswordChange(password){ 
@@ -23,13 +31,14 @@ export default class Login extends React.Component{
   handleSubmit(){ 
     const login = { 
       username : this.state.username, 
-      password : this.state.password
+      password : this.state.password, 
+      id : this.state.id
     }
     this.postSubmitData(login); 
   }
 
   postSubmitData(login){
-    fetch(`${API_BASE_URL}/login`, { 
+    fetch(`${API_BASE_URL}/auth/login`, { 
       method: 'post',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(login)
@@ -37,7 +46,7 @@ export default class Login extends React.Component{
       //console.log('res', res);
       return res.json(); 
     }).then(signup => {  
-      console.log('Signup: ', JSON.stringify(signup)); 
+      console.log('Login: ', JSON.stringify(signup)); 
     }).catch(error => { 
       console.log('Error:', error);
     });

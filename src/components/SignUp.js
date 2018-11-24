@@ -15,13 +15,11 @@ export default class SignUp extends React.Component{
   }
 
   handleSubmit(){ 
-
     const user = {
       fullname : this.state.fullname, 
       username : this.state.username, 
       password : this.state.password, 
     }; 
-    //console.log(user); 
     this.postSubmitData(user);   
   }
 
@@ -66,7 +64,7 @@ export default class SignUp extends React.Component{
         <label>Password</label>
         <input type="password" placeholder="password123" value={this.state.password} onChange={e => this.hanldePasswordChange(e.target.value)}></input>
         <label>Email</label>
-        <input type="email" placeholder="jdoe23@fawn.com" value={this.state.email} onChange={(e) => this.handleEmailChange(e)}></input>
+        <input type="email" placeholder="jdoe23@fawn.com" value={this.state.email} onChange={e => this.handleEmailChange(e.target.value)}></input>
         <input type="button" value="submit" onClick={() => this.handleSubmit()}></input>
       </form>
     ); 

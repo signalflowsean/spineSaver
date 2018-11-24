@@ -6,7 +6,7 @@ export default function DataContainer(data) {
   slouchData.push(data); 
   //console.log(slouchData.length, slouchData);
   if (slouchData.length === size){ 
-    fetch(`${API_BASE_URL}/slouchData`, { 
+    fetch(`${API_BASE_URL}/slouch`, { 
       method: 'post',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({slouchData})

@@ -1,4 +1,9 @@
 .display{ 
   position : relative; 
-  top : 120px; 
+  top : 200px; 
+}
+
+.slouchSlider{ 
+  background-color: black; 
+  display : none; 
 }
