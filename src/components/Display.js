@@ -6,7 +6,8 @@ import SlouchSlider from './slouchSlider';
 import {fetchDisplayData} from '../actions/display'; 
 
 export class Display extends React.Component { 
-  componentDidMount(){ 
+ 
+  fetchDisplayData(){ 
     this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
   }
 
@@ -17,6 +18,18 @@ export class Display extends React.Component {
         <div>User is not valid</div>
       ); 
     }
+    
+    //once user is loaded then fetch display data
+    // if (this.props.loading === false){ 
+    //   return (
+    //     <div>Please wait loading user...</div>
+    //   )
+    // }
+    // else { 
+    //   this.fetchDisplayData(); 
+    // }
+    this.fetchDisplayData(); 
+
  
     return (
       <div className="display">
@@ -27,25 +40,22 @@ export class Display extends React.Component {
         <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input>
         {/* SlouchSlider is running, but not visible */}
         <div className="slouchSlider">
-          <SlouchSlider />
+          {/* <SlouchSlider /> */}
         </div>
       </div>
     );
   }
 };
 
-const mapStateToProps = state => { 
-    //const {currentUser} = state.auth; 
-    return { 
-      currentUser : state.auth.currentUser, 
-      name : state.auth.currentUser.fullname, 
+const mapStateToProps = state => ({ 
+  currentUser : state.auth.currentUser, 
+  name : state.auth.currentUser.fullname, 
+  error: state.display.error, 
+  loading : state.display.loading,
+  loggedHours : state.display.loggedHours, 
+  slouchedHours : state.display.slouchedHours, 
+  improvement : state.display.improvement
+}); 
 
-      error: state.display.error, 
-      loading : state.display.loading,
-      loggedHours : state.display.loggedHours, 
-      slouchedHours : state.display.slouchedHours, 
-      improvement : state.display.improvement
-    }; 
-}; 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

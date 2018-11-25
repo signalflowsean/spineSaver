@@ -1,5 +1,3 @@
-
-
 export const normalizeResponseErrors = res => { 
   if (!res.ok) { 
     if ( 

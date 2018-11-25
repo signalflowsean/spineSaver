@@ -2,42 +2,20 @@ import React from 'react';
 import Webcam from 'react-webcam'; 
 import * as posenet from '@tensorflow-models/posenet';
 import { Stage, Layer, Rect } from 'react-konva';
-import '../Styles/camCalibStack.css'; 
+import { connect } from 'react-redux'; 
+import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
 import Constants from '../Utils/constants'; 
 import DataContainer from '../Utils/dataContainer'; 
+import '../Styles/camCalibStack.css'; 
 
-
-export default class SlouchSlider extends React.Component{
-  constructor(props){ 
-    super(props); 
-
-    this.state = { 
-      interval : null,
-      isSlouching : '', 
-      HTMLImage : null, 
-      screenCap : null, 
-      webcam : null,
-      tempSlouch : null, 
-      slouch : 0, 
-      bBoxHeight : 0, 
-      bBoxWidth : 0, 
-      bBoxX: 0, 
-      bBoxY: 0, 
-      isCalibrating: false, 
-      hasCalibrated: false, 
-      isLoaded : false,  
-      posenet : null,
-      feedback : null, 
-      instructions : null
-    }; 
-  }
+export class SlouchSlider extends React.Component{
 
   componentWillUnmount(){ 
     this.setState({interval : clearInterval(this.state.interval)});   
   }
 
-  componentDidMount(){ 
+  componentDidMount(){
     this.setState({feedback : "Loading...", isLoaded : false});
 
     posenet.load().then(posenet => this.setState({posenet, feedback: 'Loaded', isLoaded: true}));  
@@ -67,9 +45,9 @@ export default class SlouchSlider extends React.Component{
       }); 
   }
 
-  setImage = (image) => { 
-    this.image = image; 
-  }
+  // setImage = (image) => { 
+  //   this.image = image; 
+  // }
   //WEBCAM MTHODS STOP
   
   findPose = (img) => {     
@@ -93,7 +71,15 @@ export default class SlouchSlider extends React.Component{
       }
     }
   }
-
+  
+  dataContainer(data){ 
+    // slouchData.push(data); 
+    // //console.log(slouchData.length, slouchData);
+    // if (slouchData.length === size) { 
+    //   //dispatch action
+    //   slouchData = []; 
+    // }
+  }
   calculateSlouch = (pose) => {
     if (this.state.hasCalibrated && !this.state.isCalibrating){
       const slouch = (this.state.tempSlouch / CalculateSlouch(pose)) -1; 
@@ -194,4 +180,28 @@ export default class SlouchSlider extends React.Component{
     ); 
   }
 }
+const mapStateToProps = state => ({ 
+  interval : state.slouch.interval,
+  isSlouching : state.slouch.isSlouching, 
+  HTMLImage : state.slouch.HTMLImage, 
+  screenCap : state.slouch.screenCap, 
+  webcam : state.slouch.webcam,
+  tempSlouch : state.slouch.tempSlouch, 
+  slouch : state.slouch.slouch, 
+  bBoxHeight : state.slouch.bBoxHeight, 
+  bBoxWidth : state.slouch.bBoxWidth, 
+  bBoxX: state.slouch.bBoxX, 
+  bBoxY: state.slouch.bBoxY, 
+  isCalibrating: state.slouch.isCalibrating, 
+  hasCalibrated: state.slouch.hasCalibrated, 
+  isLoaded : state.slouch.isLoaded,  
+  posenet : state.slouch.posenet,
+  feedback : state.slouch.feedback, 
+  instructions : state.slouch.instructions, 
+  loading: state.slouch.loading, 
+  error: state.slouch.error
+}); 
+
+export default requiresLogin()(connect(mapStateToProps(SlouchSlider)))
+
 

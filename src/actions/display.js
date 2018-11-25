@@ -24,8 +24,9 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 
   //const authToken = getState().auth.authToken; 
   const authToken = loadAuthToken(); 
+  
   console.log('authToken', authToken); 
-  return fetch(`${API_BASE_URL}/display/:${id}`, { 
+  return fetch(`${API_BASE_URL}/display/${id}`, { 
     method: 'GET', 
     headers: { 
       Authorization: `Bearer ${authToken}`
