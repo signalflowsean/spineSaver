@@ -18,7 +18,7 @@ export const fetchDisplayDataError = error => ({
   error
 }); 
 
-export const fetchDisplayData = () => (dispatch, getState, id) => { 
+export const fetchDisplayData = (id) => (dispatch, getState) => { 
   dispatch(fetchDisplayDataLoading()); 
   
   const authToken = getState().auth.authToken; 
