@@ -7,17 +7,17 @@ import {fetchDisplayData} from '../actions/display';
 
 export class Display extends React.Component { 
   componentDidMount(){ 
-    this.props.dispatch(fetchDisplayData());
+    this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
   }
 
   render(){ 
-    console.log('username', this.props.username); 
-    if (this.props.username === undefined){ 
+    console.log(JSON.stringify(this.props.currentUser));
+    if (this.props.currentUser === undefined){ 
       return (
         <div>User is not valid</div>
       ); 
     }
-
+ 
     return (
       <div className="display">
         <p>Hi {this.props.username}!</p>
@@ -37,7 +37,7 @@ export class Display extends React.Component {
 const mapStateToProps = state => ({ 
     error: state.error, 
     loading : state.loading,
-    username : state.username, 
+    currentUser : state.auth.currentUser, 
     loggedHours : state.loggedHours, 
     slouchedHours : state.slouchedHours, 
     improvement : state.improvement

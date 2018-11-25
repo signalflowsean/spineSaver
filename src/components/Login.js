@@ -6,7 +6,6 @@ import {required, nonEmpty} from '../validators';
 
 export class Login extends React.Component{ 
   onSubmit(values) { 
-    console.log('username', values.username, 'password', values.password); 
     return this.props.dispatch(login(values.username, values.password)); 
   }
 

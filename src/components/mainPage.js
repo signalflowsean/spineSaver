@@ -5,8 +5,9 @@ import {Link, Redirect} from 'react-router-dom';
 import Login from './login'; 
 
 export function MainPage(props) { 
-
+  //console.log('loggedIn', props.loggedIn); 
   if(props.loggedIn) { 
+    console.log('logged in'); 
     return <Redirect to="/home" />
   }
 

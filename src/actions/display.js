@@ -19,6 +19,7 @@ export const fetchDisplayDataError = error => ({
 }); 
 
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
+  console.log('userID', id); 
   dispatch(fetchDisplayDataLoading()); 
   
   const authToken = getState().auth.authToken; 

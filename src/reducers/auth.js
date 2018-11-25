@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action){
   } else if (action.type === AUTH_SUCCESS) { 
     return Object.assign({}, state, { 
       loading: false, 
-      error: action.error
+      currentUser: action.currentUser
     }); 
   } else if (action.type === AUTH_ERROR) { 
     return Object.assign({}, state, { 
