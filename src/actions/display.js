@@ -1,5 +1,6 @@
 import {API_BASE_URL} from '../config'; 
 import {normalizeResponseErrors} from './utils'; 
+import {loadAuthToken} from '../local-storage'; 
 
 export const FETCH_DISPLAY_DATA_LOADING = 'FETCH_DISPLAY_DATA_LOADING'; 
 export const fetchDisplayDataLoading = () => ({ 
@@ -19,11 +20,11 @@ export const fetchDisplayDataError = error => ({
 }); 
 
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
-  console.log('userID', id); 
-  dispatch(fetchDisplayDataLoading()); 
-  
-  const authToken = getState().auth.authToken; 
-  
+  dispatch(fetchDisplayDataLoading());   
+
+  //const authToken = getState().auth.authToken; 
+  const authToken = loadAuthToken(); 
+  console.log('authToken', authToken); 
   return fetch(`${API_BASE_URL}/display/:${id}`, { 
     method: 'GET', 
     headers: { 

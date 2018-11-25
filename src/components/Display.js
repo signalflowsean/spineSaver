@@ -20,7 +20,7 @@ export class Display extends React.Component {
  
     return (
       <div className="display">
-        <p>Hi {this.props.username}!</p>
+        <p>Hi {this.props.name}!</p>
         <p>You've logged {this.props.loggedHours} hours.</p>
         <p>You've slouched for {this.props.slouchedHours} hours.</p>
         <p>This is a {this.props.improvement}% improvement.</p>
@@ -34,13 +34,17 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => ({ 
-    error: state.error, 
-    loading : state.loading,
-    currentUser : state.auth.currentUser, 
-    loggedHours : state.loggedHours, 
-    slouchedHours : state.slouchedHours, 
-    improvement : state.improvement
-  }); 
+const mapStateToProps = state => { 
+    //const {currentUser} = state.auth; 
+    return { 
+      error: state.error, 
+      loading : state.loading,
+      name : state.auth.currentUser.fullname, 
+      currentUser : state.auth.currentUser, 
+      loggedHours : state.loggedHours, 
+      slouchedHours : state.slouchedHours, 
+      improvement : state.improvement
+    }; 
+}; 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 
