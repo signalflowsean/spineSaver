@@ -29,4 +29,5 @@ export default function reducer(state = initialState, action) {
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
      return Object.assign({}, state, { error: action.error})
   }
+  return state; 
 }

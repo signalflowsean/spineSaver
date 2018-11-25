@@ -6,9 +6,9 @@ export const fetchDisplayDataLoading = () => ({
   type: FETCH_DISPLAY_DATA_LOADING
 }); 
 
-export const FETCH_DISPLAY_DATA_SUCESS = 'FETCH_DISPLAY_DATA_SUCCESS'; 
+export const FETCH_DISPLAY_DATA_SUCCESS = 'FETCH_DISPLAY_DATA_SUCCESS'; 
 export const fetchDisplayDataSucess = data => ({ 
-  type: FETCH_DISPLAY_DATA_SUCESS, 
+  type: FETCH_DISPLAY_DATA_SUCCESS, 
   data
 }); 
 
@@ -18,7 +18,7 @@ export const fetchDisplayDataError = error => ({
   error
 }); 
 
-export const fetchProtectedData = () => (dispatch, getState, id) => { 
+export const fetchDisplayData = () => (dispatch, getState, id) => { 
   dispatch(fetchDisplayDataLoading()); 
   
   const authToken = getState().auth.authToken; 

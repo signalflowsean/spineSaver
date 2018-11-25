@@ -1,38 +1,14 @@
 import React from 'react'; 
 import '../Styles/display.css'; 
-import {API_BASE_URL} from '../config'; 
+import {connect} from 'react-redux'; 
+import requiresLogin from './requires-login'; 
 import SlouchSlider from './SlouchSlider'; 
+import {fetchDisplayData} from '../actions/display'; 
 
-export default class Display extends React.Component { 
-  constructor(props){
-    super(props); 
-    
-    this.state = { 
-      username : '', 
-      loggedHours : 0, 
-      slouchedHours : 0, 
-      improvement : 0
-    }; 
-  }
-  
-  getDisplay() {  
-    fetch(`${API_BASE_URL}/display/`)
-    .then(res=> { return res.json(); })
-    .then(data => { 
-      console.log('display', data); 
-      this.setState({
-      loggedHours : data.timeElapsed, 
-      slouchedHours : data.slouchElapsed, 
-      improvement : data.improvement, 
-      username: data.username}); 
-    })
-    .catch(err => { 
-      console.log(err)
-    }); 
-  }
-
+export class Display extends React.Component { 
   componentDidMount(){ 
-    this.getDisplay(); 
+    this.props.dispatch(
+      fetchDisplayData());
   }
 
   render(){ 
@@ -50,5 +26,15 @@ export default class Display extends React.Component {
       </div>
     );
   }
+};
 
-} 
+const mapStateToProps = state => ({ 
+    error: state.display.error, 
+    loading : state.display.loading,
+    username : state.display.username, 
+    loggedHours : state.display.loggedHours, 
+    slouchedHours : state.display.slouchedHours, 
+    improvement : state.dispaly.improvement
+  }); 
+
+export default requiresLogin()(connect(mapStateToProps)(Display)); 
