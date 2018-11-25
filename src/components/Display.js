@@ -37,13 +37,14 @@ export class Display extends React.Component {
 const mapStateToProps = state => { 
     //const {currentUser} = state.auth; 
     return { 
-      error: state.error, 
-      loading : state.loading,
-      name : state.auth.currentUser.fullname, 
       currentUser : state.auth.currentUser, 
-      loggedHours : state.loggedHours, 
-      slouchedHours : state.slouchedHours, 
-      improvement : state.improvement
+      name : state.auth.currentUser.fullname, 
+
+      error: state.display.error, 
+      loading : state.display.loading,
+      loggedHours : state.display.loggedHours, 
+      slouchedHours : state.display.slouchedHours, 
+      improvement : state.display.improvement
     }; 
 }; 
 
