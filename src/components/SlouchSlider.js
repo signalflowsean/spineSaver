@@ -41,8 +41,7 @@ export class SlouchSlider extends React.Component{
 
   componentDidMount(){
     posenet.load()
-      .then(posenet => { 
-        //console.log('hi'); 
+      .then(posenet => {
         this.props.dispatch(posenetSuccess(posenet)); 
         this.isEverythingLoaded(); 
       })
@@ -64,7 +63,6 @@ export class SlouchSlider extends React.Component{
   }
 
   capture = () => {
-    //console.log('capture'); 
     const screenShot = this.props.webcam.getScreenshot(); 
     this.props.dispatch(takeScreenShot(screenShot));  
 
@@ -75,14 +73,19 @@ export class SlouchSlider extends React.Component{
         .then(pose => { 
           this.props.dispatch(newPoseDataPoint(pose)); 
           if (this.props.isCalibrating){ 
-            //console.log('draw'); 
             this.drawBoundingBox(  
               pose.keypoints[1].position, 
               pose.keypoints[2].position, 
               pose.keypoints[5].position, 
               pose.keypoints[6].position);  
           }
-          if (this.props.hasCalibrated) { 
+          else if (!this.props.isCalibrating) { 
+            this.zeroOutBBoxValues(); 
+          }
+
+          if (this.props.hasCalibrated) {
+            console.log('made it'); 
+          
             this.calculateSlouch(pose); 
           }
         })
@@ -131,7 +134,6 @@ export class SlouchSlider extends React.Component{
   }
 
   render() {   
-    console.log(this.props.bBoxWidth, this.props.bBoxHeight, this.props.bBoxX, this.props.bBoxY); 
     return ( 
       <div>
         <Stage 
