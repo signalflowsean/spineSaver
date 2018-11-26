@@ -1,5 +1,6 @@
 import {API_BASE_URL} from '../config'; 
-import {normalizeResponseErrors} from './utils'; 
+// import Constants from '../Utils/constants'; 
+// import * as posenet from '@tensorflow-models/posenet';  
 
 export const POST_SLOUCH_DATA_LOADING = 'POST_SLOUCH_DATA_LOADING'; 
 export const postSlouchDataLoading = () => ({ 
@@ -18,45 +19,85 @@ export const postSlouchDataError = error => ({
   error
 });
 
+export const POSENET_LOADING = 'POSENET_LOADING'; 
+export const posenetLoading = () => ({ 
+  type: POSENET_LOADING
+}); 
+
+export const POSENET_SUCCESS = 'POSENET_SUCCESS'; 
+export const posenetSuccess = posenet => ({ 
+  type: POSENET_SUCCESS, 
+  posenet
+});
+
+export const POSENET_ERROR = 'POSENET_ERROR'; 
+export const posenetError = error => ({ 
+  type: POSENET_ERROR, 
+  error
+}); 
+
+export const SLOUCH_CALCULATION_LOADING = 'SLOUCH_CALCULATION_LOADING'; 
+export const slouchCalculationLoading = capture => ({ 
+  type: SLOUCH_CALCULATION_LOADING, 
+  capture
+}); 
+
+export const SLOUCH_CALCULATION_SUCCESS = 'SLOUCH_CALCULATION_SUCCESS'; 
+export const slouchCalculationSuccess = slouch => ({ 
+  type: SLOUCH_CALCULATION_SUCCESS, 
+  slouch
+}); 
+
+export const SLOUCH_CALCULATION_ERROR = 'SLOUCH_CALCULATION_ERROR'; 
+export const slouchCalculationError = error => ({ 
+  type: SLOUCH_CALCULATION_ERROR, 
+  error
+}); 
+
 export const CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL = 'CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL'; 
 export const clearScreenshotFrameRateInterval = () => ({ 
   type: CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL 
 }); 
 
 export const SET_SCREENSHOT_FRAME_RATE_INTERVAL = 'SET_SCREENSHOT_FRAME_RATE_INTERVAL'; 
-export const setScreenshotFrameRateInterval = () => ({ 
-  type: SET_SCREENSHOT_FRAME_RATE_INTERVAL
+export const setScreenshotFrameRateInterval = (capture) => ({ 
+  type: SET_SCREENSHOT_FRAME_RATE_INTERVAL, 
+  capture
 }); 
-
-export const POSENET_IS_LOADING = 'POSENET_IS_LOADING'; 
-export const posenetIsLoading = () => ({ 
-  type: POSENET_IS_LOADING
-}); 
-
-export const POSENET_IS_LOADED = 'POSENET_IS_LOADED'; 
-export const posenetISLoading = () => ({ 
-  type: POSENET_IS_LOADED
-});
 
 export const SET_WEB_CAM_REF = 'SET_WEB_CAM_REF'; 
-export const setWebCamREf = () => ({ 
-  type: SET_WEB_CAM_REF
+export const setWebCamRef = webcam => ({ 
+  type: SET_WEB_CAM_REF, 
+  webcam
 }); 
 
 export const SET_SCREENSHOT_REF = 'SET_SCREENSHOT_REF'; 
-export const setScreenShotRef = () => ({ 
-  type: SET_SCREENSHOT_REF
+export const setScreenShotRef = camera => ({ 
+  type: SET_SCREENSHOT_REF, 
+  camera
 }); 
 
 export const TAKE_SCREENSHOT = 'TAKE_SCREENSHOT'; 
-export const takeScreenShot = () => ({ 
-  type: TAKE_SCREENSHOT
+export const takeScreenShot = capture => ({ 
+  type: TAKE_SCREENSHOT, 
+  capture
 });
 
-export const SHOW_SLOUCH_ALERT = 'SHOW_SLOUCH_ALERT'; 
-export const showSlouchAlert = () => ({ 
-  type: SHOW_SLOUCH_ALERT
+export const NEW_POSE_DATA_POINT  = 'NEW_POSE_DATA_POINT'; 
+export const newPoseDataPoint = pose => ({ 
+  type: NEW_POSE_DATA_POINT, 
+  pose
+})
+
+export const SHOW_SLOUCH_REPRIMAND = 'SHOW_SLOUCH_REPRIMAND'; 
+export const showSlouchReprimand = () => ({ 
+  type: SHOW_SLOUCH_REPRIMAND
 });
+
+export const SHOW_SLOUCH_COMPLIMENT = 'SHOW_SLOUCH_COMPLIMENT'
+export const showSlouchCompliment = () => ({ 
+  type: SHOW_SLOUCH_COMPLIMENT
+}); 
 
 export const SPINE_SAVER_HAS_CALIBRATED = 'SPINE_SAVER_HAS_CALIBRATED'; 
 export const spineSaverHasCalibrated = () => ({ 
@@ -68,25 +109,78 @@ export const spineSaverIsCalibrating = () => ({
   type: SPINE_SAVER_IS_CALIBRATING
 }); 
 
-export const UPDATE_BOUNDING_BOX = 'UPDATE_BOUNDING_BOX'; 
-export const updateBoundingBox = () => ({ 
-  type: UPDATE_BOUNDING_BOX
-})
 
-export const postSlouchData = (slouchData) => (dispatch, getState) => { 
-  dispatch(postSlouchDataLoading); 
-  fetch(`${API_BASE_URL}/slouch`, { 
-    method: 'post',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({slouchData})
-  }).then(res => {
-   //console.log('res', res);
-    return res.json(); 
-  }).then(slouchData => {  
-    //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
-    dispatch(postSlouchDataSuccess(slouchData)); 
-  }).catch(error => { 
-    console.log('Error:', error);
-    dispatch(postSlouchDataError(error)); 
-  });
+
+export const ZERO_OUT_CALIBRATION_VALUES = 'ZERO_OUT_CALIBRATION_VALUES'
+export const zeroOutCalibrationValues = () => ({ 
+  type: ZERO_OUT_CALIBRATION_VALUES
+}); 
+
+export const HANDLE_CALIBRATE_BUTTON_CLICK = 'HANDLE_CALIBRATE_BUTTON_CLICK'; 
+export const handleCalibrateButtonClick = () => ({ 
+  type: HANDLE_CALIBRATE_BUTTON_CLICK
+}); 
+
+export const UPDATE_BOUNDING_BOX_WIDTH = 'UPDATE_BOUNDING_BOX_WIDTH'; 
+export const updateBoundingBoxWidth = width => ({ 
+  type: UPDATE_BOUNDING_BOX_WIDTH, 
+  width
+}); 
+
+export const UPDATE_BOUNDING_BOX_HEIGHT = 'UPDATE_BOUNDING_BOX_HEIGHT'; 
+export const updateBoundingBoxHeight = height => ({ 
+  type: UPDATE_BOUNDING_BOX_HEIGHT,
+  height
+}); 
+
+export const UPDATE_BOUNDING_BOX_X = 'UPDATE_BOUNDING_BOX_X'; 
+export const updateBoundingBoxX = x => ({ 
+  type: UPDATE_BOUNDING_BOX_X,
+  x
+}); 
+
+export const UPDATE_BOUNDING_BOX_Y = 'UPDATE_BOUNDING_BOX_Y'; 
+export const updateBoundingBoxY = y => ({ 
+  type: UPDATE_BOUNDING_BOX_Y, 
+  y
+}); 
+
+export const UPDATE_BOUNDING_BOX_TEMP_SLOUCH = 'UPDATE_BOUNDING_BOX_TEMP_SLOUCH'; 
+export const updateBoundingBoxTempSlouch = tempSlouch => ({ 
+  type: UPDATE_BOUNDING_BOX_TEMP_SLOUCH, 
+  tempSlouch
+}); 
+
+export const WEBCAM_LOADED = 'WEBCAM_LOADED'; 
+export const webcamLoaded = () => ({ 
+  type: WEBCAM_LOADED
+}); 
+
+export const SETUP_LOADED = 'SETUP_LOADED'; 
+export const setupLoaded = () => ({ 
+  type: SETUP_LOADED
+}); 
+
+export const postSlouchData = (slouchData) => (dispatch) => { 
+  let slouchContainer = []; 
+  slouchContainer.push(slouchData); 
+
+  if (slouchContainer.length === 10) { 
+    dispatch(postSlouchDataLoading); 
+    fetch(`${API_BASE_URL}/slouch`, { 
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({slouchData})
+    }).then(res => {
+    //console.log('res', res);
+      return res.json(); 
+    }).then(slouchData => {  
+      slouchContainer = []; 
+      //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
+      dispatch(postSlouchDataSuccess(slouchData)); 
+    }).catch(error => { 
+      console.log('Error:', error);
+      dispatch(postSlouchDataError(error)); 
+    });
+  }
 } 

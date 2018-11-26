@@ -1,108 +1,119 @@
 import React from 'react';
 import Webcam from 'react-webcam'; 
-import * as posenet from '@tensorflow-models/posenet';
+import * as posenet from '@tensorflow-models/posenet';  
 import { Stage, Layer, Rect } from 'react-konva';
 import { connect } from 'react-redux'; 
+import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
-import Constants from '../Utils/constants'; 
-import DataContainer from '../Utils/dataContainer'; 
 import '../Styles/camCalibStack.css'; 
+import Constants from '../Utils/constants'; 
+import {
+  handleCalibrateButtonClick,
+  setWebCamRef, 
+  setScreenShotRef, 
+  showSlouchCompliment, 
+  showSlouchReprimand,
+  newPoseDataPoint, 
+  postSlouchData, 
+  posenetSuccess, 
+  posenetError,
+  updateBoundingBoxWidth, 
+  updateBoundingBoxHeight, 
+  updateBoundingBoxX, 
+  updateBoundingBoxY, 
+  webcamLoaded,
+  takeScreenShot, 
+  setupLoaded
+} from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
 
-  componentWillUnmount(){ 
-    this.setState({interval : clearInterval(this.state.interval)});   
-  }
-
-  componentDidMount(){
-    this.setState({feedback : "Loading...", isLoaded : false});
-
-    posenet.load().then(posenet => this.setState({posenet, feedback: 'Loaded', isLoaded: true}));  
-  }
-
-  ///WEBCAM METHODS START
   setWebcamRef = webcam => { 
-    this.setState({webcam}); 
+    this.props.dispatch(setWebCamRef(webcam)); 
   };
   
   setScreenShotRef = screenCapHTML => { 
-    this.setState({HTMLImage : screenCapHTML}); 
+    this.props.dispatch(setScreenShotRef(screenCapHTML)); 
   };
 
-  capture = () => { 
-    const capture = this.state.webcam.getScreenshot(); 
+  componentWillUnmount(){ 
+    if (!this.captureInterval) { return; }
+    clearInterval(this.captureInterval); 
+  }
 
-    this.setState({capture}, 
-      () => this.findPose(this.state.HTMLImage)); 
-  };
-
+  componentDidMount(){
+    posenet.load()
+      .then(posenet => { 
+        //console.log('hi'); 
+        this.props.dispatch(posenetSuccess(posenet)); 
+        this.isEverythingLoaded(); 
+      })
+      .catch(error => { 
+        this.props.dispatch(posenetError()); 
+      });  
+  }
   onWebcamLoaded = () => { 
-    this.setState(
-      {feedback : 'Loaded', instructions: 'Hit the CALIBRATE button to get started', isLoaded: true}, 
-      () => {
-        this.setState({interval : setInterval(this.capture, Constants.frameRate)})
-      }); 
+    this.props.dispatch(webcamLoaded());
+    this.isEverythingLoaded(); 
   }
 
-  // setImage = (image) => { 
-  //   this.image = image; 
-  // }
-  //WEBCAM MTHODS STOP
-  
-  findPose = (img) => {     
-      this.state.posenet.estimateSinglePose(img, 
-        Constants.imageScaleFactor, 
-        Constants.flipHorizontal, 
-        Constants.outputStride)
-          .then((pose) => this.calculateSlouch(pose))
+  isEverythingLoaded = () => { 
+    if (this.props.isPosenetLoaded && this.props.isWebcamLoaded){ 
+      this.props.dispatch(setupLoaded()); 
+      this.captureInterval = setInterval(
+      () => this.capture(), Constants.frameRate); 
+    }
+  }
 
+  capture = () => {
+    //console.log('capture'); 
+    const screenShot = this.props.webcam.getScreenshot(); 
+    this.props.dispatch(takeScreenShot(screenShot));  
+
+    this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
+      Constants.imageScaleFactor, 
+      Constants.flipHorizontal, 
+      Constants.outputStride)
+        .then(pose => { 
+          this.props.dispatch(newPoseDataPoint(pose)); 
+          if (this.props.isCalibrating){ 
+            //console.log('draw'); 
+            this.drawBoundingBox(  
+              pose.keypoints[1].position, 
+              pose.keypoints[2].position, 
+              pose.keypoints[5].position, 
+              pose.keypoints[6].position);  
+          }
+          if (this.props.hasCalibrated) { 
+            this.calculateSlouch(pose); 
+          }
+        })
+        .catch(error => { 
+          console.log('posenet error:', error); 
+        });  
     this.alert(); 
-  }
+  };
 
   alert(){ 
     const thresh = 0.5; 
-    if (this.state.feedback === 'Realtime slouch amount is showing.') {
-      if (this.state.slouch > thresh ){ 
-        this.setState({isSlouching : 'Sit up straight!'}); 
+    if (this.props.feedback === 'Realtime slouch amount is showing.') {
+      if (this.props.slouch > thresh ){ 
+        this.props.dispatch(showSlouchReprimand()); 
       }
       else {
-        this.setState({isSlouching : 'Good job sitting'});  
+        this.props.dispatch(showSlouchCompliment()); 
       }
     }
   }
   
-  dataContainer(data){ 
-    // slouchData.push(data); 
-    // //console.log(slouchData.length, slouchData);
-    // if (slouchData.length === size) { 
-    //   //dispatch action
-    //   slouchData = []; 
-    // }
-  }
   calculateSlouch = (pose) => {
-    if (this.state.hasCalibrated && !this.state.isCalibrating){
-      const slouch = (this.state.tempSlouch / CalculateSlouch(pose)) -1; 
-      this.setState({slouch, feedback: 'Realtime slouch amount is showing.'}); 
-      DataContainer(this.state.slouch); 
-    }
-    else if (this.state.isCalibrating){ 
-      this.drawBoundingBox(pose.keypoints[1].position, pose.keypoints[2].position, pose.keypoints[5].position, pose.keypoints[6].position); 
-    }
+    const slouch = (this.props.tempSlouch / CalculateSlouch(pose)) -1; 
+    this.props.dispatch(postSlouchData(slouch)); 
   } 
 
   handleCalibrateButtonClick = () => { 
-    this.setState({
-      isCalibrating: !this.state.isCalibrating, feedback: 'Calibrated'  
-    }, () => {
-      if(!this.state.isCalibrating) {
-        //Done calibrating reset values
-        this.zeroOutBBoxValues(); 
-      }     
-      this.state.isCalibrating ? 
-      this.setState({feedback : 'Calibrating...', instructions: 'Move your body into a upright position. Then click the STOP CALIBRATING button.'}) : 
-      this.setState({instructions: null, hasCalibrated: true }) 
-    });
+    this.props.dispatch(handleCalibrateButtonClick()); 
   } 
 
   zeroOutBBoxValues(){ 
@@ -112,23 +123,22 @@ export class SlouchSlider extends React.Component{
     this.drawBoundingBox(leftEye, rightEye, leftShoulder); 
   }
 
-  drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
-      this.setState( {
-        boundingBoxWidth : (rightEye.x - leftEye.x),  
-        boundingBoxHeight :(leftEye.y - leftShoulder.y),
-        boundingBoxX : leftEye.x, 
-        boundingBoxY : (leftEye.y - this.state.boundingBoxHeight), 
-        tempSlouch : (this.state.boundingBoxHeight / this.state.boundingBoxWidth)
-      }); 
+  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
+    const width = (rightEye.x - leftEye.x); 
+    const height = (leftEye.y - leftShoulder.y); 
+    const x = leftEye.x; 
+    const y = (leftEye.y - this.props.bBoxHeight); 
+
+    console.log(width, height, x, y); 
+    
+    this.props.dispatch(updateBoundingBoxWidth(width));
+    this.props.dispatch(updateBoundingBoxHeight(height));
+    this.props.dispatch(updateBoundingBoxX(x)); 
+    this.props.dispatch(updateBoundingBoxY(y));     
   }
 
-  render() { 
-    if (this.state.isLoaded === false){ 
-      return ( 
-        <p>{this.state.feedback}</p>
-      ); 
-    }
-
+  render() {   
+    console.log(this.props.bBoxWidth, this.props.bBoxHeight, this.props.bBoxX, this.props.bBoxY); 
     return ( 
       <div>
         <Stage 
@@ -136,12 +146,11 @@ export class SlouchSlider extends React.Component{
           width={Constants.width} 
           height={Constants.height}>
           <Layer>
-            {/* USER BOUNDING BOX */}
             <Rect
-              x={this.state.boundingBoxX}
-              y={this.state.boundingBoxY}
-              width={this.state.boundingBoxWidth}
-              height={this.state.boundingBoxHeight}
+              x={this.props.bBoxX}
+              y={this.props.bBoxY}
+              width={this.props.bBoxWidth}
+              height={this.props.bBoxHeight}
               stroke={'red'}
             />
           </Layer>  
@@ -157,29 +166,31 @@ export class SlouchSlider extends React.Component{
           ref={this.setWebcamRef}
         />
         <div className="feedback">
-          <p>{this.state.feedback}</p>
-          <p>{this.state.instructions}
-            <input type="button" value={!this.state.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+          <p>{this.props.feedback}</p>
+          <p>{this.props.instructions}
+            <input type="button" value={!this.props.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
           </p>
           <br></br>
           <p>Slouch Amount:  </p>
             <input 
               type="range" 
               name="slouchSlider" 
-              value={this.state.slouch} 
+              value={this.props.slouch} 
               step=".01" 
               min="0" 
               max="0.5"
               onChange={() => console.log('')}
               >
             </input>
+            <Link to="/home">Dashboard</Link>
         </div>
-        <p>{this.state.isSlouching}</p>
-        <img className="screen-shots" src={this.state.capture} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+        <p>{this.props.isSlouching}</p>
+        <img  className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
       </div>
     ); 
   }
 }
+
 const mapStateToProps = state => ({ 
   interval : state.slouch.interval,
   isSlouching : state.slouch.isSlouching, 
@@ -194,14 +205,18 @@ const mapStateToProps = state => ({
   bBoxY: state.slouch.bBoxY, 
   isCalibrating: state.slouch.isCalibrating, 
   hasCalibrated: state.slouch.hasCalibrated, 
-  isLoaded : state.slouch.isLoaded,  
+  isLoaded : state.slouch.isLoaded, 
+  isWebcamLoaded : state.slouch.isWebcamLoaded, 
+  isPosenetLoaded : state.slouch.isPosenetLoaded,  
   posenet : state.slouch.posenet,
   feedback : state.slouch.feedback, 
   instructions : state.slouch.instructions, 
   loading: state.slouch.loading, 
-  error: state.slouch.error
+  error: state.slouch.error, 
+  pose : state.slouch.pose,
+  calibrateButtonCount : state.slouch.calibrateButtonCount
 }); 
 
-export default requiresLogin()(connect(mapStateToProps(SlouchSlider)))
+export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 
 
 
