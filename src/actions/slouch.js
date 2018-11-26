@@ -109,8 +109,6 @@ export const spineSaverIsCalibrating = () => ({
   type: SPINE_SAVER_IS_CALIBRATING
 }); 
 
-
-
 export const ZERO_OUT_CALIBRATION_VALUES = 'ZERO_OUT_CALIBRATION_VALUES'
 export const zeroOutCalibrationValues = () => ({ 
   type: ZERO_OUT_CALIBRATION_VALUES
@@ -121,28 +119,10 @@ export const handleCalibrateButtonClick = () => ({
   type: HANDLE_CALIBRATE_BUTTON_CLICK
 }); 
 
-export const UPDATE_BOUNDING_BOX_WIDTH = 'UPDATE_BOUNDING_BOX_WIDTH'; 
-export const updateBoundingBoxWidth = width => ({ 
-  type: UPDATE_BOUNDING_BOX_WIDTH, 
-  width
-}); 
-
-export const UPDATE_BOUNDING_BOX_HEIGHT = 'UPDATE_BOUNDING_BOX_HEIGHT'; 
-export const updateBoundingBoxHeight = height => ({ 
-  type: UPDATE_BOUNDING_BOX_HEIGHT,
-  height
-}); 
-
-export const UPDATE_BOUNDING_BOX_X = 'UPDATE_BOUNDING_BOX_X'; 
-export const updateBoundingBoxX = x => ({ 
-  type: UPDATE_BOUNDING_BOX_X,
-  x
-}); 
-
-export const UPDATE_BOUNDING_BOX_Y = 'UPDATE_BOUNDING_BOX_Y'; 
-export const updateBoundingBoxY = y => ({ 
-  type: UPDATE_BOUNDING_BOX_Y, 
-  y
+export const UPDATE_BOUNDING_BOX = 'UPDATE_BOUNDING_BOX'; 
+export const updateBoundingBox = boundingBox => ({ 
+  type: UPDATE_BOUNDING_BOX, 
+  boundingBox
 }); 
 
 export const UPDATE_BOUNDING_BOX_TEMP_SLOUCH = 'UPDATE_BOUNDING_BOX_TEMP_SLOUCH'; 

@@ -18,10 +18,7 @@ import {
   postSlouchData, 
   posenetSuccess, 
   posenetError,
-  updateBoundingBoxWidth, 
-  updateBoundingBoxHeight, 
-  updateBoundingBoxX, 
-  updateBoundingBoxY, 
+  updateBoundingBox, 
   webcamLoaded,
   takeScreenShot, 
   setupLoaded
@@ -124,17 +121,13 @@ export class SlouchSlider extends React.Component{
   }
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
-    const width = (rightEye.x - leftEye.x); 
-    const height = (leftEye.y - leftShoulder.y); 
-    const x = leftEye.x; 
-    const y = (leftEye.y - this.props.bBoxHeight); 
-
-    console.log(width, height, x, y); 
-    
-    this.props.dispatch(updateBoundingBoxWidth(width));
-    this.props.dispatch(updateBoundingBoxHeight(height));
-    this.props.dispatch(updateBoundingBoxX(x)); 
-    this.props.dispatch(updateBoundingBoxY(y));     
+    const boundingBox = { 
+      width : (rightEye.x - leftEye.x), 
+      height : (leftEye.y - leftShoulder.y), 
+      x : leftEye.x, 
+      y : (leftEye.y - this.props.bBoxHeight) 
+    }; 
+    this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
   render() {   

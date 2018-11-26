@@ -14,10 +14,7 @@ import {
   TAKE_SCREENSHOT,
   SPINE_SAVER_HAS_CALIBRATED,
   SPINE_SAVER_IS_CALIBRATING,
-  UPDATE_BOUNDING_BOX_WIDTH,
-  UPDATE_BOUNDING_BOX_HEIGHT, 
-  UPDATE_BOUNDING_BOX_X, 
-  UPDATE_BOUNDING_BOX_Y, 
+  UPDATE_BOUNDING_BOX, 
   SETUP_LOADED, 
   // UPDATE_BOUNDING_BOX_TEMP_SLOUCH,
   WEBCAM_LOADED, 
@@ -95,20 +92,17 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {
       feedback: 'Loaded' , isLoaded: true,  instructions: 'Hit the CALIBRATE button to get started'})
   }
-  else if (action.type === UPDATE_BOUNDING_BOX_WIDTH) { 
-    return Object.assign({}, state, {bBoxWidth : action.width}); 
-  }
-  else if (action.type === UPDATE_BOUNDING_BOX_HEIGHT) { 
-    return Object.assign({}, state, {bBoxHeight : action.height}); 
-  }
-  else if (action.type === UPDATE_BOUNDING_BOX_X) { 
-    return Object.assign({}, state, {bBoxX :action.x}); 
-  }
-  else if (action.type === UPDATE_BOUNDING_BOX_Y) { 
-    return Object.assign({}, state, {bBoxY : action.y})
-  }
   else if (action.type === SPINE_SAVER_IS_CALIBRATING) { 
     return Object.assign({}, state, {feedback : 'Calibrating...'}); 
+  }
+  else if (action.type === UPDATE_BOUNDING_BOX) {
+    console.log('party', action.boundingBox.height); 
+    return Object.assign({}, state, {
+      bBoxHeight: action.boundingBox.height, 
+      bBoxWidth: action.boundingBox.width, 
+      bBoxX : action.boundingBox.x, 
+      bBoxY : action.boundingBox.y
+    }); 
   }
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
     let feedback = state.feedback; 
