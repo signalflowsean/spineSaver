@@ -41,12 +41,11 @@ export const fetchCalibrationError = () => ({
 }); 
 
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
+  console.log('yo'); 
   dispatch(fetchDisplayDataLoading());   
 
-  //const authToken = getState().auth.authToken; 
   const authToken = loadAuthToken(); 
   
-  //console.log('authToken', authToken); 
   return fetch(`${API_BASE_URL}/display/${id}`, { 
     method: 'GET', 
     headers: { 
@@ -75,9 +74,9 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json()) 
     .then((data) => { 
-      console.log('fetching calibration data', data); 
       if (data.calibrationValue > 0){ 
-        dispatch(fetchCalibrationSucessPayload(data)); 
+        console.log(data.calibrationValue); 
+        dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       }
       else  if (data.calibrationValue === 0){ 
         dispatch(fetchCalilibrationDataSuccessEmpty())

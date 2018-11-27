@@ -15,8 +15,6 @@ export class Display extends React.Component {
   
   componentDidMount(){ 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
-    //Fetch calibration data from backend   
-    //If calibration data is not found redirect user to settings page
   }
 
   logOut(){ 
@@ -29,8 +27,6 @@ export class Display extends React.Component {
   }
 
   render(){ 
-    console.log('calibVal', this.props.calibVal); 
- 
     if (this.loggedIn === false){
       return ( 
         <Redirect to="/"></Redirect>

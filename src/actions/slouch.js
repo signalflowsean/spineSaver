@@ -186,21 +186,18 @@ export const postSlouchData = (slouchData) => (dispatch) => {
 } 
 
 export const postCalibrationData = (calibrationData) => (dispatch) => { 
-  //console.log(calibrationData); 
   dispatch(calibrationPotsingLoading()); 
   
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
-  // console.log('id', id.id); 
-  // console.log('calibrateVal', calibrateVal); 
+
   fetch(`${API_BASE_URL}/slouch/calibration/${id.id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 
     body: JSON.stringify({calibrateVal}), 
   }).then(res => { 
     dispatch(calibrationPostingSuccess())
-    console.log('calibration', res); 
     return res.json(); 
   }).then(calibrationData => { 
     dispatch(calibrationPostingError())

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
+import {fetchDisplayData, fetchCalibrationData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 import {
@@ -42,6 +43,7 @@ export class SlouchSlider extends React.Component{
       }; 
 
       this.props.dispatch(postCalibrationData(calibrationObj)); 
+  
     }
   }
 
@@ -109,6 +111,10 @@ export class SlouchSlider extends React.Component{
           if (this.props.hasCalibrated) {     
             this.calculateSlouch(pose); 
           }
+          //user has calibrated before
+          else if (!this.props.notCalibrated){ 
+            this.calculateSlouch(pose); 
+          }
           //If there is a value already from the backend no worries
           // if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
           //   this.calculateSlouch(pose); 
@@ -133,9 +139,6 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    // if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
-      
-    // }
   
     const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
     this.addSlouchToTempContainer(slouch); 
@@ -145,11 +148,13 @@ export class SlouchSlider extends React.Component{
   } 
 
   addSlouchToTempContainer = slouch => { 
-    //console.log('fetch'); 
+    console.log('post'); 
     this.tempDataContainer.push(slouch); 
     if (this.tempDataContainer.length === Constants.packetSize){ 
-      console.log('reached packet size'); 
+      //console.log('reached packet size'); 
       this.props.dispatch(postSlouchData(this.tempDataContainer)); 
+      this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
+      
       this.tempDataContainer = []; 
     } 
   }
@@ -171,6 +176,9 @@ export class SlouchSlider extends React.Component{
   }
 
   render() {   
+    //console.log('calibVal Slider', this.props.calibVal); 
+    //console.log('calib?', this.props.notCalibrated); 
+
     return ( 
       <div>
         <Stage 
@@ -251,6 +259,7 @@ const mapStateToProps = state => ({
   pose : state.slouch.pose,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
   notCalibrated : state.display.notCalibrated, 
+  calibVal : state.display.calibVal
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 
