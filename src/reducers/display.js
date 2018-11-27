@@ -25,9 +25,9 @@ export default function reducer(state = initialState, action) {
     return Object.assign({}, state, {
       loading : false, 
       username : action.username, 
-      loggedHours : action.loggedHours, 
-      slouchedHours : action.slouchedHours, 
-      improvement : action.improvement
+      loggedHours : action.data.timeElapsed, 
+      slouchedHours : action.data.slouchElapsed, 
+      improvement : action.data.improvement
     })
   }
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 

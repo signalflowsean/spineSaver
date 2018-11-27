@@ -41,7 +41,7 @@ export const fetchCalibrationError = () => ({
 }); 
 
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
-  console.log('yo'); 
+  //console.log('yo'); 
   dispatch(fetchDisplayDataLoading());   
 
   const authToken = loadAuthToken(); 
@@ -54,7 +54,10 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
   })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
-    .then((data) => dispatch(fetchDisplayDataSucess(data)))
+    .then((data) => { 
+      console.log('hello?', data); 
+      dispatch(fetchDisplayDataSucess(data)); 
+    })
     .catch(err => { 
       dispatch(fetchDisplayDataError(err))
     }); 
