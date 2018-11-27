@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
-import {fetchDisplayData, fetchCalibrationData} from '../actions/display';
+import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 import {
@@ -41,9 +41,7 @@ export class SlouchSlider extends React.Component{
         id : this.props.currentUser, 
         calibrateVal : this.props.tempSlouch
       }; 
-
       this.props.dispatch(postCalibrationData(calibrationObj)); 
-  
     }
   }
 
@@ -115,10 +113,6 @@ export class SlouchSlider extends React.Component{
           else if (!this.props.notCalibrated){ 
             this.calculateSlouch(pose); 
           }
-          //If there is a value already from the backend no worries
-          // if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
-          //   this.calculateSlouch(pose); 
-          // }
         })
         .catch(error => { 
           console.log('posenet error:', error); 
@@ -139,16 +133,12 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-  
     const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
     this.addSlouchToTempContainer(slouch); 
-    //console.log(slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-    
   } 
 
   addSlouchToTempContainer = slouch => { 
-    console.log('post'); 
     this.tempDataContainer.push(slouch); 
     if (this.tempDataContainer.length === Constants.packetSize){ 
       //console.log('reached packet size'); 
@@ -176,8 +166,6 @@ export class SlouchSlider extends React.Component{
   }
 
   render() {   
-    //console.log('calibVal Slider', this.props.calibVal); 
-    //console.log('calib?', this.props.notCalibrated); 
 
     return ( 
       <div>
@@ -247,7 +235,6 @@ const mapStateToProps = state => ({
   bBoxY: state.slouch.bBoxY, 
   isCalibrating: state.slouch.isCalibrating, 
   hasCalibrated: state.slouch.hasCalibrated,
-  //calibratedVal: state.slouch.calibratedVal, 
   isLoaded : state.slouch.isLoaded, 
   isWebcamLoaded : state.slouch.isWebcamLoaded, 
   isPosenetLoaded : state.slouch.isPosenetLoaded,  
