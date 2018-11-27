@@ -1,4 +1,5 @@
 import {API_BASE_URL} from '../config'; 
+import {loadAuthToken} from '../local-storage'; 
 
 export const POST_SLOUCH_DATA_LOADING = 'POST_SLOUCH_DATA_LOADING'; 
 export const postSlouchDataLoading = () => ({ 
@@ -145,16 +146,31 @@ export const setupLoaded = () => ({
   type: SETUP_LOADED
 }); 
 
+export const CALIBRATION_POSTING_LOADING = 'CALIBRATION_POSTING_LOADING'; 
+export const calibrationPotsingLoading = () => ({ 
+  type: CALIBRATION_POSTING_LOADING 
+});  
+
+export const CALIBRATION_POSTING_SUCCESS = 'CALIBRATION_POSTING_SUCCESS'; 
+export const calibrationPostingSuccess = () => ({ 
+  type: CALIBRATION_POSTING_SUCCESS
+}); 
+
+export const CALIBRATION_POSTING_ERROR = 'CALIBRATION_POSTING_ERROR'; 
+export const calibrationPostingError = () => ({ 
+  type: CALIBRATION_POSTING_ERROR
+}); 
+
 export const postSlouchData = (slouchData) => (dispatch) => { 
   let slouchContainer = []; 
   slouchContainer.push(slouchData); 
-
+  const authToken = loadAuthToken(); 
   if (slouchContainer.length === 10) { 
     dispatch(postSlouchDataLoading); 
     fetch(`${API_BASE_URL}/slouch`, { 
       method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({slouchData})
+      headers: {'Content-Type':'application/json', Authorization: `Bearer ${authToken}`},
+      body: JSON.stringify({slouchData}), 
     }).then(res => {
     //console.log('res', res);
       return res.json(); 
@@ -168,3 +184,28 @@ export const postSlouchData = (slouchData) => (dispatch) => {
     });
   }
 } 
+
+export const postCalibrationData = (calibrationData) => (dispatch) => { 
+  //console.log(calibrationData); 
+  dispatch(calibrationPotsingLoading()); 
+  
+  const authToken = loadAuthToken(); 
+  
+  const {id, calibrateVal} = calibrationData; 
+  // console.log('id', id.id); 
+  // console.log('calibrateVal', calibrateVal); 
+  fetch(`${API_BASE_URL}/slouch/calibration/${id.id}`, { 
+    method: 'post', 
+    headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 
+    body: JSON.stringify({calibrateVal}), 
+  }).then(res => { 
+    dispatch(calibrationPostingSuccess())
+    console.log('calibration', res); 
+    return res.json(); 
+  }).then(calibrationData => { 
+    dispatch(calibrationPostingError())
+  }).catch(error => { 
+    console.error('Error post calibration data to backend', error); 
+  })
+  
+}

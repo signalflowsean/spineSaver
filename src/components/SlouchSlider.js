@@ -22,7 +22,8 @@ import {
   updateBoundingBox, 
   webcamLoaded,
   takeScreenShot, 
-  setupLoaded
+  setupLoaded, 
+  postCalibrationData
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
@@ -30,6 +31,20 @@ export class SlouchSlider extends React.Component{
     super(props); 
     this.tempDataContainer = []; 
   }
+
+  componentDidUpdate(prevProps) { 
+    if(!prevProps.hasCalibrated && this.props.hasCalibrated) { 
+      console.log('post new calibration data');
+
+      const calibrationObj = { 
+        id : this.props.currentUser, 
+        calibrateVal : this.props.tempSlouch
+      }; 
+
+      this.props.dispatch(postCalibrationData(calibrationObj)); 
+    }
+  }
+
   setWebcamRef = webcam => { 
     this.props.dispatch(setWebCamRef(webcam)); 
   };
@@ -209,6 +224,7 @@ export class SlouchSlider extends React.Component{
 }
 
 const mapStateToProps = state => ({ 
+  currentUser : state.auth.currentUser, 
   calibratedVal : state.slouch.calibratedVal, 
   interval : state.slouch.interval,
   isSlouching : state.slouch.isSlouching, 
@@ -222,7 +238,8 @@ const mapStateToProps = state => ({
   bBoxX: state.slouch.bBoxX, 
   bBoxY: state.slouch.bBoxY, 
   isCalibrating: state.slouch.isCalibrating, 
-  hasCalibrated: state.slouch.hasCalibrated, 
+  hasCalibrated: state.slouch.hasCalibrated,
+  //calibratedVal: state.slouch.calibratedVal, 
   isLoaded : state.slouch.isLoaded, 
   isWebcamLoaded : state.slouch.isWebcamLoaded, 
   isPosenetLoaded : state.slouch.isPosenetLoaded,  
@@ -232,7 +249,8 @@ const mapStateToProps = state => ({
   loading: state.slouch.loading, 
   error: state.slouch.error, 
   pose : state.slouch.pose,
-  calibrateButtonCount : state.slouch.calibrateButtonCount
+  calibrateButtonCount : state.slouch.calibrateButtonCount, 
+  notCalibrated : state.display.notCalibrated, 
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 

@@ -32,7 +32,7 @@ export const fetchCalibrationSucessPayload = calibration => ({
 
 export const FETCH_CALIBRATION_DATA_SUCCESS_EMPTY = 'FETCH_CALIBRATION_DATA_SUCCESS_EMPTY'; 
 export const fetchCalilibrationDataSuccessEmpty = () => ({ 
-
+  type: FETCH_CALIBRATION_DATA_SUCCESS_EMPTY
 }); 
 
 export const FETCH_CALIBRATION_DATA_ERROR = 'FETCH_CALIBRATION_DATA_ERROR'; 
@@ -55,17 +55,15 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
   })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
-    .then(({data}) => dispatch(fetchDisplayDataSucess(data)))
+    .then((data) => dispatch(fetchDisplayDataSucess(data)))
     .catch(err => { 
       dispatch(fetchDisplayDataError(err))
     }); 
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
-  //console.log('fetch calibration data')
   dispatch(fetchCalibrationDataLoading()); 
 
-  //const authToken = getState().auth.authToken(); 
   const authToken = loadAuthToken(); 
 
   return fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
@@ -75,13 +73,15 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
     }
   })
     .then(res => normalizeResponseErrors(res))
-    .then(res => {
-      console.log('got res');  
-      res.json(); 
-    })
-    .then(({data}) => { 
+    .then(res => res.json()) 
+    .then((data) => { 
       console.log('fetching calibration data', data); 
-      dispatch(fetchCalibrationSucessPayload(data)); 
+      if (data.calibrationValue > 0){ 
+        dispatch(fetchCalibrationSucessPayload(data)); 
+      }
+      else  if (data.calibrationValue === 0){ 
+        dispatch(fetchCalilibrationDataSuccessEmpty())
+      }
     })
     .catch(err => { 
       dispatch(fetchCalibrationError(err)); 

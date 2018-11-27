@@ -15,10 +15,8 @@ export class Display extends React.Component {
   
   componentDidMount(){ 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
-    //Fetch calibration data from backend
-    
+    //Fetch calibration data from backend   
     //If calibration data is not found redirect user to settings page
-
   }
 
   logOut(){ 
@@ -32,7 +30,7 @@ export class Display extends React.Component {
 
   render(){ 
     console.log('calibVal', this.props.calibVal); 
-    
+ 
     if (this.loggedIn === false){
       return ( 
         <Redirect to="/"></Redirect>
@@ -42,6 +40,12 @@ export class Display extends React.Component {
     if (this.props.currentUser === undefined){ 
       return (
         <div>User is not valid</div>
+      ); 
+    }
+
+    if (this.props.notCalibrated){ 
+      return (
+        <SlouchSlider />
       ); 
     }
   
@@ -73,7 +77,8 @@ const mapStateToProps = state => ({
   loggedHours : state.display.loggedHours, 
   slouchedHours : state.display.slouchedHours, 
   improvement : state.display.improvement, 
-  calibVal : state.display.calibVal
+  calibVal : state.display.calibVal, 
+  notCalibrated : state.display.notCalibrated, 
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

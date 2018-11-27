@@ -19,7 +19,8 @@ import {
   WEBCAM_LOADED, 
   HANDLE_CALIBRATE_BUTTON_CLICK,
   NEW_POSE_DATA_POINT, 
-  NEW_SLOUCH_DATA_POINT
+  NEW_SLOUCH_DATA_POINT, 
+  SLOUCH_CALCULATION_SUCCESS
 } from '../actions/slouch'; 
 
 const initialState = { 
@@ -39,14 +40,16 @@ const initialState = {
   hasCalibrated: false, 
   isLoaded : false,  
   isPosenetLoaded: false, 
-  isWebcamLoaded : false, 
+  isWebcamLoaded : false,
+  calibratedVal : null, 
   posenet : null,
   feedback : null, 
   instructions : null, 
   loading: '', 
   error: null, 
   pose: null,
-  calibrateButtonCount: 0
+  calibrateButtonCount: 0, 
+  notCalibrated : null
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -126,6 +129,7 @@ export default function reducer(state = initialState, action){
     if (state.calibrateButtonCount >= 1){ 
       feedback = 'Calibrated'
       hasCalibrated = true; 
+      //calibratedVal = state.
     } 
 
     return Object.assign({}, state, {
@@ -139,6 +143,9 @@ export default function reducer(state = initialState, action){
   }
   else if (action.type === NEW_POSE_DATA_POINT) { 
     return Object.assign({}, state, {pose : action.pose}); 
+  }
+  else if (action.type === SLOUCH_CALCULATION_SUCCESS) { 
+    return Object.assign({}, state, {notCalibrated : false}); 
   }
   
   return state; 
