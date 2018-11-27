@@ -162,27 +162,25 @@ export const calibrationPostingError = () => ({
 }); 
 
 export const postSlouchData = (slouchData) => (dispatch) => { 
-  let slouchContainer = []; 
-  slouchContainer.push(slouchData); 
+
   const authToken = loadAuthToken(); 
-  if (slouchContainer.length === 10) { 
-    dispatch(postSlouchDataLoading); 
-    fetch(`${API_BASE_URL}/slouch`, { 
-      method: 'post',
-      headers: {'Content-Type':'application/json', Authorization: `Bearer ${authToken}`},
-      body: JSON.stringify({slouchData}), 
-    }).then(res => {
-    //console.log('res', res);
-      return res.json(); 
-    }).then(slouchData => {  
-      slouchContainer = []; 
-      //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
-      dispatch(postSlouchDataSuccess(slouchData)); 
-    }).catch(error => { 
-      console.log('Error:', error);
-      dispatch(postSlouchDataError(error)); 
-    });
-  }
+
+  dispatch(postSlouchDataLoading); 
+  fetch(`${API_BASE_URL}/slouch`, { 
+    method: 'post',
+    headers: {'Content-Type':'application/json', Authorization: `Bearer ${authToken}`},
+    body: JSON.stringify({slouchData}), 
+  }).then(res => {
+    console.log('post slouch', res);
+    return res.json(); 
+  }).then(slouchData => {  
+    //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
+    dispatch(postSlouchDataSuccess(slouchData)); 
+  }).catch(error => { 
+    console.log('Error:', error);
+    dispatch(postSlouchDataError(error)); 
+  });
+
 } 
 
 export const postCalibrationData = (calibrationData) => (dispatch) => { 

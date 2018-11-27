@@ -108,16 +108,18 @@ export class SlouchSlider extends React.Component{
           //has calibrated on the settings page
           if (this.props.hasCalibrated) {     
             this.calculateSlouch(pose); 
+            this.alert(); 
           }
           //user has calibrated before
           else if (!this.props.notCalibrated){ 
             this.calculateSlouch(pose); 
+            this.alert(); 
           }
         })
         .catch(error => { 
           console.log('posenet error:', error); 
         });  
-    this.alert(); 
+  
   };
 
   alert(){ 
@@ -133,18 +135,25 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
+    //calibValBeckEnd is passed in from display
+    console.log(this.props.calibValBeckEnd); 
+    const slouch = (this.props.calibVal / CalculateSlouch(pose)); 
+    
     this.addSlouchToTempContainer(slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
   } 
 
   addSlouchToTempContainer = slouch => { 
+    console.log('slouch', slouch); 
+ 
     this.tempDataContainer.push(slouch); 
-    if (this.tempDataContainer.length === Constants.packetSize){ 
-      //console.log('reached packet size'); 
-      this.props.dispatch(postSlouchData(this.tempDataContainer)); 
+    if (this.tempDataContainer.length === Constants.packetSize){
+       
+      if (slouch !== 0) { 
+        console.log('patcket sent')
+        this.props.dispatch(postSlouchData(slouch)); 
+      }
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
-      
       this.tempDataContainer = []; 
     } 
   }

@@ -16,7 +16,7 @@ export class Login extends React.Component{
         <div>{this.props.error}</div>
       )
     }
-
+    
     return (
       <form onSubmit={this.props.handleSubmit(values => this.onSubmit(values))}>
         {error}

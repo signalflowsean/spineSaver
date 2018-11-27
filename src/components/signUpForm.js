@@ -9,8 +9,8 @@ const passwordLength = length({min: 10, max: 72});
 
 export class SignUpForm extends React.Component{ 
   onSubmit(values) { 
-    const {username, password, firstName, lastName} = values; 
-    const user = {username, password, firstName, lastName}; 
+    const {username, password, fullname} = values; 
+    const user = {username, password, fullname}; 
 
     return this.props 
       .dispatch(signUpUser(user))
@@ -25,7 +25,7 @@ export class SignUpForm extends React.Component{
           component={ Input } 
           type="text" 
           placeholder="Jane Doe" 
-          name="fullName"
+          name="fullname"
           validate={[required, nonEmpty, isTrimmed]}>
         </Field>
         <label htmlFor="username">Username</label>
