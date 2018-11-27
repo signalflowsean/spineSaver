@@ -50,6 +50,7 @@ export class SlouchSlider extends React.Component{
         this.props.dispatch(posenetError()); 
       });  
   }
+
   onWebcamLoaded = () => { 
     this.props.dispatch(webcamLoaded());
     this.isEverythingLoaded(); 
@@ -73,6 +74,7 @@ export class SlouchSlider extends React.Component{
       Constants.outputStride)
         .then(pose => { 
           this.props.dispatch(newPoseDataPoint(pose)); 
+
           if (this.props.isCalibrating){ 
             this.drawBoundingBox(  
               pose.keypoints[1].position, 
@@ -108,14 +110,11 @@ export class SlouchSlider extends React.Component{
   
   calculateSlouch = (pose) => {
     const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
-    console.log('slouch', slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-    //this.props.dispatch(postSlouchData(slouch)); 
   } 
 
   handleCalibrateButtonClick = () => { 
     this.props.dispatch(handleCalibrateButtonClick()); 
-
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
@@ -128,12 +127,10 @@ export class SlouchSlider extends React.Component{
       tempSlouch : ratio
     }; 
     this.props.dispatch(updateBoundingBox(boundingBox)); 
- 
   }
 
   render() {   
-    // console.log(this.props.calibratedVal); 
-    console.log(this.props.slouch); 
+
     return ( 
       <div>
         <Stage 

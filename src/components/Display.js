@@ -4,10 +4,17 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './slouchSlider'; 
-import {fetchDisplayData} from '../actions/display'; 
+import {fetchDisplayData, fetchCalibrationData} from '../actions/display'; 
 
 export class Display extends React.Component { 
- 
+  componentDidMount(){ 
+    this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
+    //Fetch calibration data from backend
+    
+    //If calibration data is not found redirect user to settings page
+
+  }
+
   fetchDisplayData(){ 
     this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
   }

@@ -19,13 +19,34 @@ export const fetchDisplayDataError = error => ({
   error
 }); 
 
+export const FETCH_CALIBRATION_DATA_LOADING = 'FETCH_CALIBRATION_DATA_LOADING'; 
+export const fetchCalibrationDataLoading = () => ({ 
+  type: FETCH_CALIBRATION_DATA_LOADING
+}); 
+
+export const FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD = 'FETCH_CALIBRATION_DATA_SUCCESS'; 
+export const fetchCalibrationSucessPayload = calibration => ({ 
+  type: FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD, 
+  calibration
+}); 
+
+export const FETCH_CALIBRATION_DATA_SUCCESS_EMPTY = 'FETCH_CALIBRATION_DATA_SUCCESS_EMPTY'; 
+export const fetchCalilibrationDataSuccessEmpty = () => ({ 
+
+}); 
+
+export const FETCH_CALIBRATION_DATA_ERROR = 'FETCH_CALIBRATION_DATA_ERROR'; 
+export const fetchCalibrationError = () => ({
+  type: FETCH_CALIBRATION_DATA_ERROR
+}); 
+
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
   dispatch(fetchDisplayDataLoading());   
 
   //const authToken = getState().auth.authToken; 
   const authToken = loadAuthToken(); 
   
-  console.log('authToken', authToken); 
+  //console.log('authToken', authToken); 
   return fetch(`${API_BASE_URL}/display/${id}`, { 
     method: 'GET', 
     headers: { 
@@ -39,4 +60,31 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
       dispatch(fetchDisplayDataError(err))
     }); 
 }
+
+export const fetchCalibrationData = (id) => (dispatch, getState) => { 
+  console.log('fetchData')
+  dispatch(fetchCalibrationDataLoading()); 
+
+  //const authToken = getState().auth.authToken(); 
+  const authToken = loadAuthToken(); 
+  console.log('authToken', authToken); 
+  return fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
+    method: 'GET', 
+    headers: { 
+      Authorization: `Bearer ${authToken}`
+    }
+  })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => {
+      console.log('got res');  
+      res.json(); 
+    })
+    .then(({data}) => { 
+      console.log('data', data); 
+      //dispatch(fetchDisplayDataSucess()))
+    })
+    .catch(err => { 
+      dispatch(fetchCalibrationError(err)); 
+    }); 
+}; 
 
