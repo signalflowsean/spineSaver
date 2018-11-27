@@ -1,6 +1,4 @@
 import {API_BASE_URL} from '../config'; 
-// import Constants from '../Utils/constants'; 
-// import * as posenet from '@tensorflow-models/posenet';  
 
 export const POST_SLOUCH_DATA_LOADING = 'POST_SLOUCH_DATA_LOADING'; 
 export const postSlouchDataLoading = () => ({ 
@@ -87,7 +85,13 @@ export const NEW_POSE_DATA_POINT  = 'NEW_POSE_DATA_POINT';
 export const newPoseDataPoint = pose => ({ 
   type: NEW_POSE_DATA_POINT, 
   pose
-})
+}); 
+
+export const NEW_SLOUCH_DATA_POINT = 'NEW_SLOUCH_DATA_POINT'; 
+export const newSlouchDataPoint = slouch => ({ 
+  type: NEW_SLOUCH_DATA_POINT, 
+  slouch
+}); 
 
 export const SHOW_SLOUCH_REPRIMAND = 'SHOW_SLOUCH_REPRIMAND'; 
 export const showSlouchReprimand = () => ({ 

@@ -16,13 +16,14 @@ import {
   SPINE_SAVER_IS_CALIBRATING,
   UPDATE_BOUNDING_BOX, 
   SETUP_LOADED, 
-  // UPDATE_BOUNDING_BOX_TEMP_SLOUCH,
   WEBCAM_LOADED, 
   HANDLE_CALIBRATE_BUTTON_CLICK,
-  NEW_POSE_DATA_POINT
+  NEW_POSE_DATA_POINT, 
+  NEW_SLOUCH_DATA_POINT
 } from '../actions/slouch'; 
 
 const initialState = { 
+  calibratedVal : 0, 
   interval : null,
   isSlouching : '', 
   HTMLImage : null, 
@@ -95,25 +96,31 @@ export default function reducer(state = initialState, action){
   else if (action.type === SPINE_SAVER_IS_CALIBRATING) { 
     return Object.assign({}, state, {feedback : 'Calibrating...'}); 
   }
+  else if (action.type === NEW_SLOUCH_DATA_POINT) { 
+    return Object.assign({}, state, {slouch : action.slouch})
+  }
   else if (action.type === UPDATE_BOUNDING_BOX) {
-    console.log('party', action.boundingBox.height); 
     return Object.assign({}, state, {
       bBoxHeight: action.boundingBox.height, 
       bBoxWidth: action.boundingBox.width, 
       bBoxX : action.boundingBox.x, 
-      bBoxY : action.boundingBox.y
+      bBoxY : action.boundingBox.y,
+      tempSlouch : action.boundingBox.tempSlouch
     }); 
   }
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
     let feedback = state.feedback; 
     let hasCalibrated = state.hasCalibrated; 
     let instructions = state.instructions; 
+    let calibratedVal; 
+
     if (!state.isCalibrating){ 
       feedback = 'Calibrating...';
       instructions = 'Sit up straight and then click the STOP CALIBRATING button.'
     }
     else if (state.isCalibrating){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
+      calibratedVal = state.tempSlouch; 
     }
     
     if (state.calibrateButtonCount >= 1){ 
@@ -126,7 +133,9 @@ export default function reducer(state = initialState, action){
       feedback, 
       hasCalibrated, 
       instructions,
-      calibrateButtonCount : (state.calibrateButtonCount + 1) })
+      calibratedVal,
+      calibrateButtonCount : (state.calibrateButtonCount + 1) 
+    }); 
   }
   else if (action.type === NEW_POSE_DATA_POINT) { 
     return Object.assign({}, state, {pose : action.pose}); 

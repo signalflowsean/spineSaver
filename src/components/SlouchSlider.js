@@ -15,6 +15,7 @@ import {
   showSlouchCompliment, 
   showSlouchReprimand,
   newPoseDataPoint, 
+  newSlouchDataPoint,
   postSlouchData, 
   posenetSuccess, 
   posenetError,
@@ -80,12 +81,10 @@ export class SlouchSlider extends React.Component{
               pose.keypoints[6].position);  
           }
           else if (!this.props.isCalibrating) { 
-            this.zeroOutBBoxValues(); 
+            this.drawBoundingBox({x: 0, y: 0}, {x: 0, y:0}, {X:0, Y:0}); 
           }
 
-          if (this.props.hasCalibrated) {
-            console.log('made it'); 
-          
+          if (this.props.hasCalibrated) {          
             this.calculateSlouch(pose); 
           }
         })
@@ -108,32 +107,33 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    const slouch = (this.props.tempSlouch / CalculateSlouch(pose)) -1; 
-    this.props.dispatch(postSlouchData(slouch)); 
+    const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
+    console.log('slouch', slouch); 
+    this.props.dispatch(newSlouchDataPoint(slouch)); 
+    //this.props.dispatch(postSlouchData(slouch)); 
   } 
 
   handleCalibrateButtonClick = () => { 
     this.props.dispatch(handleCalibrateButtonClick()); 
+
   } 
 
-  zeroOutBBoxValues(){ 
-    const leftEye = {x: 0, y: 0}; 
-    const rightEye = {x: 0, y: 0}; 
-    const leftShoulder = {x: 0, y: 0}; 
-    this.drawBoundingBox(leftEye, rightEye, leftShoulder); 
-  }
-
-  drawBoundingBox = (leftEye, rightEye, leftShoulder, rightShoulder) => {   
+  drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
+    const ratio = this.props.bBoxWidth / this.props.bBoxHeight; 
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
       x : leftEye.x, 
-      y : (leftEye.y - this.props.bBoxHeight) 
+      y : (leftEye.y - this.props.bBoxHeight), 
+      tempSlouch : ratio
     }; 
     this.props.dispatch(updateBoundingBox(boundingBox)); 
+ 
   }
 
   render() {   
+    // console.log(this.props.calibratedVal); 
+    console.log(this.props.slouch); 
     return ( 
       <div>
         <Stage 
@@ -173,7 +173,7 @@ export class SlouchSlider extends React.Component{
               value={this.props.slouch} 
               step=".01" 
               min="0" 
-              max="0.5"
+              max="0.14"
               onChange={() => console.log('')}
               >
             </input>
@@ -187,6 +187,7 @@ export class SlouchSlider extends React.Component{
 }
 
 const mapStateToProps = state => ({ 
+  calibratedVal : state.slouch.calibratedVal, 
   interval : state.slouch.interval,
   isSlouching : state.slouch.isSlouching, 
   HTMLImage : state.slouch.HTMLImage, 
