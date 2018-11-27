@@ -28,7 +28,7 @@ import {
 export class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
-    let tempDataContainer = []; 
+    this.tempDataContainer = []; 
   }
   setWebcamRef = webcam => { 
     this.props.dispatch(setWebCamRef(webcam)); 
@@ -50,6 +50,7 @@ export class SlouchSlider extends React.Component{
         this.isEverythingLoaded(); 
       })
       .catch(error => { 
+        console.log('posenet error'); 
         this.props.dispatch(posenetError()); 
       });  
   }
@@ -86,14 +87,11 @@ export class SlouchSlider extends React.Component{
               pose.keypoints[6].position);  
           }
           else if (!this.props.isCalibrating) { 
-            //console.log('hi'); 
-            //this.drawBoundingBox({x: -1000, y: -1000}, {x: -10000, y:-1000}, {X:-10000, Y:-1000}); 
-            const obj = {width : 0, height: 0, x: 0, y: 0}; 
-            this.props.dispatch(updateBoundingBox(obj)); 
+            const resetObj = {width : 0, height: 0, x: 0, y: 0}; 
+            this.props.dispatch(updateBoundingBox(resetObj)); 
           }
           //has calibrated on the settings page
-          if (this.props.hasCalibrated) { 
-            console.log('hi');          
+          if (this.props.hasCalibrated) {     
             this.calculateSlouch(pose); 
           }
           //If there is a value already from the backend no worries
@@ -120,20 +118,24 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
+    // if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
       
-    }
+    // }
+  
     const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
+    this.addSlouchToTempContainer(slouch); 
     //console.log(slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-
     
   } 
 
   addSlouchToTempContainer = slouch => { 
+    //console.log('fetch'); 
     this.tempDataContainer.push(slouch); 
     if (this.tempDataContainer.length === Constants.packetSize){ 
-
+      console.log('reached packet size'); 
+      this.props.dispatch(postSlouchData(this.tempDataContainer)); 
+      this.tempDataContainer = []; 
     } 
   }
 

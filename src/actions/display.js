@@ -62,12 +62,12 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
-  console.log('fetchData')
+  //console.log('fetch calibration data')
   dispatch(fetchCalibrationDataLoading()); 
 
   //const authToken = getState().auth.authToken(); 
   const authToken = loadAuthToken(); 
-  console.log('authToken', authToken); 
+
   return fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
     method: 'GET', 
     headers: { 
@@ -80,8 +80,8 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
       res.json(); 
     })
     .then(({data}) => { 
-      console.log('data', data); 
-      //dispatch(fetchDisplayDataSucess()))
+      console.log('fetching calibration data', data); 
+      dispatch(fetchCalibrationSucessPayload(data)); 
     })
     .catch(err => { 
       dispatch(fetchCalibrationError(err)); 

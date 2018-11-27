@@ -1,12 +1,18 @@
 import React from 'react'; 
 import '../Styles/display.css'; 
 import {connect} from 'react-redux'; 
-import {Link} from 'react-router-dom'; 
+import {Link, Redirect} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './slouchSlider'; 
 import {fetchDisplayData, fetchCalibrationData} from '../actions/display'; 
+import { clearAuth } from '../actions/auth';
 
 export class Display extends React.Component { 
+  constructor(props){ 
+    super(props); 
+    this.loggedIn = true; 
+  }
+  
   componentDidMount(){ 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
     //Fetch calibration data from backend
@@ -15,11 +21,24 @@ export class Display extends React.Component {
 
   }
 
+  logOut(){ 
+    this.props.dispatch(clearAuth()); 
+    this.loggedIn = false; 
+  }
+
   fetchDisplayData(){ 
     this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
   }
 
   render(){ 
+    console.log('calibVal', this.props.calibVal); 
+    
+    if (this.loggedIn === false){
+      return ( 
+        <Redirect to="/"></Redirect>
+      ); 
+    }
+
     if (this.props.currentUser === undefined){ 
       return (
         <div>User is not valid</div>
@@ -33,9 +52,11 @@ export class Display extends React.Component {
         <p>You've logged {this.props.loggedHours} hours.</p>
         <p>You've slouched for {this.props.slouchedHours} hours.</p>
         <p>This is a {this.props.improvement}% improvement.</p>
-        <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input>
+        {/* <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input> */}
+        <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
         {/* SlouchSlider is running, but not visible */}
         <div className="slouchSlider">
+          {/* Send calibration value to slouch slider */}
           <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
           {/* <SlouchSlider /> */}
         </div>
@@ -51,7 +72,8 @@ const mapStateToProps = state => ({
   loading : state.display.loading,
   loggedHours : state.display.loggedHours, 
   slouchedHours : state.display.slouchedHours, 
-  improvement : state.display.improvement
+  improvement : state.display.improvement, 
+  calibVal : state.display.calibVal
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 
