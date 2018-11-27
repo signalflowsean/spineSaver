@@ -26,7 +26,10 @@ import {
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
-
+  constructor(props){ 
+    super(props); 
+    let tempDataContainer = []; 
+  }
   setWebcamRef = webcam => { 
     this.props.dispatch(setWebCamRef(webcam)); 
   };
@@ -83,12 +86,20 @@ export class SlouchSlider extends React.Component{
               pose.keypoints[6].position);  
           }
           else if (!this.props.isCalibrating) { 
-            this.drawBoundingBox({x: 0, y: 0}, {x: 0, y:0}, {X:0, Y:0}); 
+            //console.log('hi'); 
+            //this.drawBoundingBox({x: -1000, y: -1000}, {x: -10000, y:-1000}, {X:-10000, Y:-1000}); 
+            const obj = {width : 0, height: 0, x: 0, y: 0}; 
+            this.props.dispatch(updateBoundingBox(obj)); 
           }
-
-          if (this.props.hasCalibrated) {          
+          //has calibrated on the settings page
+          if (this.props.hasCalibrated) { 
+            console.log('hi');          
             this.calculateSlouch(pose); 
           }
+          //If there is a value already from the backend no worries
+          // if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
+          //   this.calculateSlouch(pose); 
+          // }
         })
         .catch(error => { 
           console.log('posenet error:', error); 
@@ -109,9 +120,22 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
+    if (this.props.calibValBackEnd !== null || this.props.calibValBackEnd !== 0){ 
+      
+    }
     const slouch = (this.props.calibratedVal / CalculateSlouch(pose)); 
+    //console.log(slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
+
+    
   } 
+
+  addSlouchToTempContainer = slouch => { 
+    this.tempDataContainer.push(slouch); 
+    if (this.tempDataContainer.length === Constants.packetSize){ 
+
+    } 
+  }
 
   handleCalibrateButtonClick = () => { 
     this.props.dispatch(handleCalibrateButtonClick()); 
@@ -130,7 +154,6 @@ export class SlouchSlider extends React.Component{
   }
 
   render() {   
-
     return ( 
       <div>
         <Stage 

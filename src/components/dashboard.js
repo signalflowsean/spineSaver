@@ -36,7 +36,8 @@ export class Display extends React.Component {
         <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input>
         {/* SlouchSlider is running, but not visible */}
         <div className="slouchSlider">
-          <SlouchSlider />
+          <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
+          {/* <SlouchSlider /> */}
         </div>
       </div>
     );

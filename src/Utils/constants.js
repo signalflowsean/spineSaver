@@ -12,7 +12,8 @@ const Constants =  {
     width, 
     height, 
     facingMode: 'user'
-  }
+  }, 
+  packetSize: 10
 }; 
 
 export default Constants; 
