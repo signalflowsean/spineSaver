@@ -86,9 +86,10 @@ export class SlouchSlider extends React.Component{
   }
 
   isEverythingLoaded = () => { 
-    if (this.props.isPosenetLoaded && this.props.isWebcamLoaded){ 
+    if (this.props.isPosenetLoaded && this.props.isWebcamLoaded && !this.captureInterval){ 
       console.log('Everything is loaded'); 
       this.props.dispatch(setupLoaded()); 
+      //SET INTERVAL
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
     }

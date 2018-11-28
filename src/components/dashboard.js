@@ -44,8 +44,8 @@ export class Display extends React.Component {
       return (<div>User is not valid</div>); 
     }
     
-    //console.log(this.props.notCalibrated, 'not calib'); 
-
+    console.log(this.props.notCalibrated, 'not calib'); 
+    
     if (this.props.notCalibrated){  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
@@ -55,8 +55,8 @@ export class Display extends React.Component {
       <div className="display">
         <Link to="/settings">Calibrate</Link>
         <p>Hi {this.props.name}!</p>
-        <p>You've logged {this.props.loggedHours} hours.</p>
-        <p>You've slouched for {this.props.slouchedHours} hours.</p>
+        <p>You've logged {this.props.loggedHours} minutes.</p>
+        <p>You've slouched for {this.props.slouchedHours} minutes.</p>
         <p>This is a {this.props.improvement}% improvement.</p>
         {/* <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input> */}
         <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
