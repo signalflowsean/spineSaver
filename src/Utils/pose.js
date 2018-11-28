@@ -10,7 +10,7 @@ export function CalculateSlouch(pose){
   const currBoundingBoxWidth = rightEye.x - leftEye.x; 
   const currBoundingBoxHeight = leftEye.y - leftShoulder.y;
   
-  const newRatio = currBoundingBoxHeight/currBoundingBoxWidth;  
+  const newRatio = currBoundingBoxWidth/currBoundingBoxHeight;  
   return newRatio; 
 }
 

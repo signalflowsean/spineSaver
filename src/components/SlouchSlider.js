@@ -53,7 +53,6 @@ export class SlouchSlider extends React.Component{
         console.log('We have calibrated and it\'s ok to hit the dashboard component')
       }
     }
- 
   }
 
   setWebcamRef = webcam => { 
@@ -96,14 +95,11 @@ export class SlouchSlider extends React.Component{
   }
 
   capture = () => {
-
     const screenShot = this.props.webcam.getScreenshot(); 
     this.props.dispatch(takeScreenShot(screenShot));  
 
     this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
-      Constants.imageScaleFactor, 
-      Constants.flipHorizontal, 
-      Constants.outputStride)
+      Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
         .then(pose => { 
           this.props.dispatch(newPoseDataPoint(pose)); 
 
@@ -132,7 +128,6 @@ export class SlouchSlider extends React.Component{
         .catch(error => { 
           console.log('posenet error:', error); 
         });  
-  
   };
 
   alert(){ 
@@ -148,14 +143,13 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    const slouch = (this.props.calibVal / CalculateSlouch(pose)); 
+    const slouch = Math.abs((this.props.calibratedVal / CalculateSlouch(pose))-1); 
     
     this.addSlouchToTempContainer(slouch); 
     this.props.dispatch(newSlouchDataPoint(slouch)); 
   } 
 
   addSlouchToTempContainer = slouch => { 
-
     this.tempDataContainer.push(slouch); 
     //console.log('packetSize', Constants.packetSize)
     if (this.tempDataContainer.length === Constants.packetSize){
@@ -178,19 +172,25 @@ export class SlouchSlider extends React.Component{
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
-    const ratio = this.props.bBoxWidth / this.props.bBoxHeight; 
+    //const ratio = this.props.bBoxWidth / this.props.bBoxHeight; 
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
       x : leftEye.x, 
       y : (leftEye.y - this.props.bBoxHeight), 
-      tempSlouch : ratio
+      tempSlouch : (this.props.bBoxWidth / this.props.bBoxHeight)
     }; 
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
-  render() {   
-
+  render() { 
+    //console.log('tempSlouch', this.props.tempSlouch);   
+    console.log('slouch', this.props.slouch); 
+    //console.log('bBoxW', this.props.bBoxWidth); 
+    //console.log('bBoxH', this.props.bBoxHeight); 
+    //console.log('calibVal', this.props.calibVal); 
+    console.log('calibratedVal', this.props.calibratedVal); 
+    
     return ( 
       <div>
         <Stage 
@@ -230,7 +230,7 @@ export class SlouchSlider extends React.Component{
               value={this.props.slouch} 
               step=".01" 
               min="0" 
-              max="0.14"
+              max="1"
               onChange={() => console.log('')}
               >
             </input>
