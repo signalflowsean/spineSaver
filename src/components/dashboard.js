@@ -44,7 +44,7 @@ export class Display extends React.Component {
       return (<div>User is not valid</div>); 
     }
     
-    console.log(this.props.notCalibrated, 'not calib'); 
+    //console.log(this.props.notCalibrated, 'not calib'); 
 
     if (this.props.notCalibrated){  
       console.log('Not calibrated, redirecting back'); 

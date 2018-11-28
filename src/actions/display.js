@@ -59,7 +59,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
     .then((data) => { 
-      console.log('display data', data); 
+      //console.log('display data', data); 
       dispatch(fetchDisplayDataSucess(data)); 
     })
     .catch(err => { 

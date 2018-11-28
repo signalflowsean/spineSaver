@@ -1,5 +1,5 @@
 export const loadAuthToken = () => { 
-  const auth = localStorage.getItem('authToken'); 
+  //const auth = localStorage.getItem('authToken'); 
   return localStorage.getItem('authToken');
 }; 
 

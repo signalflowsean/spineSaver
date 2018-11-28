@@ -164,16 +164,15 @@ export const calibrationPostingError = () => ({
 export const postSlouchData = (slouchDataObj) => (dispatch) => { 
   const {id, slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
-  console.log('slouch packet', slouch); 
+  //console.log('slouch packet', slouch); 
 
-  
   //Checks to see if slouch is a slouch `packet`
   // if (Array.isArray(slouch)){ 
   //   console.error('Error: Slouch must be an array slouches'); 
   //   return; 
   // }
 
-  console.log('id', id, 'slouch', slouch);
+  //console.log('id', id, 'slouch', slouch);
   
   dispatch(postSlouchDataLoading); 
   fetch(`${API_BASE_URL}/slouch/${id}`, { 
@@ -209,7 +208,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
     dispatch(calibrationPostingSuccess())
     return res.json(); 
   }).then(calibrationData => { 
-    console.log(`Calibration data success ${calibrationData}`)
+    //console.log(`Calibration data success ${calibrationData}`)
   }).catch(error => { 
     dispatch(calibrationPostingError())
     console.error('Error post calibration data to backend', error); 

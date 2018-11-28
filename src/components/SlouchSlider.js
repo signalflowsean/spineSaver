@@ -157,9 +157,9 @@ export class SlouchSlider extends React.Component{
   addSlouchToTempContainer = slouch => { 
 
     this.tempDataContainer.push(slouch); 
-    console.log('packetSize', Constants.packetSize)
+    //console.log('packetSize', Constants.packetSize)
     if (this.tempDataContainer.length === Constants.packetSize){
-      console.log('posting `packet` of slouches'); 
+      //console.log('posting `packet` of slouches'); 
       if (slouch !== 0) { 
         const slouchDataObj = {
           id:  this.props.currentUser.id, 
@@ -167,7 +167,7 @@ export class SlouchSlider extends React.Component{
         }
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
-        console.log('emptying array'); 
+        //console.log('emptying array'); 
       }
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
