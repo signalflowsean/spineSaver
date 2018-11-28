@@ -1,8 +1,8 @@
 export const normalizeResponseErrors = res => { 
   if (!res.ok) { 
     if ( 
-      res.headers.has('content-type') && 
-      res.headers.has('content-type').startsWith('application/json')
+      res.headers.has('content-type') &&
+      res.headers.get('content-type').startsWith('application/json')
     ) { 
       //A decable json error
       return res.json().then(err => Promise.reject(err)); 

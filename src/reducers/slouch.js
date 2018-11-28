@@ -41,7 +41,6 @@ const initialState = {
   isLoaded : false,  
   isPosenetLoaded: false, 
   isWebcamLoaded : false,
-  calibratedVal : null, 
   posenet : null,
   feedback : null, 
   instructions : null, 
@@ -129,7 +128,6 @@ export default function reducer(state = initialState, action){
     if (state.calibrateButtonCount >= 1){ 
       feedback = 'Calibrated'
       hasCalibrated = true; 
-      //calibratedVal = state.
     } 
 
     return Object.assign({}, state, {

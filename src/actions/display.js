@@ -40,10 +40,14 @@ export const fetchCalibrationError = () => ({
   type: FETCH_CALIBRATION_DATA_ERROR
 }); 
 
-export const fetchDisplayData = (id) => (dispatch, getState) => { 
-  //console.log('yo'); 
-  dispatch(fetchDisplayDataLoading());   
+export const USER_HAS_CALIBRATED = 'USER_HAS_CALIBRATED'; 
+export const userHasCalibrated = () => ({ 
+  type: USER_HAS_CALIBRATED
+}); 
 
+export const fetchDisplayData = (id) => (dispatch, getState) => { 
+  dispatch(fetchDisplayDataLoading());   
+  
   const authToken = loadAuthToken(); 
   
   return fetch(`${API_BASE_URL}/display/${id}`, { 
@@ -55,10 +59,11 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
     .then((data) => { 
-      console.log('hello?', data); 
+      console.log('display data', data); 
       dispatch(fetchDisplayDataSucess(data)); 
     })
     .catch(err => { 
+      console.log('Error fetching display data: ', err); 
       dispatch(fetchDisplayDataError(err))
     }); 
 }
@@ -78,7 +83,7 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
     .then(res => res.json()) 
     .then((data) => { 
       if (data.calibrationValue > 0){ 
-        console.log(data.calibrationValue); 
+        //console.log(data.calibrationValue); 
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       }
       else  if (data.calibrationValue === 0){ 

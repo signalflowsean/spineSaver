@@ -3,7 +3,8 @@ import {
   FETCH_DISPLAY_DATA_SUCCESS, 
   FETCH_DISPLAY_DATA_ERROR, 
   FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD, 
-  FETCH_CALIBRATION_DATA_SUCCESS_EMPTY
+  FETCH_CALIBRATION_DATA_SUCCESS_EMPTY, 
+  USER_HAS_CALIBRATED
 } from '../actions/display.js'; 
 
 const initialState = {
@@ -14,7 +15,7 @@ const initialState = {
   slouchedHours : 0, 
   improvement : 0, 
   calibVal: null, 
-  notCalibrated : null
+  notCalibrated : true
 };
 
 export default function reducer(state = initialState, action) { 
@@ -37,8 +38,12 @@ export default function reducer(state = initialState, action) {
     return Object.assign({}, state, { calibVal : action.calibration, notCalibrated: false}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
-    console.log('farge'); 
-    return Object.assign({}, state, {notCalibrated : true})
+    return Object.assign({}, state, {}); 
   }
+  else if (action.type === USER_HAS_CALIBRATED) { 
+    return Object.assign({}, state, {notCalibrated : false}); 
+
+  }
+  //USER HAS CALIBRATED
   return state; 
 }

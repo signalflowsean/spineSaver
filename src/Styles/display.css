@@ -5,5 +5,5 @@
 
 .slouchSlider{ 
   background-color: black; 
-  display : none; 
+  visibility: hidden; 
 }

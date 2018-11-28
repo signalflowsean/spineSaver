@@ -161,17 +161,27 @@ export const calibrationPostingError = () => ({
   type: CALIBRATION_POSTING_ERROR
 }); 
 
-export const postSlouchData = (slouchData) => (dispatch) => { 
-
+export const postSlouchData = (slouchDataObj) => (dispatch) => { 
+  const {id, slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
+  console.log('slouch packet', slouch); 
 
+  
+  //Checks to see if slouch is a slouch `packet`
+  // if (Array.isArray(slouch)){ 
+  //   console.error('Error: Slouch must be an array slouches'); 
+  //   return; 
+  // }
+
+  console.log('id', id, 'slouch', slouch);
+  
   dispatch(postSlouchDataLoading); 
-  fetch(`${API_BASE_URL}/slouch`, { 
+  fetch(`${API_BASE_URL}/slouch/${id}`, { 
     method: 'post',
     headers: {'Content-Type':'application/json', Authorization: `Bearer ${authToken}`},
-    body: JSON.stringify({slouchData}), 
+    body: JSON.stringify({slouch}),  
   }).then(res => {
-    console.log('post slouch', res);
+    //console.log('post slouch', res);
     return res.json(); 
   }).then(slouchData => {  
     //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
@@ -184,12 +194,13 @@ export const postSlouchData = (slouchData) => (dispatch) => {
 } 
 
 export const postCalibrationData = (calibrationData) => (dispatch) => { 
+  console.log('Calibration value added'); 
   dispatch(calibrationPotsingLoading()); 
-  
+ 
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
-
+  console.log(`User id: ${id}, Value: ${calibrateVal}`); 
   fetch(`${API_BASE_URL}/slouch/calibration/${id.id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 
@@ -198,8 +209,9 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
     dispatch(calibrationPostingSuccess())
     return res.json(); 
   }).then(calibrationData => { 
-    dispatch(calibrationPostingError())
+    console.log(`Calibration data success ${calibrationData}`)
   }).catch(error => { 
+    dispatch(calibrationPostingError())
     console.error('Error post calibration data to backend', error); 
   })
   

@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
-import {fetchDisplayData} from '../actions/display';
+import {fetchDisplayData, userHasCalibrated} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
+
 import {
   handleCalibrateButtonClick,
   setWebCamRef, 
@@ -35,14 +36,24 @@ export class SlouchSlider extends React.Component{
 
   componentDidUpdate(prevProps) { 
     if(!prevProps.hasCalibrated && this.props.hasCalibrated) { 
-      console.log('post new calibration data');
+      console.log('STOP CALIBRATION button pressed'); 
 
       const calibrationObj = { 
         id : this.props.currentUser, 
         calibrateVal : this.props.tempSlouch
       }; 
+
       this.props.dispatch(postCalibrationData(calibrationObj)); 
+      this.props.dispatch(userHasCalibrated()); 
+      //NOT CALIBRATED
     }
+
+    if(!prevProps.notCalibrated && this.props.notCalibrated){ 
+      if (this.props.notCalibrated === false) { 
+        console.log('We have calibrated and it\'s ok to hit the dashboard component')
+      }
+    }
+ 
   }
 
   setWebcamRef = webcam => { 
@@ -77,6 +88,7 @@ export class SlouchSlider extends React.Component{
 
   isEverythingLoaded = () => { 
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded){ 
+      console.log('Everything is loaded'); 
       this.props.dispatch(setupLoaded()); 
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
@@ -84,6 +96,7 @@ export class SlouchSlider extends React.Component{
   }
 
   capture = () => {
+
     const screenShot = this.props.webcam.getScreenshot(); 
     this.props.dispatch(takeScreenShot(screenShot));  
 
@@ -135,8 +148,6 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    //calibValBeckEnd is passed in from display
-    console.log(this.props.calibValBeckEnd); 
     const slouch = (this.props.calibVal / CalculateSlouch(pose)); 
     
     this.addSlouchToTempContainer(slouch); 
@@ -144,17 +155,21 @@ export class SlouchSlider extends React.Component{
   } 
 
   addSlouchToTempContainer = slouch => { 
-    console.log('slouch', slouch); 
- 
+
     this.tempDataContainer.push(slouch); 
+    console.log('packetSize', Constants.packetSize)
     if (this.tempDataContainer.length === Constants.packetSize){
-       
+      console.log('posting `packet` of slouches'); 
       if (slouch !== 0) { 
-        console.log('patcket sent')
-        this.props.dispatch(postSlouchData(slouch)); 
+        const slouchDataObj = {
+          id:  this.props.currentUser.id, 
+          slouch : this.tempDataContainer
+        }
+        this.props.dispatch(postSlouchData(slouchDataObj)); 
+        this.tempDataContainer = []; 
+        console.log('emptying array'); 
       }
-      this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
-      this.tempDataContainer = []; 
+      this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
   }
 
@@ -219,6 +234,7 @@ export class SlouchSlider extends React.Component{
               onChange={() => console.log('')}
               >
             </input>
+            {/* Can't go to dashboard when not calibrated */}
             <Link to="/home">Dashboard</Link>
         </div>
         <p>{this.props.isSlouching}</p>

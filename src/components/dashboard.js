@@ -17,7 +17,14 @@ export class Display extends React.Component {
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
 
+  componentDidUpdate(prevProps) { 
+    if(!prevProps.calibVal && this.props.hasCalibrated) { 
+      console.log('Calibration value has changed to:', this.props.calibVal)
+    }
+  }
+
   logOut(){ 
+    console.log(`Logging out ${this.props.currentUser}`); 
     this.props.dispatch(clearAuth()); 
     this.loggedIn = false; 
   }
@@ -28,21 +35,20 @@ export class Display extends React.Component {
 
   render(){ 
     if (this.loggedIn === false){
-      return ( 
-        <Redirect to="/"></Redirect>
-      ); 
+      console.log('Not logged in, can\'t be here'); 
+      return (<Redirect to="/"></Redirect>); 
     }
 
     if (this.props.currentUser === undefined){ 
-      return (
-        <div>User is not valid</div>
-      ); 
+      console.log('Current user is not defined'); 
+      return (<div>User is not valid</div>); 
     }
+    
+    console.log(this.props.notCalibrated, 'not calib'); 
 
-    if (this.props.notCalibrated){ 
-      return (
-        <SlouchSlider />
-      ); 
+    if (this.props.notCalibrated){  
+      console.log('Not calibrated, redirecting back'); 
+      return (<Redirect to="/settings" />); 
     }
   
     return (
@@ -74,7 +80,7 @@ const mapStateToProps = state => ({
   slouchedHours : state.display.slouchedHours, 
   improvement : state.display.improvement, 
   calibVal : state.display.calibVal, 
-  notCalibrated : state.display.notCalibrated, 
+  notCalibrated : state.display.notCalibrated 
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 
