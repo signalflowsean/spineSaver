@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'; 
 import {Link, Redirect} from 'react-router-dom'; 
 
-import Login from './login'; 
+import Login from './Login'; 
 
 export function MainPage(props) { 
   //console.log('loggedIn', props.loggedIn); 

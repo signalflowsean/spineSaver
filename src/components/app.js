@@ -5,7 +5,7 @@ import {Route, withRouter} from 'react-router-dom';
 import MainPage from './mainPage'; 
 import SignUpPage from './signUpPage'; 
 import Display from './dashboard'; 
-import SlouchSlider from './slouchSlider'; 
+import SlouchSlider from './SlouchSlider'; 
 
 import {refreshAuthToken} from '../actions/auth'; 
 

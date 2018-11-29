@@ -3,7 +3,7 @@ import '../Styles/display.css';
 import {connect} from 'react-redux'; 
 import {Link, Redirect} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
-import SlouchSlider from './slouchSlider'; 
+import SlouchSlider from './SlouchSlider'; 
 import {fetchDisplayData, fetchCalibrationData} from '../actions/display'; 
 import { clearAuth } from '../actions/auth';
 
