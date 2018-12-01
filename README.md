@@ -1,4 +1,4 @@
-#Spine Saver
+# Spine Saver
 Spine saver is a web app the helps users slouch less.
 
 CLICK LINK BELOW TO SEE IT DEPLOYED 
