@@ -43,29 +43,30 @@ export class Display extends React.Component {
       console.log('Current user is not defined'); 
       return (<div>User is not valid</div>); 
     }
-    
-    console.log(this.props.notCalibrated, 'not calib'); 
-    
+        
     if (this.props.notCalibrated){  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
   
     return (
-      <div className="display">
-        <Link to="/settings">Calibrate</Link>
-        <p>Hi {this.props.name}!</p>
-        <p>You've logged {this.props.loggedHours} minutes.</p>
-        <p>You've slouched for {this.props.slouchedHours} minutes.</p>
-        <p>This is a {this.props.improvement}% improvement.</p>
-        {/* <input type="button" value="Refresh" onClick={() => this.getDisplay()}></input> */}
-        <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
-        {/* SlouchSlider is running, but not visible */}
-        <div className="slouchSlider">
-          {/* Send calibration value to slouch slider */}
-          <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
-          {/* <SlouchSlider /> */}
-        </div>
+      <div>
+        <header className="header">
+          <h2>Spine Saver</h2>
+          <section>
+            <Link to="/settings">Calibrate</Link>
+          </section>
+        </header>
+        <main>
+          <p>Hi {this.props.name}!</p>
+          <p>You've logged {this.props.loggedHours} minutes.</p>
+          <p>You've slouched for {this.props.slouchedHours} minutes.</p>
+          <p>This is a {this.props.improvement}% improvement.</p>
+          <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
+          <div className="slouchSlider">
+            <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
+          </div>
+        </main>
       </div>
     );
   }

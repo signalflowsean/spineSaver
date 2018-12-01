@@ -6,6 +6,7 @@ import MainPage from './mainPage';
 import SignUpPage from './signUpPage'; 
 import Display from './dashboard'; 
 import SlouchSlider from './SlouchSlider'; 
+import LoginPage from './loginPage'; 
 
 import {refreshAuthToken} from '../actions/auth'; 
 
@@ -48,6 +49,7 @@ export class App extends React.Component {
         <Route exact path="/home" component={Display} />
         <Route exact path="/settings" component={SlouchSlider} />
         <Route exact path="/signup" component={SignUpPage} />
+        <Route exact path="/login" component={LoginPage} />
       </div>
     ); 
   }

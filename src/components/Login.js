@@ -12,9 +12,7 @@ export class Login extends React.Component{
   render(){ 
     let error; 
     if (this.props.error) { 
-      error = (
-        <div>{this.props.error}</div>
-      )
+      error = (<div>{this.props.error}</div>)
     }
     
     return (
@@ -45,6 +43,8 @@ export class Login extends React.Component{
     ); 
   }
 }
+
+
 
 export default reduxForm({ 
  form: 'login', 

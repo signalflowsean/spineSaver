@@ -1,9 +1,3 @@
-.display{ 
-  position : relative; 
-  top : 10px; 
-}
-
 .slouchSlider{ 
-  background-color: black; 
-  visibility: hidden; 
+  visibility: hidden;
 }

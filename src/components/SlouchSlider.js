@@ -152,17 +152,17 @@ export class SlouchSlider extends React.Component{
 
   addSlouchToTempContainer = slouch => { 
     this.tempDataContainer.push(slouch); 
-    //console.log('packetSize', Constants.packetSize)
+
+    //Reached packet size - post to backend
     if (this.tempDataContainer.length === Constants.packetSize){
-      //console.log('posting `packet` of slouches'); 
       if (slouch !== 0) { 
+        //Action digestable format
         const slouchDataObj = {
           id:  this.props.currentUser.id, 
           slouch : this.tempDataContainer
         }
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
-        //console.log('emptying array'); 
       }
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
@@ -184,62 +184,62 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
-  render() { 
-    //console.log('tempSlouch', this.props.tempSlouch);   
-    console.log('slouch', this.props.slouch); 
-    //console.log('bBoxW', this.props.bBoxWidth); 
-    //console.log('bBoxH', this.props.bBoxHeight); 
-    //console.log('calibVal', this.props.calibVal); 
-    console.log('calibratedVal', this.props.calibratedVal); 
-    
+  render() {   
     return ( 
       <div>
-        <Stage 
-          className={'calibration-stage'} 
-          width={Constants.width} 
-          height={Constants.height}>
-          <Layer>
-            <Rect
-              x={this.props.bBoxX}
-              y={this.props.bBoxY}
-              width={this.props.bBoxWidth}
-              height={this.props.bBoxHeight}
-              stroke={'red'}
-            />
-          </Layer>  
-        </Stage>
-        <Webcam 
-          className={'webcam'}
-          audio={false}
-          height={Constants.height}
-          width={Constants.width}
-          screenshotFormat="image/png"
-          videoConstraints={Constants.videoConstraints}
-          onUserMedia={() => this.onWebcamLoaded()}
-          ref={this.setWebcamRef}
-        />
-        <div className="feedback">
-          <p>{this.props.feedback}</p>
-          <p>{this.props.instructions}
-            <input type="button" value={!this.props.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
-          </p>
-          <br></br>
-          <p>Slouch Amount:  </p>
-            <input 
-              type="range" 
-              name="slouchSlider" 
-              value={this.props.slouch} 
-              step=".01" 
-              min="0" 
-              max="1"
-              onChange={() => console.log('')}
-              >
-            </input>
+        <header className="header">
+          <h2>Spine Saver</h2>
+          <section >
             {/* Can't go to dashboard when not calibrated */}
             <Link to="/home">Dashboard</Link>
-        </div>
-        <p>{this.props.isSlouching}</p>
-        <img  className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+          </section>
+        </header>
+        <main>
+          <Stage 
+            className={'calibration-stage'} 
+            width={Constants.width} 
+            height={Constants.height}>
+            <Layer>
+              <Rect
+                x={this.props.bBoxX}
+                y={this.props.bBoxY}
+                width={this.props.bBoxWidth}
+                height={this.props.bBoxHeight}
+                stroke={'red'}
+              />
+            </Layer>  
+          </Stage>
+          <Webcam 
+            className={'webcam'}
+            audio={false}
+            height={Constants.height}
+            width={Constants.width}
+            screenshotFormat="image/png"
+            videoConstraints={Constants.videoConstraints}
+            onUserMedia={() => this.onWebcamLoaded()}
+            ref={this.setWebcamRef}
+          />
+          <div className="feedback">
+            <p>{this.props.feedback}</p>
+            <p>{this.props.instructions}
+              <input type="button" value={!this.props.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+            </p>
+            <br></br>
+            <p>Slouch Amount:  </p>
+              <input 
+                type="range" 
+                name="slouchSlider" 
+                value={this.props.slouch} 
+                step=".01" 
+                min="0" 
+                max="1"
+                onChange={() => console.log('')}
+                >
+              </input>
+          </div>
+          <p>{this.props.isSlouching}</p>
+          <img  className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+        </main>
       </div>
     ); 
   }
