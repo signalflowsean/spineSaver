@@ -1,5 +1,8 @@
 #Spine Saver
-Spine saver is a web app the helps users slouch less. 
+Spine saver is a web app the helps users slouch less.
+
+CLICK LINK BELOW TO SEE IT DEPLOYED 
+https://spine-saver-client.herokuapp.com/settings
 
 ## Installation
 Use the package manager [npm] to install the dependencies
@@ -39,6 +42,20 @@ To start the app run
   passport
   passport-jwt
   passport-local
+
+## Screenshots
+https://drive.google.com/open?id=1QwxdwigI14OX9cmHUv7S1fAbPxwLHjZq
+
+## Main Components
+### Frontent
+Dashboard 
+Slouch Slider
+### Backend
+Display
+Slouch
+
+### THIS APP CANNOT BE USED WITHOUT PERMISSION
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
