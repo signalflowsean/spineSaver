@@ -1,3 +1,45 @@
+#Spine Saver
+Spine saver is a web app the helps users slouch less. 
+
+## Installation
+Use the package manager [npm] to install the dependencies
+`npm install`
+To start the app run 
+`npm start`
+
+## Tech Stack
+  ### Frontend
+  tensorflow.js library PoseNet
+  tensorflow-models
+  tensorflow/tfjs
+  jwt-decode
+  konva
+  react
+  react-dom
+  react-konva
+  react-redux
+  react-router
+  react-router-dom
+  react-scripts
+  react-webcam
+  redux
+  redux-form
+  redux-thunk
+  ### Backend
+  bcryptjs
+  body-parser
+  cors
+  dotenv
+  express
+  jsonwebtoken
+  moment
+  mongoose
+  morgan
+  nodemon
+  passport
+  passport-jwt
+  passport-local
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

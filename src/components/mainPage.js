@@ -26,7 +26,7 @@ export function MainPage(props) {
         <img src="https://santispilates.files.wordpress.com/2009/11/fotolia_9063035_s-spine1.jpg" alt="Spine"></img>
       </main>
       <footer>
-        <p>Thanks for watching</p>
+        {/* <p>Thanks for watching</p> */}
       </footer>
     </div>
   ); 

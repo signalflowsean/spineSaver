@@ -13,9 +13,9 @@ export function SignUpPage(props) {
 
   return (
     <div>
-      <h2>SignUp for Spine Saver</h2>
+      <h2>SignUp</h2>
+      <Link to="/">Home</Link>
       <SignUpForm></SignUpForm>
-      <Link to="/">Login</Link>
     </div>
   ); 
 }

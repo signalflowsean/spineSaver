@@ -32,6 +32,7 @@ export class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
     this.tempDataContainer = []; 
+    this.isSlouching = ''; 
   }
 
   componentDidUpdate(prevProps) { 
@@ -123,7 +124,7 @@ export class SlouchSlider extends React.Component{
           //user has calibrated before
           else if (!this.props.notCalibrated){ 
             this.calculateSlouch(pose); 
-            this.alert(); 
+            // this.alert(); 
           }
         })
         .catch(error => { 
@@ -132,15 +133,13 @@ export class SlouchSlider extends React.Component{
   };
 
   alert(){ 
-    const thresh = 0.5; 
-    if (this.props.feedback === 'Realtime slouch amount is showing.') {
+    const thresh = 0.3; 
       if (this.props.slouch > thresh ){ 
-        this.props.dispatch(showSlouchReprimand()); 
+        this.isSlouching = 'Sit up straight!'
       }
       else {
-        this.props.dispatch(showSlouchCompliment()); 
+        this.isSlouching = 'Great job sitting!'
       }
-    }
   }
   
   calculateSlouch = (pose) => {
@@ -185,6 +184,7 @@ export class SlouchSlider extends React.Component{
   }
 
   render() {   
+    // console.log(this.props.slouch); 
     return ( 
       <div>
         <header className="header">
@@ -224,7 +224,7 @@ export class SlouchSlider extends React.Component{
             <p>{this.props.instructions}
               <input type="button" value={!this.props.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
             </p>
-            <br></br>
+            <p>{this.isSlouching}</p>
             <p>Slouch Amount:  </p>
               <input 
                 type="range" 
@@ -237,7 +237,6 @@ export class SlouchSlider extends React.Component{
                 >
               </input>
           </div>
-          <p>{this.props.isSlouching}</p>
           <img  className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
         </main>
       </div>
