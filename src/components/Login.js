@@ -3,7 +3,7 @@ import {Field, reduxForm, focus} from 'redux-form';
 import Input from './input'; 
 import {login} from '../actions/auth'; 
 import {required, nonEmpty} from '../validators'; 
-
+import '../Styles/login.css'; 
 export class Login extends React.Component{ 
   onSubmit(values) { 
     return this.props.dispatch(login(values.username, values.password)); 
