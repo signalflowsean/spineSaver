@@ -91,7 +91,7 @@ export default function reducer(state = initialState, action){
   //   return Object.assign({}, state, {feedback: 'Calibrated', hasCalibrated : true}); 
   // }
   else if (action.type === ZERO_OUT_CALIBRATION_BUTTON_COUNT){ 
-    return Object.assign({}, state, {calibrateButtonCount :0}); 
+    return Object.assign({}, state, {calibrateButtonCount :0, hasCalibrated : false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {feedback : 'Webcam Loaded, Posenet Loading...', isWebcamLoaded : true}); 
@@ -107,7 +107,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
-    console.log('success'); 
+    console.log('posted calibration data'); 
     return Object.assign({}, state, {notCalibrated : false}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
@@ -120,7 +120,7 @@ export default function reducer(state = initialState, action){
     }); 
   }
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
-    console.log('Maded'); 
+    console.log('calibration button count', state.calibrateButtonCount); 
     let feedback = state.feedback; 
     let hasCalibrated = state.hasCalibrated; 
     let instructions = state.instructions; 
@@ -136,10 +136,11 @@ export default function reducer(state = initialState, action){
     }
     
     if (state.calibrateButtonCount >= 1){ 
+      console.log('hello?'); 
       feedback = 'Calibrated'
       hasCalibrated = true; 
     } 
-    console.log('button count', state.calibrateButtonCount); 
+
     return Object.assign({}, state, {
       isCalibrating : !state.isCalibrating,
       feedback, 

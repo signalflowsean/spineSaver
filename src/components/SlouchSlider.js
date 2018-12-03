@@ -35,18 +35,30 @@ export class SlouchSlider extends React.Component{
     this.isSlouching = ''; 
   }
 
-  componentDidMount(){ 
-   this.props.dispatch(zeroOutCalibrationButtonCount()); 
+  componentDidMount(){
+    //NOTE RENAME THIS TO RESET OR SOMEHTING
+    this.props.dispatch(zeroOutCalibrationButtonCount()); 
+    posenet.load()
+      .then(posenet => {
+        this.props.dispatch(posenetSuccess(posenet)); 
+        this.isEverythingLoaded(); 
+      })
+      .catch(error => { 
+        console.log('posenet error'); 
+        this.props.dispatch(posenetError()); 
+      });  
   }
 
   componentDidUpdate(prevProps) { 
     if(!prevProps.hasCalibrated && this.props.hasCalibrated) { 
       console.log('STOP CALIBRATION button pressed'); 
-
+      
+      //TEMP SLOUCH IS BROKEN
       const calibrationObj = { 
         id : this.props.currentUser.id, 
         calibrateVal : this.props.tempSlouch
       }; 
+      console.log('calibrationValue', calibrationObj.calibrateVal); 
 
       console.log('Trying to post calibration data', calibrationObj.id, calibrationObj.calibrateVal); 
       this.props.dispatch(postCalibrationData(calibrationObj)); 
@@ -59,6 +71,11 @@ export class SlouchSlider extends React.Component{
     }
   }
 
+  componentWillUnmount(){ 
+    if (!this.captureInterval) { return; }
+    clearInterval(this.captureInterval); 
+  }
+
   setWebcamRef = webcam => { 
     this.props.dispatch(setWebCamRef(webcam)); 
   };
@@ -67,22 +84,6 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(setScreenShotRef(screenCapHTML)); 
   };
 
-  componentWillUnmount(){ 
-    if (!this.captureInterval) { return; }
-    clearInterval(this.captureInterval); 
-  }
-
-  componentDidMount(){
-    posenet.load()
-      .then(posenet => {
-        this.props.dispatch(posenetSuccess(posenet)); 
-        this.isEverythingLoaded(); 
-      })
-      .catch(error => { 
-        console.log('posenet error'); 
-        this.props.dispatch(posenetError()); 
-      });  
-  }
 
   onWebcamLoaded = () => { 
     this.props.dispatch(webcamLoaded());
@@ -183,9 +184,13 @@ export class SlouchSlider extends React.Component{
     }; 
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
-
+  
   render() {  
- 
+    // console.log('notCalibrated', this.props.notCalibrated); 
+    // console.log('slouch', this.props.slouch); 
+    // console.log('isCalibrating', this.props.isCalibrating); 
+    //console.log('hasCalibrated', this.props.hasCalibrated); 
+
     return ( 
       <div>
         <header className="header">
