@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
-import {fetchDisplayData, userHasCalibrated} from '../actions/display';
+// import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
@@ -14,8 +14,6 @@ import {
   handleCalibrateButtonClick,
   setWebCamRef, 
   setScreenShotRef, 
-  showSlouchCompliment, 
-  showSlouchReprimand,
   newPoseDataPoint, 
   newSlouchDataPoint,
   postSlouchData, 
@@ -31,6 +29,7 @@ import {
 export class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
+    //VARIABLES WHERE STATE IS NOT SUPER NESSESARU
     this.tempDataContainer = []; 
     this.isSlouching = ''; 
   }
@@ -45,7 +44,7 @@ export class SlouchSlider extends React.Component{
       }; 
 
       this.props.dispatch(postCalibrationData(calibrationObj)); 
-      this.props.dispatch(userHasCalibrated()); 
+      // this.props.dispatch(userHasCalibrated()); 
       //NOT CALIBRATED
     }
 
@@ -124,7 +123,6 @@ export class SlouchSlider extends React.Component{
           //user has calibrated before
           else if (!this.props.notCalibrated){ 
             this.calculateSlouch(pose); 
-            // this.alert(); 
           }
         })
         .catch(error => { 
@@ -163,7 +161,7 @@ export class SlouchSlider extends React.Component{
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
       }
-      this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
+      // this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
   }
 
@@ -185,6 +183,7 @@ export class SlouchSlider extends React.Component{
 
   render() {   
     // console.log(this.props.slouch); 
+    // console.log(this.props.isCalibrating);  
     return ( 
       <div>
         <header className="header">
@@ -222,7 +221,7 @@ export class SlouchSlider extends React.Component{
           <div className="feedback">
             <p>{this.props.feedback}</p>
             <p>{this.props.instructions}
-              <input type="button" value={!this.props.isCalibrating? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+              <input type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
             </p>
             <p>{this.isSlouching}</p>
             <p>Slouch Amount:  </p>

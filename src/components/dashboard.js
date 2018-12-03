@@ -14,6 +14,7 @@ export class Display extends React.Component {
   }
   
   componentDidMount(){ 
+    //CHECKING TO SEE IF THE USER HAS ALREADY CALIBRATED
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
 
@@ -34,6 +35,13 @@ export class Display extends React.Component {
   }
 
   render(){ 
+
+    console.log('notCalibrated', this.props.notCalibrated); 
+    // console.log('loading', this.props.loading); 
+    // if (this.props.loading){ 
+    //   return (<p>Loading...</p>); 
+    // }
+
     if (this.loggedIn === false){
       console.log('Not logged in, can\'t be here'); 
       return (<Redirect to="/"></Redirect>); 
@@ -43,12 +51,12 @@ export class Display extends React.Component {
       console.log('Current user is not defined'); 
       return (<div>User is not valid</div>); 
     }
-        
+
     if (this.props.notCalibrated){  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
-  
+    
     return (
       <div>
         <header className="header">

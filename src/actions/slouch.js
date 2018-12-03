@@ -199,7 +199,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
-  console.log(`User id: ${id}, Value: ${calibrateVal}`); 
+  // console.log(`User id: ${id}, Value: ${calibrateVal}`); 
   fetch(`${API_BASE_URL}/slouch/calibration/${id.id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 

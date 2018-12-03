@@ -24,7 +24,7 @@ export const fetchCalibrationDataLoading = () => ({
   type: FETCH_CALIBRATION_DATA_LOADING
 }); 
 
-export const FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD = 'FETCH_CALIBRATION_DATA_SUCCESS'; 
+export const FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD = 'FETCH_CALIBRATION_DATA_PAYLOAD'; 
 export const fetchCalibrationSucessPayload = calibration => ({ 
   type: FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD, 
   calibration
@@ -38,11 +38,6 @@ export const fetchCalilibrationDataSuccessEmpty = () => ({
 export const FETCH_CALIBRATION_DATA_ERROR = 'FETCH_CALIBRATION_DATA_ERROR'; 
 export const fetchCalibrationError = () => ({
   type: FETCH_CALIBRATION_DATA_ERROR
-}); 
-
-export const USER_HAS_CALIBRATED = 'USER_HAS_CALIBRATED'; 
-export const userHasCalibrated = () => ({ 
-  type: USER_HAS_CALIBRATED
 }); 
 
 export const fetchDisplayData = (id) => (dispatch, getState) => { 
@@ -59,7 +54,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
     .then((data) => { 
-      //console.log('display data', data); 
+      // console.log('display data', data); 
       dispatch(fetchDisplayDataSucess(data)); 
     })
     .catch(err => { 
@@ -69,6 +64,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
+  console.log('fetchingCalibrationData')
   dispatch(fetchCalibrationDataLoading()); 
 
   const authToken = loadAuthToken(); 
@@ -81,9 +77,11 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
   })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json()) 
-    .then((data) => { 
+    .then((data) => {
+      console.log('calibrationValue', data.calibrationValue);  
+
       if (data.calibrationValue > 0){ 
-        //console.log(data.calibrationValue); 
+        console.log(data.calibrationValue); 
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       }
       else  if (data.calibrationValue === 0){ 

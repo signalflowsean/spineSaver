@@ -20,7 +20,8 @@ import {
   HANDLE_CALIBRATE_BUTTON_CLICK,
   NEW_POSE_DATA_POINT, 
   NEW_SLOUCH_DATA_POINT, 
-  SLOUCH_CALCULATION_SUCCESS
+  SLOUCH_CALCULATION_SUCCESS, 
+  CALIBRATION_POSTING_SUCCESS
 } from '../actions/slouch'; 
 
 const initialState = { 
@@ -48,7 +49,7 @@ const initialState = {
   error: null, 
   pose: null,
   calibrateButtonCount: 0, 
-  notCalibrated : null
+  notCalibrated : true
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -101,6 +102,9 @@ export default function reducer(state = initialState, action){
   else if (action.type === NEW_SLOUCH_DATA_POINT) { 
     return Object.assign({}, state, {slouch : action.slouch})
   }
+  else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
+    return Object.assign({}, state, {notCalibrated :false}); 
+  }
   else if (action.type === UPDATE_BOUNDING_BOX) {
     return Object.assign({}, state, {
       bBoxHeight: action.boundingBox.height, 
@@ -143,7 +147,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {pose : action.pose}); 
   }
   else if (action.type === SLOUCH_CALCULATION_SUCCESS) { 
-    return Object.assign({}, state, {notCalibrated : false}); 
+    return Object.assign({}, state); 
   }
   
   return state; 
