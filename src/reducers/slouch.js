@@ -12,7 +12,8 @@ import {
   SET_WEB_CAM_REF, 
   SET_SCREENSHOT_REF,
   TAKE_SCREENSHOT,
-  SPINE_SAVER_HAS_CALIBRATED,
+  ZERO_OUT_CALIBRATION_BUTTON_COUNT, 
+  // SPINE_SAVER_HAS_CALIBRATED,
   SPINE_SAVER_IS_CALIBRATING,
   UPDATE_BOUNDING_BOX, 
   SETUP_LOADED, 
@@ -86,8 +87,11 @@ export default function reducer(state = initialState, action){
   else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
-  else if (action.type === SPINE_SAVER_HAS_CALIBRATED){ 
-    return Object.assign({}, state, {feedback: 'Calibrated', hasCalibrated : true}); 
+  // else if (action.type === SPINE_SAVER_HAS_CALIBRATED){ 
+  //   return Object.assign({}, state, {feedback: 'Calibrated', hasCalibrated : true}); 
+  // }
+  else if (action.type === ZERO_OUT_CALIBRATION_BUTTON_COUNT){ 
+    return Object.assign({}, state, {calibrateButtonCount :0}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {feedback : 'Webcam Loaded, Posenet Loading...', isWebcamLoaded : true}); 
@@ -103,7 +107,8 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
-    return Object.assign({}, state, {notCalibrated :false}); 
+    console.log('success'); 
+    return Object.assign({}, state, {notCalibrated : false}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
     return Object.assign({}, state, {
@@ -115,6 +120,7 @@ export default function reducer(state = initialState, action){
     }); 
   }
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
+    console.log('Maded'); 
     let feedback = state.feedback; 
     let hasCalibrated = state.hasCalibrated; 
     let instructions = state.instructions; 
@@ -133,7 +139,7 @@ export default function reducer(state = initialState, action){
       feedback = 'Calibrated'
       hasCalibrated = true; 
     } 
-
+    console.log('button count', state.calibrateButtonCount); 
     return Object.assign({}, state, {
       isCalibrating : !state.isCalibrating,
       feedback, 

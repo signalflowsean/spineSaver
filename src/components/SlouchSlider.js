@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
-// import {fetchDisplayData} from '../actions/display';
+import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
@@ -23,7 +23,8 @@ import {
   webcamLoaded,
   takeScreenShot, 
   setupLoaded, 
-  postCalibrationData
+  postCalibrationData,
+  zeroOutCalibrationButtonCount
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
@@ -34,18 +35,21 @@ export class SlouchSlider extends React.Component{
     this.isSlouching = ''; 
   }
 
+  componentDidMount(){ 
+   this.props.dispatch(zeroOutCalibrationButtonCount()); 
+  }
+
   componentDidUpdate(prevProps) { 
     if(!prevProps.hasCalibrated && this.props.hasCalibrated) { 
       console.log('STOP CALIBRATION button pressed'); 
 
       const calibrationObj = { 
-        id : this.props.currentUser, 
+        id : this.props.currentUser.id, 
         calibrateVal : this.props.tempSlouch
       }; 
 
+      console.log('Trying to post calibration data', calibrationObj.id, calibrationObj.calibrateVal); 
       this.props.dispatch(postCalibrationData(calibrationObj)); 
-      // this.props.dispatch(userHasCalibrated()); 
-      //NOT CALIBRATED
     }
 
     if(!prevProps.notCalibrated && this.props.notCalibrated){ 
@@ -161,7 +165,7 @@ export class SlouchSlider extends React.Component{
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
       }
-      // this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
+      this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
   }
 
@@ -170,7 +174,6 @@ export class SlouchSlider extends React.Component{
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
-    //const ratio = this.props.bBoxWidth / this.props.bBoxHeight; 
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
@@ -181,9 +184,8 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
-  render() {   
-    // console.log(this.props.slouch); 
-    // console.log(this.props.isCalibrating);  
+  render() {  
+ 
     return ( 
       <div>
         <header className="header">
@@ -269,7 +271,7 @@ const mapStateToProps = state => ({
   error: state.slouch.error, 
   pose : state.slouch.pose,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
-  notCalibrated : state.display.notCalibrated, 
+  notCalibrated : state.display.notCalibrated,
   calibVal : state.display.calibVal
 }); 
 

@@ -15,7 +15,7 @@ const initialState = {
   slouchedHours : 0, 
   improvement : 0,
   calibVal: null, 
-  notCalibrated : true
+  notCalibrated : null
 };
 
 export default function reducer(state = initialState, action) { 
@@ -37,13 +37,12 @@ export default function reducer(state = initialState, action) {
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
      return Object.assign({}, state, { loading: false, error: action.error})
   }
-  else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){ 
-    console.log('reducer', action.calibration); 
+  else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
     return Object.assign({}, state, { loading: false, calibVal : action.calibration, notCalibrated: false}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
+    console.log('Getting empty calibration data?'); 
     return Object.assign({}, state, { loading: false, notCalibrated : true, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
-  //USER HAS CALIBRATED
   return state; 
 }

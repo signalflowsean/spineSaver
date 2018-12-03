@@ -161,6 +161,11 @@ export const calibrationPostingError = () => ({
   type: CALIBRATION_POSTING_ERROR
 }); 
 
+export const ZERO_OUT_CALIBRATION_BUTTON_COUNT = 'ZERO_OUT_CALIBRATION_BUTTON_COUNT'; 
+export const zeroOutCalibrationButtonCount = () => ({ 
+  type: ZERO_OUT_CALIBRATION_BUTTON_COUNT
+}); 
+
 export const postSlouchData = (slouchDataObj) => (dispatch) => { 
   const {id, slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
@@ -193,22 +198,23 @@ export const postSlouchData = (slouchDataObj) => (dispatch) => {
 } 
 
 export const postCalibrationData = (calibrationData) => (dispatch) => { 
-  console.log('Calibration value added'); 
+  console.log('Adding calibration data'); 
   dispatch(calibrationPotsingLoading()); 
  
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
   // console.log(`User id: ${id}, Value: ${calibrateVal}`); 
-  fetch(`${API_BASE_URL}/slouch/calibration/${id.id}`, { 
+  fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 
     body: JSON.stringify({calibrateVal}), 
   }).then(res => { 
-    dispatch(calibrationPostingSuccess())
     return res.json(); 
   }).then(calibrationData => { 
-    //console.log(`Calibration data success ${calibrationData}`)
+    console.log('ajax calibration val', calibrateVal); 
+    dispatch(calibrationPostingSuccess())
+
   }).catch(error => { 
     dispatch(calibrationPostingError())
     console.error('Error post calibration data to backend', error); 

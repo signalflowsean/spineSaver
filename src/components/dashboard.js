@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './SlouchSlider'; 
-import {fetchDisplayData, fetchCalibrationData} from '../actions/display'; 
+import {fetchCalibrationData} from '../actions/display'; 
 import { clearAuth } from '../actions/auth';
 
 export class Display extends React.Component { 
@@ -30,12 +30,8 @@ export class Display extends React.Component {
     this.loggedIn = false; 
   }
 
-  fetchDisplayData(){ 
-    this.props.dispatch(fetchDisplayData(this.props.currentUser.id));
-  }
-
   render(){ 
-
+    
     console.log('notCalibrated', this.props.notCalibrated); 
     // console.log('loading', this.props.loading); 
     // if (this.props.loading){ 
