@@ -38,6 +38,7 @@ export default function reducer(state = initialState, action) {
      return Object.assign({}, state, { loading: false, error: action.error})
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
+    console.log('calibration'); 
     return Object.assign({}, state, { loading: false, calibVal : action.calibration, notCalibrated: false}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 

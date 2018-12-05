@@ -45,12 +45,13 @@ export class Display extends React.Component {
       console.log('Current user is not defined'); 
       return (<div>User is not valid</div>); 
     }
-
-    if (this.props.notCalibrated){  
+    console.log('not calibrated', this.props.notCalibrated); 
+    if (this.props.notCalibrated && !this.props.loading){  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
     
+
     return (
       <div>
         <header className="header">

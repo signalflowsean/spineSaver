@@ -42,7 +42,6 @@ export class SlouchSlider extends React.Component{
     
     posenet.load()
       .then(posenet => {
-        console.log('posenet loaded'); 
         this.props.dispatch(posenetSuccess(posenet)); 
         this.isEverythingLoaded(); 
       })
@@ -84,14 +83,8 @@ export class SlouchSlider extends React.Component{
   } 
 
   isEverythingLoaded = () => { 
-    //console.log('webcam', this.props.webcam); 
-    console.log('webcam', this.props.isWebcamLoaded, 'posenet', this.props.isPosenetLoaded); 
-
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded && !this.captureInterval){ 
-      //WHY TRIGGERING TWICE??
-      console.log('Everything is loaded'); 
       this.props.dispatch(setupLoaded()); 
-      //SET INTERVAL
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
     }

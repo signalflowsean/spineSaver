@@ -4,8 +4,6 @@ import {
   POSENET_LOADING, 
   POSENET_SUCCESS, 
   POSENET_ERROR,
-  POST_SLOUCH_DATA_LOADING,
-  POST_SLOUCH_DATA_SUCCESS,
   POST_SLOUCH_DATA_ERROR, 
   CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL,
   SET_SCREENSHOT_FRAME_RATE_INTERVAL,
@@ -49,7 +47,7 @@ const initialState = {
   error: null, 
   pose: null,
   calibrateButtonCount: 0, 
-  notCalibrated : true
+  notCalibrated : null
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -70,12 +68,6 @@ export default function reducer(state = initialState, action){
   }
   else if (action.type === TAKE_SCREENSHOT) { 
     return Object.assign({}, state, {screenCap: action.capture})
-  }
-  else if (action.type === POST_SLOUCH_DATA_LOADING){
-    return Object.assign({}, state, {});  
-  } 
-  else if (action.type === POST_SLOUCH_DATA_SUCCESS){ 
-    return Object.assign({}, state, {})
   }
   else if (action.type === POST_SLOUCH_DATA_ERROR){ 
     return Object.assign({}, state, {error : action.error});
