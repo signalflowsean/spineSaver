@@ -169,15 +169,13 @@ export const zeroOutCalibrationButtonCount = () => ({
 export const postSlouchData = (slouchDataObj) => (dispatch) => { 
   const {id, slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
-  //console.log('slouch packet', slouch); 
+  
+  console.log('slouch packet', slouch); 
 
-  //Checks to see if slouch is a slouch `packet`
-  // if (Array.isArray(slouch)){ 
-  //   console.error('Error: Slouch must be an array slouches'); 
-  //   return; 
-  // }
-
-  //console.log('id', id, 'slouch', slouch);
+  if (!Array.isArray(slouch)){ 
+    console.error('Error: Slouch must be an array slouches'); 
+    return; 
+  }
   
   dispatch(postSlouchDataLoading); 
   fetch(`${API_BASE_URL}/slouch/${id}`, { 

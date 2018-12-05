@@ -87,9 +87,6 @@ export default function reducer(state = initialState, action){
   else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
-  // else if (action.type === SPINE_SAVER_HAS_CALIBRATED){ 
-  //   return Object.assign({}, state, {feedback: 'Calibrated', hasCalibrated : true}); 
-  // }
   else if (action.type === ZERO_OUT_CALIBRATION_BUTTON_COUNT){ 
     return Object.assign({}, state, {calibrateButtonCount :0, hasCalibrated : false}); 
   }
@@ -111,6 +108,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {notCalibrated : false}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
+    console.log('reducer', action.boundingBox); 
     return Object.assign({}, state, {
       bBoxHeight: action.boundingBox.height, 
       bBoxWidth: action.boundingBox.width, 
@@ -120,7 +118,12 @@ export default function reducer(state = initialState, action){
     }); 
   }
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
-    console.log('calibration button count', state.calibrateButtonCount); 
+    let bBoxX = state.bBoxX; 
+    let bBoxY = state.bBoxY; 
+    let bBoxWidth = state.bBoxWidth; 
+    let bBoxHeight = state.bBoxHeight; 
+    let tempSlouch = state.tempSlouch; 
+
     let feedback = state.feedback; 
     let hasCalibrated = state.hasCalibrated; 
     let instructions = state.instructions; 
@@ -132,21 +135,31 @@ export default function reducer(state = initialState, action){
     }
     else if (state.isCalibrating){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
-      calibratedVal = state.tempSlouch; 
     }
     
     if (state.calibrateButtonCount >= 1){ 
-      console.log('hello?'); 
+      calibratedVal = state.tempSlouch; 
       feedback = 'Calibrated'
       hasCalibrated = true; 
-    } 
-
+      //If we have calibrated then we can zero out the values
+      bBoxHeight = 0;  
+      bBoxWidth = 0; 
+      bBoxY = 0;
+      bBoxX = 0;  
+      tempSlouch = 0; 
+    }
+      
     return Object.assign({}, state, {
       isCalibrating : !state.isCalibrating,
       feedback, 
       hasCalibrated, 
       instructions,
       calibratedVal,
+      bBoxHeight, 
+      bBoxWidth, 
+      tempSlouch,
+      bBoxY, 
+      bBoxX, 
       calibrateButtonCount : (state.calibrateButtonCount + 1) 
     }); 
   }

@@ -30,14 +30,17 @@ import {
 export class SlouchSlider extends React.Component{
   constructor(props){ 
     super(props); 
-    //VARIABLES WHERE STATE IS NOT SUPER NESSESARU
+    
+    //VARIABLES WHERE STATE IS NOT SUPER NESSESARY
     this.tempDataContainer = []; 
     this.isSlouching = ''; 
+
   }
 
   componentDidMount(){
     //NOTE RENAME THIS TO RESET OR SOMEHTING
     this.props.dispatch(zeroOutCalibrationButtonCount()); 
+    
     posenet.load()
       .then(posenet => {
         this.props.dispatch(posenetSuccess(posenet)); 
@@ -56,12 +59,13 @@ export class SlouchSlider extends React.Component{
       //TEMP SLOUCH IS BROKEN
       const calibrationObj = { 
         id : this.props.currentUser.id, 
-        calibrateVal : this.props.tempSlouch
+        calibrateVal : this.props.calibratedVal
       }; 
+
       console.log('calibrationValue', calibrationObj.calibrateVal); 
 
-      console.log('Trying to post calibration data', calibrationObj.id, calibrationObj.calibrateVal); 
-      this.props.dispatch(postCalibrationData(calibrationObj)); 
+      this.props.dispatch(postCalibrationData(calibrationObj));
+      
     }
 
     if(!prevProps.notCalibrated && this.props.notCalibrated){ 
@@ -84,7 +88,6 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(setScreenShotRef(screenCapHTML)); 
   };
 
-
   onWebcamLoaded = () => { 
     this.props.dispatch(webcamLoaded());
     this.isEverythingLoaded(); 
@@ -92,6 +95,7 @@ export class SlouchSlider extends React.Component{
 
   isEverythingLoaded = () => { 
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded && !this.captureInterval){ 
+      //WHY TRIGGERING TWICE??
       console.log('Everything is loaded'); 
       this.props.dispatch(setupLoaded()); 
       //SET INTERVAL
@@ -107,8 +111,7 @@ export class SlouchSlider extends React.Component{
     this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
       Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
         .then(pose => { 
-          this.props.dispatch(newPoseDataPoint(pose)); 
-
+          
           if (this.props.isCalibrating){ 
             this.drawBoundingBox(  
               pose.keypoints[1].position, 
@@ -116,17 +119,15 @@ export class SlouchSlider extends React.Component{
               pose.keypoints[5].position, 
               pose.keypoints[6].position);  
           }
-          else if (!this.props.isCalibrating) { 
-            const resetObj = {width : 0, height: 0, x: 0, y: 0}; 
-            this.props.dispatch(updateBoundingBox(resetObj)); 
-          }
           //has calibrated on the settings page
-          if (this.props.hasCalibrated) {     
+          else if (this.props.hasCalibrated) {
+            this.props.dispatch(newPoseDataPoint(pose));      
             this.calculateSlouch(pose); 
             this.alert(); 
           }
           //user has calibrated before
           else if (!this.props.notCalibrated){ 
+            this.props.dispatch(newPoseDataPoint(pose)); 
             this.calculateSlouch(pose); 
           }
         })
@@ -174,23 +175,30 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(handleCalibrateButtonClick()); 
   } 
 
-  drawBoundingBox = (leftEye, rightEye, leftShoulder) => {   
+  drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
+     
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
       x : leftEye.x, 
       y : (leftEye.y - this.props.bBoxHeight), 
       tempSlouch : (this.props.bBoxWidth / this.props.bBoxHeight)
-    }; 
+    };
+    
+    console.log('tempSlouch', this.props.tempSlouch); 
+    console.log(this.props.bBoxWidth, this.props.bBoxHeight); 
+
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
   
-  render() {  
+  render() {
+    // console.log('calibrateVal', this.props.calibVal);   
+    // console.log('hi', this.props.bBoxWidth, this.temp); 
     // console.log('notCalibrated', this.props.notCalibrated); 
     // console.log('slouch', this.props.slouch); 
     // console.log('isCalibrating', this.props.isCalibrating); 
     //console.log('hasCalibrated', this.props.hasCalibrated); 
-
+    console.log('calibration val', this.props.calibratedVal); 
     return ( 
       <div>
         <header className="header">
