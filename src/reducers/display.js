@@ -20,7 +20,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action) { 
   if (action.type === FETCH_DISPLAY_DATA_LOADING) { 
-    return Object.assign({}, state, {loading : true}); 
+    return Object.assign({}, state, { loading : true }); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_SUCCESS) { 
     return Object.assign({}, state, {

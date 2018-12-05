@@ -12,8 +12,7 @@ import {
   SET_WEB_CAM_REF, 
   SET_SCREENSHOT_REF,
   TAKE_SCREENSHOT,
-  ZERO_OUT_CALIBRATION_BUTTON_COUNT, 
-  // SPINE_SAVER_HAS_CALIBRATED,
+  RESET_VALUES, 
   SPINE_SAVER_IS_CALIBRATING,
   UPDATE_BOUNDING_BOX, 
   SETUP_LOADED, 
@@ -87,7 +86,7 @@ export default function reducer(state = initialState, action){
   else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
-  else if (action.type === ZERO_OUT_CALIBRATION_BUTTON_COUNT){ 
+  else if (action.type === RESET_VALUES){ 
     return Object.assign({}, state, {calibrateButtonCount :0, hasCalibrated : false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
@@ -108,7 +107,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {notCalibrated : false}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
-    console.log('reducer', action.boundingBox); 
+    // console.log('reducer', action.boundingBox); 
     return Object.assign({}, state, {
       bBoxHeight: action.boundingBox.height, 
       bBoxWidth: action.boundingBox.width, 
@@ -117,6 +116,7 @@ export default function reducer(state = initialState, action){
       tempSlouch : action.boundingBox.tempSlouch
     }); 
   }
+
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
     let bBoxX = state.bBoxX; 
     let bBoxY = state.bBoxY; 

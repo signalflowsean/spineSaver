@@ -114,9 +114,9 @@ export const spineSaverIsCalibrating = () => ({
   type: SPINE_SAVER_IS_CALIBRATING
 }); 
 
-export const ZERO_OUT_CALIBRATION_VALUES = 'ZERO_OUT_CALIBRATION_VALUES'
-export const zeroOutCalibrationValues = () => ({ 
-  type: ZERO_OUT_CALIBRATION_VALUES
+export const RESET_VALUES = 'RESET_VALUES'
+export const resetValues = () => ({ 
+  type: RESET_VALUES
 }); 
 
 export const HANDLE_CALIBRATE_BUTTON_CLICK = 'HANDLE_CALIBRATE_BUTTON_CLICK'; 
@@ -170,8 +170,6 @@ export const postSlouchData = (slouchDataObj) => (dispatch) => {
   const {id, slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
   
-  console.log('slouch packet', slouch); 
-
   if (!Array.isArray(slouch)){ 
     console.error('Error: Slouch must be an array slouches'); 
     return; 
@@ -202,7 +200,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
-  // console.log(`User id: ${id}, Value: ${calibrateVal}`); 
+
   fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 

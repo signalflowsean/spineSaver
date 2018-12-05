@@ -25,18 +25,16 @@ export class Display extends React.Component {
   }
 
   logOut(){ 
-    console.log(`Logging out ${this.props.currentUser}`); 
     this.props.dispatch(clearAuth()); 
     this.loggedIn = false; 
   }
 
   render(){ 
-    
-    console.log('notCalibrated', this.props.notCalibrated); 
-    // console.log('loading', this.props.loading); 
-    // if (this.props.loading){ 
-    //   return (<p>Loading...</p>); 
-    // }
+    //console.log('notCalibrated', this.props.notCalibrated); 
+    console.log('loading', this.props.loading); 
+    if (this.props.loading){ 
+      return (<p>Loading...</p>); 
+    }
 
     if (this.loggedIn === false){
       console.log('Not logged in, can\'t be here'); 

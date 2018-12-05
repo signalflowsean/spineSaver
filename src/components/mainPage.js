@@ -6,7 +6,6 @@ import '../Styles/main.css';
 export function MainPage(props) { 
   
   if(props.loggedIn) { 
-    console.log('logged in'); 
     return <Redirect to="/home" />
   }
   console.log(props.loggedIn); 
@@ -19,7 +18,6 @@ export function MainPage(props) {
         <section>
           <Link className="account" to="/signup">SignUp</Link>
           <Link className="account" to="/login">Login</Link>
-          {/* <Login className="login account"/> */}
         </section>
       </header>
       <main>
