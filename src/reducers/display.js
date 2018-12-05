@@ -15,16 +15,18 @@ const initialState = {
   slouchedHours : 0, 
   improvement : 0,
   calibVal: null, 
+  isDiplayLoading : false, 
+  isCalibLoading : false,
   notCalibrated : null
 };
 
 export default function reducer(state = initialState, action) { 
   if (action.type === FETCH_DISPLAY_DATA_LOADING) { 
-    return Object.assign({}, state, { loading : true }); 
+    return Object.assign({}, state, { isDiplayLoading : true }); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_SUCCESS) { 
     return Object.assign({}, state, {
-      loading : false, 
+      isDiplayLoading : false, 
       username : action.username, 
       loggedHours : action.data.timeElapsed, 
       slouchedHours : action.data.slouchElapsed, 
@@ -32,18 +34,18 @@ export default function reducer(state = initialState, action) {
     })
   }
   else if (action.type === FETCH_CALIBRATION_DATA_LOADING) { 
-    return Object.assign({}, state, { loading : true}); 
+    return Object.assign({}, state, { isCalibLoading : true}); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
-     return Object.assign({}, state, { loading: false, error: action.error})
+     return Object.assign({}, state, { error: action.error})
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
     console.log('calibration'); 
-    return Object.assign({}, state, { loading: false, calibVal : action.calibration, notCalibrated: false}); 
+    return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, notCalibrated: false}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
     console.log('Getting empty calibration data?'); 
-    return Object.assign({}, state, { loading: false, notCalibrated : true, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
+    return Object.assign({}, state, { isCalibLoading: false, notCalibrated : true, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 
 }

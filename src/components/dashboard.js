@@ -30,9 +30,12 @@ export class Display extends React.Component {
   }
 
   render(){ 
-    //console.log('notCalibrated', this.props.notCalibrated); 
-    console.log('loading', this.props.loading); 
-    if (this.props.loading){ 
+    console.log('calibloading', this.props.isCalibLoading); 
+    console.log('display loading', this.props.isDisplayLoading); 
+    console.log('notCalibrated', this.props.notCalibrated); 
+    console.log('logged hours', this.props.loggedHours); 
+    console.log('loading', this.props.isCalibLoading); 
+    if (this.props.isCalibLoading){ 
       return (<p>Loading...</p>); 
     }
 
@@ -46,12 +49,11 @@ export class Display extends React.Component {
       return (<div>User is not valid</div>); 
     }
     console.log('not calibrated', this.props.notCalibrated); 
-    if (this.props.notCalibrated && !this.props.loading){  
+    if (this.props.notCalibrated && !this.props.isCalibLoading){  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
     
-
     return (
       <div>
         <header className="header">
@@ -75,16 +77,20 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => ({ 
-  currentUser : state.auth.currentUser, 
-  name : state.auth.currentUser.fullname, 
-  error: state.display.error, 
-  loading : state.display.loading,
-  loggedHours : state.display.loggedHours, 
-  slouchedHours : state.display.slouchedHours, 
-  improvement : state.display.improvement, 
-  calibVal : state.display.calibVal, 
-  notCalibrated : state.display.notCalibrated 
-}); 
+const mapStateToProps = state => {
+  // console.log('mapping state to props');  
+  return { 
+    currentUser : state.auth.currentUser, 
+    name : state.auth.currentUser.fullname, 
+    error: state.display.error, 
+    isCalibLoading : state.display.isCalibloading,
+    isDisplayLoading : state.display.isDisplayLoading, 
+    loggedHours : state.display.loggedHours, 
+    slouchedHours : state.display.slouchedHours, 
+    improvement : state.display.improvement, 
+    calibVal : state.display.calibVal, 
+    notCalibrated : state.display.notCalibrated }; 
+
+}; 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 
