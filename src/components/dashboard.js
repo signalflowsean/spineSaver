@@ -30,11 +30,12 @@ export class Display extends React.Component {
   }
 
   render(){ 
-    console.log('calibloading', this.props.isCalibLoading); 
+    console.log('calib loading', this.props.isCalibLoading); 
     console.log('display loading', this.props.isDisplayLoading); 
-    console.log('notCalibrated', this.props.notCalibrated); 
-    console.log('logged hours', this.props.loggedHours); 
-    console.log('loading', this.props.isCalibLoading); 
+    // console.log('notCalibrated', this.props.notCalibrated); 
+    // console.log('logged hours', this.props.loggedHours); 
+
+    // console.log('loading', this.props.isCalibLoading); 
     if (this.props.isCalibLoading){ 
       return (<p>Loading...</p>); 
     }

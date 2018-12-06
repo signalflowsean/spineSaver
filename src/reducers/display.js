@@ -15,18 +15,18 @@ const initialState = {
   slouchedHours : 0, 
   improvement : 0,
   calibVal: null, 
-  isDiplayLoading : false, 
+  isDisplayLoading : false, 
   isCalibLoading : false,
   notCalibrated : null
 };
 
 export default function reducer(state = initialState, action) { 
   if (action.type === FETCH_DISPLAY_DATA_LOADING) { 
-    return Object.assign({}, state, { isDiplayLoading : true }); 
+    return Object.assign({}, state, { isDisplayLoading : true }); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_SUCCESS) { 
     return Object.assign({}, state, {
-      isDiplayLoading : false, 
+      isDisplayLoading : false, 
       username : action.username, 
       loggedHours : action.data.timeElapsed, 
       slouchedHours : action.data.slouchElapsed, 
