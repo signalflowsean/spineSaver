@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './SlouchSlider'; 
-import {fetchCalibrationData} from '../actions/display'; 
+import {fetchCalibrationData, load} from '../actions/display'; 
 import { clearAuth } from '../actions/auth';
 
 export class Display extends React.Component { 
@@ -12,10 +12,18 @@ export class Display extends React.Component {
     super(props); 
     this.loggedIn = true; 
   }
-  
+  componentWillUpdate() { 
+
+  }
+  componentWillMount() { 
+    console.log('mount'); 
+    this.props.dispatch(load()); 
+    // this.props.isCalibLoading = true; 
+    this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
+  }
   componentDidMount(){ 
     //CHECKING TO SEE IF THE USER HAS ALREADY CALIBRATED
-    this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
+ 
   }
 
   logOut(){ 
@@ -25,8 +33,11 @@ export class Display extends React.Component {
 
   render(){ 
 
+    console.log('isCalibLoading', this.props.isCalibLoading); 
     //display is loading
-    if (this.props.isCalibLoading){ 
+
+    //|| this.props.isDisplayLoading
+    if (this.props.isCalibLoading ){ 
       return (<p>Loading...</p>); 
     }
 

@@ -85,12 +85,14 @@ export class SlouchSlider extends React.Component{
 
     //If we're calibrated or we have calibrated find pose
     if (this.props.isCalibrating || this.props.hasCalibrated || this.props.isCalibrated) { 
+
       this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
         Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
           .then(pose => { 
-            console.log('detecting pose'); 
-            if (this.props.isCalibrating) { 
-              
+            // console.log('detecting pose'); 
+            
+            //if we're calibrating draw the bounding box
+            if (this.props.isCalibrating) {   
               this.drawBoundingBox(  
                 pose.keypoints[1].position, 
                 pose.keypoints[2].position, 
@@ -120,6 +122,7 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
+    
     const slouch = Math.abs((this.props.calibratedVal / CalculateSlouch(pose))-1); 
     
     this.props.dispatch(newSlouchDataPoint(slouch)); 

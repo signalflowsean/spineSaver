@@ -13,6 +13,11 @@ export const fetchDisplayDataSucess = data => ({
   data
 }); 
 
+export const LOAD = 'LOAD'; 
+export const load = () => ({ 
+  type : LOAD
+})
+
 export const FETCH_DISPLAY_DATA_ERROR = 'FETCH_DISPLAY_DATA_ERROR'; 
 export const fetchDisplayDataError = error => ({ 
   type: FETCH_DISPLAY_DATA_ERROR, 
@@ -64,7 +69,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
-  console.log('fetching calibration data'); 
+  console.log('calibration loading'); 
   dispatch(fetchCalibrationDataLoading()); 
 
   const authToken = loadAuthToken(); 
@@ -81,13 +86,17 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
       if (Math.abs(data.calibrationValue) > 0) { 
         console.log('calibration back from endpoint', data.calibrationValue);  
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
+      } else { 
+        console.log('user has never calibrated'); 
+        dispatch(fetchCalilibrationDataSuccessEmpty()); 
       }
-      else  if (data.calibrationValue === 0){ 
-        console.log('user has never calibrated ')
-        dispatch(fetchCalilibrationDataSuccessEmpty())
-      }
+      // else  if (data.calibrationValue === 0 || data.calibrationValue === null){ 
+      //   console.log('user has never calibrated ')
+      //   dispatch(fetchCalilibrationDataSuccessEmpty())
+      // }
     })
     .catch(err => { 
+      console.log('there has been an error getting data'); 
       dispatch(fetchCalibrationError(err)); 
     }); 
 }; 
