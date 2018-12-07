@@ -78,9 +78,8 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json()) 
     .then((data) => { 
-      console.log('calibration back from endpoint', data.calibrationValue)
-      if (data.calibrationValue > 0){ 
-        console.log('calibrationValue', data.calibrationValue);  
+      if (Math.abs(data.calibrationValue) > 0) { 
+        console.log('calibration back from endpoint', data.calibrationValue);  
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       }
       else  if (data.calibrationValue === 0){ 

@@ -13,7 +13,7 @@ const Constants =  {
     height, 
     facingMode: 'user'
   }, 
-  theshold : 0.5, 
+  threshold : 0.42, 
   packetSize: 10
 }; 
 

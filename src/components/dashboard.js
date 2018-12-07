@@ -15,20 +15,7 @@ export class Display extends React.Component {
   
   componentDidMount(){ 
     //CHECKING TO SEE IF THE USER HAS ALREADY CALIBRATED
-    console.log('mounted'); 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
-  }
-
-  componentDidUpdate(prevProps) { 
-
-    if (!prevProps.isCalibLoading && !this.props.isCalibLoading) { 
-
-      if (this.props.isCalibrated === false) {  
-
-      } else { 
-        
-      }
-    }
   }
 
   logOut(){ 
@@ -37,10 +24,6 @@ export class Display extends React.Component {
   }
 
   render(){ 
-    console.log('calib loading', this.props.isCalibLoading); 
-    // console.log('display loading', this.props.isDisplayLoading); 
-    
-    console.log('not calibration', this.props.isCalibrated); 
  
     if (this.props.isCalibLoading || this.props.isDisplayLoading){ 
       return (<p>Loading...</p>); 

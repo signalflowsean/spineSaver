@@ -90,7 +90,7 @@ export class SlouchSlider extends React.Component{
   isEverythingLoaded = () => { 
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
       && !this.captureInterval && this.props.screenCapHTML !== null) { 
-      console.log('everything is loaded'); 
+      console.log('everything is loaded');
       this.props.dispatch(setupLoaded()); 
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
@@ -161,8 +161,6 @@ export class SlouchSlider extends React.Component{
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
-
-
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
@@ -175,7 +173,7 @@ export class SlouchSlider extends React.Component{
   }
   
   render() {
-    console.log('isCalibrating', this.props.isCalibrating); 
+    // console.log('isCalibrating', this.props.isCalibrating); 
     return ( 
       <div>
         <header className="header">
@@ -227,7 +225,7 @@ export class SlouchSlider extends React.Component{
                 >
               </input>
           </div>
-          <img  className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+          <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
         </main>
       </div>
     ); 
