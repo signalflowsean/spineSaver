@@ -125,7 +125,7 @@ export default function reducer(state = initialState, action){
       feedback = 'Calibrating...';
       instructions = 'Sit up straight and then click the STOP CALIBRATING button.'
     }
-    else if (state.isCalibrating){ 
+    else if (state.isCalibrating && state.isLoaded){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
     }
     
