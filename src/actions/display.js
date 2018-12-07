@@ -64,7 +64,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
-  //console.log('fetchingCalibrationData')
+  console.log('fetching calibration data'); 
   dispatch(fetchCalibrationDataLoading()); 
 
   const authToken = loadAuthToken(); 
@@ -77,13 +77,14 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
   })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json()) 
-    .then((data) => {
- 
+    .then((data) => { 
+      console.log('calibration back from endpoint', data.calibrationValue)
       if (data.calibrationValue > 0){ 
         console.log('calibrationValue', data.calibrationValue);  
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       }
       else  if (data.calibrationValue === 0){ 
+        console.log('user has never calibrated ')
         dispatch(fetchCalilibrationDataSuccessEmpty())
       }
     })

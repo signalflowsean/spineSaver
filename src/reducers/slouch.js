@@ -47,7 +47,7 @@ const initialState = {
   error: null, 
   pose: null,
   calibrateButtonCount: 0, 
-  notCalibrated : null
+  // notCalibrated : null
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -95,8 +95,9 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
-    console.log('posted calibration data'); 
-    return Object.assign({}, state, {notCalibrated : false}); 
+    console.log('posted calibration data');
+    //SOMETHING SHOULD GO HERE 
+    return Object.assign({}, state, {}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
     // console.log('reducer', action.boundingBox); 

@@ -17,7 +17,7 @@ const initialState = {
   calibVal: null, 
   isDisplayLoading : false, 
   isCalibLoading : false,
-  notCalibrated : null
+  isCalibrated : null
 };
 
 export default function reducer(state = initialState, action) { 
@@ -34,18 +34,18 @@ export default function reducer(state = initialState, action) {
     })
   }
   else if (action.type === FETCH_CALIBRATION_DATA_LOADING) { 
-    return Object.assign({}, state, { isCalibLoading : true}); 
+    return Object.assign({}, state, { isCalibLoading : true, isCalibrated : null}); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
      return Object.assign({}, state, { error: action.error})
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
     console.log('calibration'); 
-    return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, notCalibrated: false}); 
+    return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, isCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
     console.log('Getting empty calibration data?'); 
-    return Object.assign({}, state, { isCalibLoading: false, notCalibrated : true, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
+    return Object.assign({}, state, { isCalibLoading: false, isCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 
 }

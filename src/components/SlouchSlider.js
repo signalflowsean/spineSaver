@@ -51,6 +51,11 @@ export class SlouchSlider extends React.Component{
       });  
   }
 
+  onWebcamLoaded = () => { 
+    this.props.dispatch(webcamLoaded());
+    this.isEverythingLoaded(); 
+  }
+
   componentDidUpdate(prevProps) { 
     if(!prevProps.hasCalibrated && this.props.hasCalibrated) {       
 
@@ -74,7 +79,7 @@ export class SlouchSlider extends React.Component{
   
   setScreenShotRef = screenCapHTML => { 
     this.props.dispatch(setScreenShotRef(screenCapHTML)); 
-    this.props.dispatch(webcamLoaded());
+    
     this.isEverythingLoaded(); 
   };
 
@@ -83,7 +88,9 @@ export class SlouchSlider extends React.Component{
   } 
 
   isEverythingLoaded = () => { 
-    if (this.props.isPosenetLoaded && this.props.isWebcamLoaded && !this.captureInterval){ 
+    if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
+      && !this.captureInterval && this.props.screenCapHTML !== null) { 
+      console.log('everything is loaded'); 
       this.props.dispatch(setupLoaded()); 
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
@@ -92,6 +99,8 @@ export class SlouchSlider extends React.Component{
 
   capture = () => {
     const screenShot = this.props.webcam.getScreenshot(); 
+    // console.log('screenShot', screenShot);  
+
     this.props.dispatch(takeScreenShot(screenShot));  
 
     if (!this.props.isCalibrating || !this.props.hasCalibrated) { 
@@ -100,6 +109,7 @@ export class SlouchSlider extends React.Component{
           .then(pose => { 
             
             if (this.props.isCalibrating) { 
+              
               this.drawBoundingBox(  
                 pose.keypoints[1].position, 
                 pose.keypoints[2].position, 
@@ -151,7 +161,8 @@ export class SlouchSlider extends React.Component{
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
-     
+
+
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
@@ -164,14 +175,12 @@ export class SlouchSlider extends React.Component{
   }
   
   render() {
-
-
+    console.log('isCalibrating', this.props.isCalibrating); 
     return ( 
       <div>
         <header className="header">
           <h2>Spine Saver</h2>
           <section >
-            {/* Can't go to dashboard when not calibrated */}
             <Link to="/home">Dashboard</Link>
           </section>
         </header>
@@ -251,7 +260,6 @@ const mapStateToProps = state => ({
   error: state.slouch.error, 
   pose : state.slouch.pose,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
-  notCalibrated : state.display.notCalibrated,
   calibVal : state.display.calibVal
 }); 
 

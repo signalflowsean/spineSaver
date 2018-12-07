@@ -15,12 +15,19 @@ export class Display extends React.Component {
   
   componentDidMount(){ 
     //CHECKING TO SEE IF THE USER HAS ALREADY CALIBRATED
+    console.log('mounted'); 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
 
   componentDidUpdate(prevProps) { 
-    if(!prevProps.calibVal && this.props.hasCalibrated) { 
-      console.log('Calibration value has changed to:', this.props.calibVal)
+
+    if (!prevProps.isCalibLoading && !this.props.isCalibLoading) { 
+
+      if (this.props.isCalibrated === false) {  
+
+      } else { 
+        
+      }
     }
   }
 
@@ -31,12 +38,11 @@ export class Display extends React.Component {
 
   render(){ 
     console.log('calib loading', this.props.isCalibLoading); 
-    console.log('display loading', this.props.isDisplayLoading); 
-    // console.log('notCalibrated', this.props.notCalibrated); 
-    // console.log('logged hours', this.props.loggedHours); 
-
-    // console.log('loading', this.props.isCalibLoading); 
-    if (this.props.isCalibLoading){ 
+    // console.log('display loading', this.props.isDisplayLoading); 
+    
+    console.log('not calibration', this.props.isCalibrated); 
+ 
+    if (this.props.isCalibLoading || this.props.isDisplayLoading){ 
       return (<p>Loading...</p>); 
     }
 
@@ -49,8 +55,8 @@ export class Display extends React.Component {
       console.log('Current user is not defined'); 
       return (<div>User is not valid</div>); 
     }
-    console.log('not calibrated', this.props.notCalibrated); 
-    if (this.props.notCalibrated && !this.props.isCalibLoading){  
+
+    if (this.props.isCalibrated === false) {  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
@@ -78,20 +84,17 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => {
-  // console.log('mapping state to props');  
-  return { 
+const mapStateToProps = state => ({ 
     currentUser : state.auth.currentUser, 
     name : state.auth.currentUser.fullname, 
     error: state.display.error, 
-    isCalibLoading : state.display.isCalibloading,
+    isCalibLoading : state.display.isCalibLoading,
     isDisplayLoading : state.display.isDisplayLoading, 
     loggedHours : state.display.loggedHours, 
     slouchedHours : state.display.slouchedHours, 
     improvement : state.display.improvement, 
     calibVal : state.display.calibVal, 
-    notCalibrated : state.display.notCalibrated }; 
-
-}; 
+    isCalibrated : state.display.isCalibrated
+}); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 
