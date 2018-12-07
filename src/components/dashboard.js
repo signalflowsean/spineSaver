@@ -24,8 +24,9 @@ export class Display extends React.Component {
   }
 
   render(){ 
- 
-    if (this.props.isCalibLoading || this.props.isDisplayLoading){ 
+
+    //display is loading
+    if (this.props.isCalibLoading){ 
       return (<p>Loading...</p>); 
     }
 

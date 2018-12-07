@@ -79,7 +79,6 @@ export class SlouchSlider extends React.Component{
   
   setScreenShotRef = screenCapHTML => { 
     this.props.dispatch(setScreenShotRef(screenCapHTML)); 
-    
     this.isEverythingLoaded(); 
   };
 
@@ -99,11 +98,9 @@ export class SlouchSlider extends React.Component{
 
   capture = () => {
     const screenShot = this.props.webcam.getScreenshot(); 
-    // console.log('screenShot', screenShot);  
 
     this.props.dispatch(takeScreenShot(screenShot));  
-
-    if (!this.props.isCalibrating || !this.props.hasCalibrated) { 
+    if (this.props.isCalibrating || this.props.hasCalibrated) { 
       this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
         Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
           .then(pose => { 

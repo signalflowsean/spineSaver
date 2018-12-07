@@ -46,8 +46,7 @@ const initialState = {
   loading: '', 
   error: null, 
   pose: null,
-  calibrateButtonCount: 0, 
-  // notCalibrated : null
+  calibrateButtonCount: 0
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -55,7 +54,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {feedback: "Loading...", isLoaded: false}); 
   }
   else if (action.type === POSENET_SUCCESS) {  
-    return Object.assign({}, state, {feedback: 'Posenet Loaded', isPosenetLoaded : true, posenet: action.posenet}); 
+    return Object.assign({}, state, {feedback: 'Loaded', isPosenetLoaded : true, posenet: action.posenet}); 
   }
   else if (action.type === POSENET_ERROR) { 
     return Object.assign({}, state, {error: action.error})
@@ -82,7 +81,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {calibrateButtonCount :0, hasCalibrated : false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
-    return Object.assign({}, state, {feedback : 'Webcam Loaded, Posenet Loading...', isWebcamLoaded : true}); 
+    return Object.assign({}, state, {feedback : 'Loading...', isWebcamLoaded : true}); 
   }
   else if (action.type === SETUP_LOADED) { 
     return Object.assign({}, state, {
@@ -134,6 +133,7 @@ export default function reducer(state = initialState, action){
       calibratedVal = state.tempSlouch; 
       feedback = 'Calibrated'
       hasCalibrated = true; 
+      instructions = 'You calibrated! Click the Dashboard link (may have two click twice)'
       //If we have calibrated then we can zero out the values
       bBoxHeight = 0;  
       bBoxWidth = 0; 
