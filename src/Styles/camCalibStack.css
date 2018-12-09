@@ -36,7 +36,7 @@ img:hover{
   height: 100%; 
 }
 
-input{ 
+.calibrate{ 
   margin-top: 10px; 
   margin-bottom: 10px; 
   height: 30px; 
@@ -44,6 +44,6 @@ input{
   margin-left: auto; 
   margin-right: auto; 
 }
-input:hover{ 
+.calibrate:hover{ 
   background-color: gold; 
 }

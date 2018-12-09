@@ -212,7 +212,7 @@ export class SlouchSlider extends React.Component{
           <div className="feedback">
             <p>{this.props.feedback}</p>
             <p>{this.props.instructions}
-              <input type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+              <input className="calibrate" type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
             </p>
             <p>{this.isSlouching}</p>
             <p>Slouch Amount:  </p>

@@ -53,7 +53,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action){ 
   if (action.type === POSENET_LOADING) { 
-    return Object.assign({}, state, {feedback: "Loading...", isLoaded: false}); 
+    return Object.assign({}, state, { isLoaded: false}); 
   }
   else if (action.type === POSENET_SUCCESS) {  
     return Object.assign({}, state, {isPosenetLoaded : true, posenet: action.posenet}); 
