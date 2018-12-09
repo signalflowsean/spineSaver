@@ -89,7 +89,6 @@ export class SlouchSlider extends React.Component{
       this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
         Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
           .then(pose => { 
-            // console.log('detecting pose'); 
             
             //if we're calibrating draw the bounding box
             if (this.props.isCalibrating) {   
