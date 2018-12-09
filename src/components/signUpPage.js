@@ -16,9 +16,7 @@ export function SignUpPage(props) {
     <div>
       <header>
         <h2>SignUp</h2>
-        {/* <Link className="icon" to="/">
-          <img src="https://image.flaticon.com/icons/svg/25/25694.svg" alt="home"></img>
-        </Link> */}
+   
       </header>
       <SignUpForm className="signup"></SignUpForm>
     </div>

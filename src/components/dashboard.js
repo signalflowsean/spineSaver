@@ -12,19 +12,14 @@ export class Display extends React.Component {
     super(props); 
     this.loggedIn = true; 
   }
-  componentWillUpdate() { 
 
-  }
   componentWillMount() { 
     console.log('mount'); 
     this.props.dispatch(load()); 
     // this.props.isCalibLoading = true; 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
-  componentDidMount(){ 
-    //CHECKING TO SEE IF THE USER HAS ALREADY CALIBRATED
- 
-  }
+
 
   logOut(){ 
     this.props.dispatch(clearAuth()); 
@@ -61,7 +56,9 @@ export class Display extends React.Component {
         <header className="header">
           <h2>Spine Saver</h2>
           <section>
-            <Link to="/settings">Calibrate</Link>
+            <Link className="icon" to="/settings">
+              <img src="https://banner2.kisspng.com/20180211/xje/kisspng-gear-data-icon-ppt-design-gear-icon-5a80761ca95662.7998225215183682846936.jpg" alt="settings"></img>
+            </Link>
           </section>
         </header>
         <main>
