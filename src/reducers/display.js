@@ -7,6 +7,7 @@ import {
   FETCH_CALIBRATION_DATA_SUCCESS_EMPTY, 
   LOAD
 } from '../actions/display.js'; 
+import { TAKE_SCREENSHOT } from '../actions/slouch.js';
 
 const initialState = {
   error: null, 
@@ -22,6 +23,14 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) { 
+  if (action.type === FETCH_CALIBRATION_DATA_LOADING 
+    || action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY 
+    || action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){ 
+      console.log('action.type', action.type); 
+      
+      // console.log('state', action.state); 
+  }
+
   if (action.type === FETCH_DISPLAY_DATA_LOADING) { 
     return Object.assign({}, state, { isDisplayLoading : true }); 
   }
@@ -42,16 +51,15 @@ export default function reducer(state = initialState, action) {
     return Object.assign({}, state, {isCalibLoading : true});
   }
   else if (action.type === FETCH_CALIBRATION_DATA_LOADING) { 
-    // console.log('calib is loading'); 
-    // , isCalibrated : null
+    console.log('calib is loading'); 
     return Object.assign({}, state, { isCalibLoading : true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
-    // console.log('calibration value:', action.calibration); 
+    console.log('calibration value:', action.calibration); 
     return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, isCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
-    // console.log('Getting empty calibration data'); 
+    console.log('Getting empty calibration data'); 
     return Object.assign({}, state, { isCalibLoading: false, isCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 

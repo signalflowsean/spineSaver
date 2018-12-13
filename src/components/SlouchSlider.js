@@ -10,6 +10,11 @@ import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
+/*
+ //i'm using hasCalibrated in slouchslider and dashboard interchangeably
+ //has calibrated when posting not getting!!!
+*/
+
 import {
   handleCalibrateButtonClick,
   setWebCamRef, 
@@ -121,11 +126,9 @@ export class SlouchSlider extends React.Component{
   }
   
   calculateSlouch = (pose) => {
-    
-    const slouch = Math.abs((this.props.calibratedVal / CalculateSlouch(pose))-1); 
-    
+  
+    const slouch = Math.abs((this.props.calibratedVal / CalculateSlouch(pose))-1);   
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-
     this.tempDataContainer.push(slouch); 
 
     //Reached packet size - post to backend
@@ -144,6 +147,7 @@ export class SlouchSlider extends React.Component{
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
+    // console.log('hello?')
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
@@ -155,9 +159,23 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
+  /*
+     //new user logs in
+     //they calibrate
+     //they hit the home button
+
+     //result: page refreshes and stays at /stettings
+     //hit the home again and expected result 
+     //expected: page is redirected to /home
+  */
+
+  /*
+
+  */
+
   componentDidUpdate(prevProps) { 
     if(!prevProps.hasCalibrated && this.props.hasCalibrated) {       
-
+      console.log('calibratedVal', this.props.calibratedVal); 
       const calibrationObj = { 
         id : this.props.currentUser.id, 
         calibrateVal : this.props.calibratedVal
@@ -173,6 +191,7 @@ export class SlouchSlider extends React.Component{
   }
   
   render() {
+    //console.log('where are we!!!???'); 
     // console.log('isCalibrating', this.props.isCalibrating); 
     return ( 
       <div>
@@ -212,7 +231,7 @@ export class SlouchSlider extends React.Component{
           <div className="feedback">
             <p>{this.props.feedback}</p>
             <p>{this.props.instructions}
-              <input className="calibrate" type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+              <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
             </p>
             <p>{this.isSlouching}</p>
             <p>Slouch Amount:  </p>
@@ -260,8 +279,8 @@ const mapStateToProps = state => ({
   error: state.slouch.error, 
   pose : state.slouch.pose,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
-  calibVal : state.display.calibVal, 
-  isCalibrated : state.display.isCalibrated
+  calibVal : state.display.calibVal
+  // isCalibrated : state.display.isCalibrated
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 

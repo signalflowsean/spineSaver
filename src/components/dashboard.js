@@ -32,7 +32,8 @@ export class Display extends React.Component {
     //display is loading
 
     //|| this.props.isDisplayLoading
-    if (this.props.isCalibLoading ){ 
+    if (this.props.isCalibLoading ){
+      // 
       return (<p>Loading...</p>); 
     }
 
@@ -41,11 +42,12 @@ export class Display extends React.Component {
       return (<Redirect to="/"></Redirect>); 
     }
 
+
     if (this.props.currentUser === undefined){ 
       console.log('Current user is not defined'); 
       return (<div>User is not valid</div>); 
     }
-
+    console.log('isCalibrated', this.props.isCalibrated)
     if (this.props.isCalibrated === false) {  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
@@ -76,7 +78,9 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => { 
+  // console.log('isCalibLoading', ); 
+  return {
     currentUser : state.auth.currentUser, 
     name : state.auth.currentUser.fullname, 
     error: state.display.error, 
@@ -87,6 +91,7 @@ const mapStateToProps = state => ({
     improvement : state.display.improvement, 
     calibVal : state.display.calibVal, 
     isCalibrated : state.display.isCalibrated
-}); 
+  }; 
+}; 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

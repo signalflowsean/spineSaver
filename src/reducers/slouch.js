@@ -80,14 +80,15 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
   else if (action.type === RESET_VALUES){ 
-    return Object.assign({}, state, {calibrateButtonCount :0, hasCalibrated : false}); 
+    return Object.assign({}, state, {calibrateButtonCount :0, feedback : 'Loading...', hasCalibrated : false, isLoaded: false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
-    return Object.assign({}, state, {feedback : 'Loading...', isWebcamLoaded : true}); 
+    return Object.assign({}, state, {isWebcamLoaded : true}); 
   }
   else if (action.type === SETUP_LOADED) { 
-    return Object.assign({}, state, {
-      feedback: 'Loaded' , isLoaded: true,  instructions: 'Hit the CALIBRATE button to get started'})
+    console.log('hello?'); 
+    return Object.assign({}, state, { feedback : 'Loaded', isLoaded : true, 
+      instructions: 'Hit CALIBRATE button'}); 
   }
   else if (action.type === SPINE_SAVER_IS_CALIBRATING) { 
     return Object.assign({}, state, {feedback : 'Calibrating...'}); 
@@ -131,9 +132,12 @@ export default function reducer(state = initialState, action){
     else if (state.isCalibrating && state.isLoaded){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
     }
-    
+  
     if (state.calibrateButtonCount >= 1){ 
+      console.log('WE JUST CALIBRATED!!!!!')
+      console.log('tempSlouch', state.tempSlouch); 
       calibratedVal = state.tempSlouch; 
+      console.log('calibrated val reducer', state.calibratedVal); 
       feedback = 'Calibrated'
       hasCalibrated = true; 
       isCalibrated = true; 
