@@ -52,6 +52,8 @@ export class Display extends React.Component {
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
+
+ 
     
     return (
       <div>
