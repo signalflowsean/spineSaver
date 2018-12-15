@@ -200,6 +200,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   const authToken = loadAuthToken(); 
   
   const {id, calibrateVal} = calibrationData; 
+  
 
   fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
     method: 'post', 
@@ -208,6 +209,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   }).then(res => { 
     return res.json(); 
   }).then(calibrationData => { 
+
     console.log('ajax calibration val', calibrateVal); 
     dispatch(calibrationPostingSuccess())
 

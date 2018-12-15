@@ -22,8 +22,10 @@ import {
   CALIBRATION_POSTING_SUCCESS
 } from '../actions/slouch'; 
 
+import { 
+  RESET_VALS_ON_LOG_OUT
+} from '../actions/display'; 
 const initialState = { 
-  calibratedVal : 0, 
   interval : null,
   isSlouching : '', 
   HTMLImage : null, 
@@ -36,7 +38,6 @@ const initialState = {
   bBoxX: 0, 
   bBoxY: 0, 
   isCalibrating: false, 
-  hasCalibrated: false, 
   isLoaded : false,  
   isPosenetLoaded: false, 
   isWebcamLoaded : false,
@@ -47,13 +48,17 @@ const initialState = {
   error: null, 
   pose: null,
   calibrateButtonCount: 0,
-  isCalibrated : false
-  
+  hasCalibValUpdatedThisSession : false
 }; 
 
 export default function reducer(state = initialState, action){ 
   if (action.type === POSENET_LOADING) { 
     return Object.assign({}, state, { isLoaded: false}); 
+  }
+  else if (action.type === RESET_VALS_ON_LOG_OUT){ 
+    console.log('reset vals on log out2')
+    return Object.assign({}, state, {
+      hasCalibValUpdatedThisSession:false}); 
   }
   else if (action.type === POSENET_SUCCESS) {  
     return Object.assign({}, state, {isPosenetLoaded : true, posenet: action.posenet}); 
@@ -80,13 +85,13 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
   else if (action.type === RESET_VALUES){ 
-    return Object.assign({}, state, {calibrateButtonCount :0, feedback : 'Loading...', hasCalibrated : false, isLoaded: false}); 
+    return Object.assign({}, state, {calibrateButtonCount :0, feedback : 'Loading...', isLoaded: false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {isWebcamLoaded : true}); 
   }
   else if (action.type === SETUP_LOADED) { 
-    console.log('hello?'); 
+    // console.log('hello?'); 
     return Object.assign({}, state, { feedback : 'Loaded', isLoaded : true, 
       instructions: 'Hit CALIBRATE button'}); 
   }
@@ -118,12 +123,9 @@ export default function reducer(state = initialState, action){
     let bBoxWidth = state.bBoxWidth; 
     let bBoxHeight = state.bBoxHeight; 
     let tempSlouch = state.tempSlouch; 
-
     let feedback = state.feedback; 
-    let hasCalibrated = state.hasCalibrated; 
     let instructions = state.instructions; 
-    let calibratedVal; 
-    let  isCalibrated = state.isCalibrated;  
+    let hasCalibValUpdatedThisSession = state.hasCalibValUpdatedThisSession; 
 
     if (!state.isCalibrating){ 
       feedback = 'Calibrating...';
@@ -136,11 +138,8 @@ export default function reducer(state = initialState, action){
     if (state.calibrateButtonCount >= 1){ 
       console.log('WE JUST CALIBRATED!!!!!')
       console.log('tempSlouch', state.tempSlouch); 
-      calibratedVal = state.tempSlouch; 
-      console.log('calibrated val reducer', state.calibratedVal); 
       feedback = 'Calibrated'
-      hasCalibrated = true; 
-      isCalibrated = true; 
+      hasCalibValUpdatedThisSession = true; 
       instructions = 'You calibrated! \nClick the Dashboard link (may have two click twice)'
       //If we have calibrated then we can zero out the values
       bBoxHeight = 0;  
@@ -153,10 +152,8 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {
       isCalibrating : !state.isCalibrating,
       feedback, 
-      isCalibrated,
-      hasCalibrated, 
+      hasCalibValUpdatedThisSession,
       instructions,
-      calibratedVal,
       bBoxHeight, 
       bBoxWidth, 
       tempSlouch,

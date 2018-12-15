@@ -4,57 +4,45 @@ import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './SlouchSlider'; 
-import {fetchCalibrationData, load} from '../actions/display'; 
+import {fetchCalibrationData, resetValsOnLogOut} from '../actions/display'; 
 import { clearAuth } from '../actions/auth';
 
 export class Display extends React.Component { 
-  constructor(props){ 
-    super(props); 
-    this.loggedIn = true; 
-  }
+  // constructor(props){ 
+  //   super(props); 
+  // }
 
   componentWillMount() { 
-    console.log('mount'); 
-    this.props.dispatch(load()); 
-    // this.props.isCalibLoading = true; 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
 
+  componentDidUpdate(prevProps) { 
+
+    if(prevProps.loggedIn && !this.props.loggedIn) {    
+      console.log('hasUserEverCalibrated', this.props.hasUserEverCalibrated, 
+     'hasCalibValUpdatedThisSession', this.props.hasCalibValUpdatedThisSession); 
+     console.log(this.props.loggedIn)
+      // console.log('hi')   
+      this.props.dispatch(clearAuth()); 
+    }
+  }
 
   logOut(){ 
-    this.props.dispatch(clearAuth()); 
-    this.loggedIn = false; 
+  
+    this.props.dispatch(resetValsOnLogOut()); 
   }
 
   render(){ 
-
-    console.log('isCalibLoading', this.props.isCalibLoading); 
-    //display is loading
-
-    //|| this.props.isDisplayLoading
     if (this.props.isCalibLoading ){
-      // 
+      // console.log('are we ever loading?'); 
       return (<p>Loading...</p>); 
     }
-
-    if (this.loggedIn === false){
-      console.log('Not logged in, can\'t be here'); 
-      return (<Redirect to="/"></Redirect>); 
-    }
-
-
-    if (this.props.currentUser === undefined){ 
-      console.log('Current user is not defined'); 
-      return (<div>User is not valid</div>); 
-    }
-    console.log('isCalibrated', this.props.isCalibrated)
-    if (this.props.isCalibrated === false) {  
+    
+    if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
       console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
-
- 
-    
+   
     return (
       <div>
         <header className="header">
@@ -80,9 +68,7 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => { 
-  // console.log('isCalibLoading', ); 
-  return {
+const mapStateToProps = state => ({ 
     currentUser : state.auth.currentUser, 
     name : state.auth.currentUser.fullname, 
     error: state.display.error, 
@@ -92,8 +78,9 @@ const mapStateToProps = state => {
     slouchedHours : state.display.slouchedHours, 
     improvement : state.display.improvement, 
     calibVal : state.display.calibVal, 
-    isCalibrated : state.display.isCalibrated
-  }; 
-}; 
+    hasUserEverCalibrated : state.display.hasUserEverCalibrated, 
+    loggedIn : state.display.loggedIn, 
+    hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession, 
+}); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

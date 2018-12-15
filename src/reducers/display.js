@@ -5,9 +5,8 @@ import {
   FETCH_DISPLAY_DATA_ERROR, 
   FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD, 
   FETCH_CALIBRATION_DATA_SUCCESS_EMPTY, 
-  LOAD
+  RESET_VALS_ON_LOG_OUT
 } from '../actions/display.js'; 
-import { TAKE_SCREENSHOT } from '../actions/slouch.js';
 
 const initialState = {
   error: null, 
@@ -18,18 +17,12 @@ const initialState = {
   improvement : 0,
   calibVal: null, 
   isDisplayLoading : true, 
-  isCalibLoading : true,
-  isCalibrated : null
+  isCalibLoading : true, 
+  hasUserEverCalibrated : false, 
+  loggedIn : false, 
 };
 
 export default function reducer(state = initialState, action) { 
-  if (action.type === FETCH_CALIBRATION_DATA_LOADING 
-    || action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY 
-    || action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){ 
-      console.log('action.type', action.type); 
-      
-      // console.log('state', action.state); 
-  }
 
   if (action.type === FETCH_DISPLAY_DATA_LOADING) { 
     return Object.assign({}, state, { isDisplayLoading : true }); 
@@ -43,24 +36,25 @@ export default function reducer(state = initialState, action) {
       improvement : action.data.improvement
     })
   }
+  else if (action.type === RESET_VALS_ON_LOG_OUT){ 
+    console.log('reset vals on log out')
+    return Object.assign({}, state, {hasUserEverCalibrated : false, 
+      hasCalibValUpdatedThisSession:false, loggedIn: false}); 
+  }
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
      return Object.assign({}, state, { isDisplayLoading : false, error: action.error}); 
   }
-  else if (action.type === LOAD) { 
-    console.log('LOAD!!!!!')
-    return Object.assign({}, state, {isCalibLoading : true});
-  }
   else if (action.type === FETCH_CALIBRATION_DATA_LOADING) { 
     console.log('calib is loading'); 
-    return Object.assign({}, state, { isCalibLoading : true}); 
+    return Object.assign({}, state, { isCalibLoading : true, loggedIn : true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
     console.log('calibration value:', action.calibration); 
-    return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, isCalibrated: true}); 
+    return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, hasUserEverCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
     console.log('Getting empty calibration data'); 
-    return Object.assign({}, state, { isCalibLoading: false, isCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
+    return Object.assign({}, state, { isCalibLoading: false, hasUserEverCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 
 }

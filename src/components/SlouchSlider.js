@@ -10,10 +10,6 @@ import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
-/*
- //i'm using hasCalibrated in slouchslider and dashboard interchangeably
- //has calibrated when posting not getting!!!
-*/
 
 import {
   handleCalibrateButtonClick,
@@ -42,7 +38,6 @@ export class SlouchSlider extends React.Component{
   }
 
   componentDidMount(){
-    //NOTE RENAME THIS TO RESET OR SOMEHTING
     this.props.dispatch(resetValues()); 
     
     posenet.load()
@@ -77,7 +72,6 @@ export class SlouchSlider extends React.Component{
   isEverythingLoaded = () => { 
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
       && !this.captureInterval && this.props.screenCapHTML !== null) { 
-      console.log('everything is loaded');
       this.props.dispatch(setupLoaded()); 
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
@@ -142,6 +136,7 @@ export class SlouchSlider extends React.Component{
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
       }
+      //is this in the right spot
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
   } 
@@ -159,27 +154,18 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
-  /*
-     //new user logs in
-     //they calibrate
-     //they hit the home button
-
-     //result: page refreshes and stays at /stettings
-     //hit the home again and expected result 
-     //expected: page is redirected to /home
-  */
-
-  /*
-
-  */
-
   componentDidUpdate(prevProps) { 
-    if(!prevProps.hasCalibrated && this.props.hasCalibrated) {       
-      console.log('calibratedVal', this.props.calibratedVal); 
+    //IF WE JUST CALIBRATED GET THE CALIBRATION VALUE AND POST IT TO THE BACKEND
+    if(prevProps.feedback === 'Calibrating...' && this.props.feedback === 'Calibrated') { 
+
       const calibrationObj = { 
         id : this.props.currentUser.id, 
-        calibrateVal : this.props.calibratedVal
+        calibrateVal : this.props.tempSlouch
       }; 
+
+      if (!this.props.calibratedVal) { 
+        console.log('GETTING THE CALIBRATION DATA FAILED')
+      }
 
       this.props.dispatch(postCalibrationData(calibrationObj));
     }
@@ -191,8 +177,6 @@ export class SlouchSlider extends React.Component{
   }
   
   render() {
-    //console.log('where are we!!!???'); 
-    // console.log('isCalibrating', this.props.isCalibrating); 
     return ( 
       <div>
         <header className="header">
@@ -243,7 +227,7 @@ export class SlouchSlider extends React.Component{
                 min="0" 
                 max="1"
                 onChange={() => console.log('')}
-                >
+              >
               </input>
           </div>
           <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
@@ -255,7 +239,6 @@ export class SlouchSlider extends React.Component{
 
 const mapStateToProps = state => ({ 
   currentUser : state.auth.currentUser, 
-  calibratedVal : state.slouch.calibratedVal, 
   interval : state.slouch.interval,
   isSlouching : state.slouch.isSlouching, 
   HTMLImage : state.slouch.HTMLImage, 
@@ -268,7 +251,6 @@ const mapStateToProps = state => ({
   bBoxX: state.slouch.bBoxX, 
   bBoxY: state.slouch.bBoxY, 
   isCalibrating: state.slouch.isCalibrating, 
-  hasCalibrated: state.slouch.hasCalibrated,
   isLoaded : state.slouch.isLoaded, 
   isWebcamLoaded : state.slouch.isWebcamLoaded, 
   isPosenetLoaded : state.slouch.isPosenetLoaded,  
@@ -279,8 +261,8 @@ const mapStateToProps = state => ({
   error: state.slouch.error, 
   pose : state.slouch.pose,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
-  calibVal : state.display.calibVal
-  // isCalibrated : state.display.isCalibrated
+  hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession
+
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 
