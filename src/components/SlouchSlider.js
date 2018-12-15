@@ -166,7 +166,8 @@ export class SlouchSlider extends React.Component{
 
   componentWillUnmount(){ 
     if (!this.captureInterval) { return; }
-    clearInterval(this.captureInterval); 
+      console.log('hi')
+      clearInterval(this.captureInterval); 
   }
   
   render() {
