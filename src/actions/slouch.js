@@ -181,10 +181,8 @@ export const postSlouchData = (slouchDataObj) => (dispatch) => {
     headers: {'Content-Type':'application/json', Authorization: `Bearer ${authToken}`},
     body: JSON.stringify({slouch}),  
   }).then(res => {
-    //console.log('post slouch', res);
     return res.json(); 
   }).then(slouchData => {  
-    //console.log('Slouch Data: ', JSON.stringify(slouchData)); 
     dispatch(postSlouchDataSuccess(slouchData)); 
   }).catch(error => { 
     console.log('Error:', error);
@@ -198,10 +196,8 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   dispatch(calibrationPotsingLoading()); 
  
   const authToken = loadAuthToken(); 
-  
   const {id, calibrateVal} = calibrationData; 
   
-
   fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
     method: 'post', 
     headers: {'Content-Type': 'application/json',  Authorization: `Bearer ${authToken}`}, 
@@ -209,7 +205,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   }).then(res => { 
     return res.json(); 
   }).then(calibrationData => { 
-
+    //THIS NEEDS TO BE LOOKED AT
     console.log('ajax calibration val', calibrateVal); 
     dispatch(calibrationPostingSuccess())
 

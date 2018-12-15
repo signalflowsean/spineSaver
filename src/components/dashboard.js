@@ -8,38 +8,28 @@ import {fetchCalibrationData, resetValsOnLogOut} from '../actions/display';
 import { clearAuth } from '../actions/auth';
 
 export class Display extends React.Component { 
-  // constructor(props){ 
-  //   super(props); 
-  // }
 
   componentWillMount() { 
     this.props.dispatch(fetchCalibrationData(this.props.currentUser.id)); 
   }
 
   componentDidUpdate(prevProps) { 
-
+    //NO LONGER LOGGED IN: CLEAR AUTH
     if(prevProps.loggedIn && !this.props.loggedIn) {    
-      console.log('hasUserEverCalibrated', this.props.hasUserEverCalibrated, 
-     'hasCalibValUpdatedThisSession', this.props.hasCalibValUpdatedThisSession); 
-     console.log(this.props.loggedIn)
-      // console.log('hi')   
       this.props.dispatch(clearAuth()); 
     }
   }
 
   logOut(){ 
-  
     this.props.dispatch(resetValsOnLogOut()); 
   }
 
   render(){ 
     if (this.props.isCalibLoading ){
-      // console.log('are we ever loading?'); 
       return (<p>Loading...</p>); 
     }
     
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
-      console.log('Not calibrated, redirecting back'); 
       return (<Redirect to="/settings" />); 
     }
    

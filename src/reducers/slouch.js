@@ -25,6 +25,7 @@ import {
 import { 
   RESET_VALS_ON_LOG_OUT
 } from '../actions/display'; 
+
 const initialState = { 
   interval : null,
   isSlouching : '', 
@@ -56,7 +57,6 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, { isLoaded: false}); 
   }
   else if (action.type === RESET_VALS_ON_LOG_OUT){ 
-    console.log('reset vals on log out2')
     return Object.assign({}, state, {
       hasCalibValUpdatedThisSession:false}); 
   }
@@ -90,8 +90,7 @@ export default function reducer(state = initialState, action){
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {isWebcamLoaded : true}); 
   }
-  else if (action.type === SETUP_LOADED) { 
-    // console.log('hello?'); 
+  else if (action.type === SETUP_LOADED) {  
     return Object.assign({}, state, { feedback : 'Loaded', isLoaded : true, 
       instructions: 'Hit CALIBRATE button'}); 
   }
@@ -102,12 +101,10 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
-    console.log('posted calibration data');
     //SOMETHING SHOULD GO HERE 
     return Object.assign({}, state, {}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
-    // console.log('reducer', action.boundingBox); 
     return Object.assign({}, state, {
       bBoxHeight: action.boundingBox.height, 
       bBoxWidth: action.boundingBox.width, 
@@ -136,12 +133,9 @@ export default function reducer(state = initialState, action){
     }
   
     if (state.calibrateButtonCount >= 1){ 
-      console.log('WE JUST CALIBRATED!!!!!')
-      console.log('tempSlouch', state.tempSlouch); 
       feedback = 'Calibrated'
       hasCalibValUpdatedThisSession = true; 
-      instructions = 'You calibrated! \nClick the Dashboard link (may have two click twice)'
-      //If we have calibrated then we can zero out the values
+      instructions = 'You calibrated! Click the Dashboard link!'
       bBoxHeight = 0;  
       bBoxWidth = 0; 
       bBoxY = 0;
