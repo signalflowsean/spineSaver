@@ -123,7 +123,6 @@ export default function reducer(state = initialState, action){
     let bBoxY = state.bBoxY; 
     let bBoxWidth = state.bBoxWidth; 
     let bBoxHeight = state.bBoxHeight; 
-    let tempSlouch = state.tempSlouch; 
     let feedback = state.feedback; 
     let instructions = state.instructions; 
     let hasCalibValUpdatedThisSession = state.hasCalibValUpdatedThisSession; 
@@ -135,8 +134,8 @@ export default function reducer(state = initialState, action){
     else if (state.isCalibrating && state.isLoaded){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
     }
-  
-    if (state.isCalibrating){ 
+
+    if (state.isCalibrating) { 
       feedback = 'Calibrated'
       hasCalibValUpdatedThisSession = true; 
       instructions = 'You calibrated! Click the Dashboard link!'
@@ -144,7 +143,6 @@ export default function reducer(state = initialState, action){
       bBoxWidth = 0; 
       bBoxY = 0;
       bBoxX = 0;  
-      tempSlouch = 0; 
     }
       
     return Object.assign({}, state, {
@@ -154,7 +152,6 @@ export default function reducer(state = initialState, action){
       instructions,
       bBoxHeight, 
       bBoxWidth, 
-      tempSlouch,
       bBoxY, 
       bBoxX, 
       calibrateButtonCount : (state.calibrateButtonCount + 1) 

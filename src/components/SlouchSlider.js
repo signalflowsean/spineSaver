@@ -154,6 +154,8 @@ export class SlouchSlider extends React.Component{
       tempSlouch : (this.props.bBoxWidth / this.props.bBoxHeight)
     };
 
+    console.log('onDrawBoundingBox', this.props.tempSlouch); 
+
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
