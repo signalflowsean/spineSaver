@@ -48,6 +48,19 @@ export class Display extends React.Component {
           <p>You've logged {this.props.loggedHours} minutes.</p>
           <p>You've slouched for {this.props.slouchedHours} minutes.</p>
           <p>This is a {this.props.improvement}% improvement.</p>
+          
+          {/* <p>{this.isSlouching}</p> */}
+          <p>Slouch Amount:  </p>
+          <input 
+            type="range" 
+            name="slouchSlider" 
+            value={this.props.slouch} 
+            step=".01" 
+            min="0" 
+            max="1"
+            onChange={() => console.log('')} >
+          </input>
+          
           <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
           <div className="slouchSlider">
             <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
@@ -68,9 +81,10 @@ const mapStateToProps = state => ({
     slouchedHours : state.display.slouchedHours, 
     improvement : state.display.improvement, 
     calibVal : state.display.calibVal, 
-    hasUserEverCalibrated : state.display.hasUserEverCalibrated, 
     loggedIn : state.display.loggedIn, 
+    hasUserEverCalibrated : state.display.hasUserEverCalibrated, 
     hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession, 
-}); 
+    slouch : state.slouch.slouch
+  }); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

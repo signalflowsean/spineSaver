@@ -82,12 +82,6 @@ export const takeScreenShot = capture => ({
   capture
 });
 
-export const NEW_POSE_DATA_POINT  = 'NEW_POSE_DATA_POINT'; 
-export const newPoseDataPoint = pose => ({ 
-  type: NEW_POSE_DATA_POINT, 
-  pose
-}); 
-
 export const NEW_SLOUCH_DATA_POINT = 'NEW_SLOUCH_DATA_POINT'; 
 export const newSlouchDataPoint = slouch => ({ 
   type: NEW_SLOUCH_DATA_POINT, 

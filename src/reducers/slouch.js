@@ -16,9 +16,9 @@ import {
   SETUP_LOADED, 
   WEBCAM_LOADED, 
   HANDLE_CALIBRATE_BUTTON_CLICK,
-  NEW_POSE_DATA_POINT, 
   NEW_SLOUCH_DATA_POINT, 
   SLOUCH_CALCULATION_SUCCESS, 
+  CALIBRATION_POSTING_LOADING, 
   CALIBRATION_POSTING_SUCCESS, 
   UPDATE_SLOUCH_BEHAVIOR
 } from '../actions/slouch'; 
@@ -50,7 +50,8 @@ const initialState = {
   error: null, 
   pose: null,
   calibrateButtonCount: 0,
-  hasCalibValUpdatedThisSession : false
+  hasCalibValUpdatedThisSession : false, 
+  isCalibrationPosted : false
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -89,7 +90,8 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
   else if (action.type === RESET_VALUES){ 
-    return Object.assign({}, state, {calibrateButtonCount :0, isLoaded: false, feedback :'Loading...'}); 
+    return Object.assign({}, state, {calibrateButtonCount :0, 
+      isLoaded: false, feedback :'Loading...', isCalibrationPosted : false}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {isWebcamLoaded : true}); 
@@ -105,8 +107,10 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 
-    //SOMETHING SHOULD GO HERE 
-    return Object.assign({}, state, {}); 
+    return Object.assign({}, state, {isCalibrationPosted:true}); 
+  }
+  else if (action.type === CALIBRATION_POSTING_LOADING) { 
+    return Object.assign({}, state, {isCalibrationPosted:false}); 
   }
   else if (action.type === UPDATE_BOUNDING_BOX) {
     return Object.assign({}, state, {
@@ -156,9 +160,6 @@ export default function reducer(state = initialState, action){
       bBoxX, 
       calibrateButtonCount : (state.calibrateButtonCount + 1) 
     }); 
-  }
-  else if (action.type === NEW_POSE_DATA_POINT) { 
-    return Object.assign({}, state, {pose : action.pose}); 
   }
   else if (action.type === SLOUCH_CALCULATION_SUCCESS) { 
     return Object.assign({}, state); 

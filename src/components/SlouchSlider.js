@@ -3,7 +3,7 @@ import Webcam from 'react-webcam';
 import * as posenet from '@tensorflow-models/posenet';  
 import { Stage, Layer, Rect } from 'react-konva';
 import { connect } from 'react-redux'; 
-import { Link } from 'react-router-dom'; 
+import { Redirect } from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import {CalculateSlouch} from '../Utils/pose'; 
 import {fetchDisplayData} from '../actions/display';
@@ -15,7 +15,6 @@ import {
   handleCalibrateButtonClick,
   setWebCamRef, 
   setScreenShotRef, 
-  newPoseDataPoint, 
   newSlouchDataPoint,
   postSlouchData, 
   posenetSuccess, 
@@ -30,19 +29,12 @@ import {
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
-  constructor(props){ 
-    super(props); 
-
-    //VARIABLES WHERE STATE IS NOT SUPER NESSESARY
-    this.tempDataContainer = []; 
-  }
 
   componentWillMount() { 
     this.props.dispatch(resetValues()); 
   }
 
   componentDidMount(){
-    
     posenet.load()
       .then(posenet => {
         this.props.dispatch(posenetSuccess(posenet)); 
@@ -87,14 +79,15 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(takeScreenShot(screenShot));  
 
     //If we're calibrated or we have calibrated find pose
-    if (this.props.isCalibrating || this.props.hasCalibrated || this.props.isCalibrated) { 
+    if (this.props.hasCalibValUpdatedThisSession|| this.props.hasUserEverCalibrated) { 
 
       this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
         Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
           .then(pose => { 
-            
+            // console.log('estimating pose'); 
             //if we're calibrating draw the bounding box
-            if (this.props.isCalibrating) {   
+            if (this.props.isCalibrating) { 
+              console.log('drawing boudningBox')  
               this.drawBoundingBox(  
                 pose.keypoints[1].position, 
                 pose.keypoints[2].position, 
@@ -102,10 +95,8 @@ export class SlouchSlider extends React.Component{
                 pose.keypoints[6].position);  
             }
             //has calibrated on the settings page
-            else if (this.props.hasCalibrated) {
-              this.props.dispatch(newPoseDataPoint(pose));      
+            else if (!this.props.isCalibrating) { 
               this.calculateSlouch(pose); 
-              this.alert(); 
             }
           })
           .catch(error => { 
@@ -123,9 +114,10 @@ export class SlouchSlider extends React.Component{
       }
   } 
   
-  calculateSlouch = (pose) => {
+  calculateSlouch = pose => {
+    const slouch = Math.abs((this.props.calibValBeckEnd / CalculateSlouch(pose))-1);   
   
-    const slouch = Math.abs((this.props.calibratedVal / CalculateSlouch(pose))-1);   
+    //DO THIS IN ONE OPERATION
     this.props.dispatch(newSlouchDataPoint(slouch)); 
     this.tempDataContainer.push(slouch); 
 
@@ -143,6 +135,8 @@ export class SlouchSlider extends React.Component{
       //is this in the right spot
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
+
+    this.alert(); 
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
@@ -176,14 +170,19 @@ export class SlouchSlider extends React.Component{
   }
   
   render() {
+
+    if (this.props.isCalibrationPosted){ 
+      return <Redirect to="/home"></Redirect>; 
+    }
+
     return ( 
       <div>
         <header className="header">
           <h2>Spine Saver</h2>
           <section >
-            <Link className="icon" to="/home">
+            {/* <Link className="icon" to="/home">
               <img src="https://image.flaticon.com/icons/svg/25/25694.svg" alt="dashboard"></img>
-            </Link>
+            </Link> */}
           </section>
         </header>
 
@@ -222,18 +221,6 @@ export class SlouchSlider extends React.Component{
             <p>{this.props.instructions}
               <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
             </p>
-            <p>{this.isSlouching}</p>
-            <p>Slouch Amount:  </p>
-              <input 
-                type="range" 
-                name="slouchSlider" 
-                value={this.props.slouch} 
-                step=".01" 
-                min="0" 
-                max="1"
-                onChange={() => console.log('')}
-              >
-              </input>
           </div>
           {/* END */}
           <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
@@ -266,9 +253,10 @@ const mapStateToProps = state => ({
   loading: state.slouch.loading, 
   error: state.slouch.error, 
   pose : state.slouch.pose,
+  isCalibrationPosted : state.slouch.isCalibrationPosted,
   calibrateButtonCount : state.slouch.calibrateButtonCount, 
-  hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession
-
+  hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession,
+  hasUserEverCalibrated : state.display.hasUserEverCalibrated
 }); 
 
 export default requiresLogin()(connect(mapStateToProps)(SlouchSlider)); 
