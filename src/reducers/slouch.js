@@ -19,7 +19,8 @@ import {
   NEW_POSE_DATA_POINT, 
   NEW_SLOUCH_DATA_POINT, 
   SLOUCH_CALCULATION_SUCCESS, 
-  CALIBRATION_POSTING_SUCCESS
+  CALIBRATION_POSTING_SUCCESS, 
+  UPDATE_SLOUCH_BEHAVIOR
 } from '../actions/slouch'; 
 
 import { 
@@ -55,6 +56,9 @@ const initialState = {
 export default function reducer(state = initialState, action){ 
   if (action.type === POSENET_LOADING) { 
     return Object.assign({}, state, { isLoaded: false}); 
+  }
+  else if (action.type === UPDATE_SLOUCH_BEHAVIOR) { 
+    return Object.assign({}, state, { instructions: action.behavior }); 
   }
   else if (action.type === RESET_VALS_ON_LOG_OUT){ 
     return Object.assign({}, state, {
@@ -126,13 +130,13 @@ export default function reducer(state = initialState, action){
 
     if (!state.isCalibrating){ 
       feedback = 'Calibrating...';
-      instructions = 'Sit up straight. \nThen click the STOP CALIBRATING button.'
+      instructions = 'Sit up straight. Then click the STOP CALIBRATING button.'
     }
     else if (state.isCalibrating && state.isLoaded){ 
       instructions = 'Hit the CALIBRATE button to get started'; 
     }
   
-    if (state.calibrateButtonCount >= 1){ 
+    if (state.isCalibrating){ 
       feedback = 'Calibrated'
       hasCalibValUpdatedThisSession = true; 
       instructions = 'You calibrated! Click the Dashboard link!'

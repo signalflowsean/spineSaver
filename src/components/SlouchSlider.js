@@ -25,7 +25,8 @@ import {
   takeScreenShot, 
   setupLoaded, 
   postCalibrationData,
-  resetValues
+  resetValues, 
+  updateSlouchBehavior
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
@@ -34,7 +35,6 @@ export class SlouchSlider extends React.Component{
 
     //VARIABLES WHERE STATE IS NOT SUPER NESSESARY
     this.tempDataContainer = []; 
-    this.isSlouching = ''; 
   }
 
   componentWillMount() { 
@@ -116,12 +116,12 @@ export class SlouchSlider extends React.Component{
 
   alert(){ 
       if (this.props.slouch > Constants.threshold ){ 
-        this.isSlouching = 'Sit up straight!'
+        this.props.dispatch(updateSlouchBehavior('Sit up straight!')); 
       }
       else {
-        this.isSlouching = 'Great job sitting!'
+        this.props.dispatch(updateSlouchBehavior('Good job sitting')); 
       }
-  }
+  } 
   
   calculateSlouch = (pose) => {
   

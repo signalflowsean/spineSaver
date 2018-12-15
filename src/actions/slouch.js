@@ -94,20 +94,11 @@ export const newSlouchDataPoint = slouch => ({
   slouch
 }); 
 
-export const SHOW_SLOUCH_REPRIMAND = 'SHOW_SLOUCH_REPRIMAND'; 
-export const showSlouchReprimand = () => ({ 
-  type: SHOW_SLOUCH_REPRIMAND
+export const UPDATE_SLOUCH_BEHAVIOR = 'UPDATE_SLOUCH_BEHAVIOR'; 
+export const updateSlouchBehavior = behavior => ({ 
+  type: UPDATE_SLOUCH_BEHAVIOR, 
+  behavior
 });
-
-export const SHOW_SLOUCH_COMPLIMENT = 'SHOW_SLOUCH_COMPLIMENT'
-export const showSlouchCompliment = () => ({ 
-  type: SHOW_SLOUCH_COMPLIMENT
-}); 
-
-export const SPINE_SAVER_HAS_CALIBRATED = 'SPINE_SAVER_HAS_CALIBRATED'; 
-export const spineSaverHasCalibrated = () => ({ 
-  type: SPINE_SAVER_HAS_CALIBRATED
-}); 
 
 export const SPINE_SAVER_IS_CALIBRATING = 'SPINE_SAVER_IS_CALIBRATING'; 
 export const spineSaverIsCalibrating = () => ({ 
