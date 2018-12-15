@@ -154,8 +154,6 @@ export class SlouchSlider extends React.Component{
       tempSlouch : (this.props.bBoxWidth / this.props.bBoxHeight)
     };
 
-    console.log('onDrawBoundingBox', this.props.tempSlouch); 
-
     this.props.dispatch(updateBoundingBox(boundingBox)); 
   }
 
@@ -167,10 +165,6 @@ export class SlouchSlider extends React.Component{
         id : this.props.currentUser.id, 
         calibrateVal : this.props.tempSlouch
       }; 
-
-      if (!this.props.calibratedVal) { 
-        console.log('GETTING THE CALIBRATION DATA FAILED')
-      }
 
       this.props.dispatch(postCalibrationData(calibrationObj));
     }

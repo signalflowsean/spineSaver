@@ -183,7 +183,6 @@ export const postSlouchData = (slouchDataObj) => (dispatch) => {
 } 
 
 export const postCalibrationData = (calibrationData) => (dispatch) => { 
-  console.log('Adding calibration data'); 
   dispatch(calibrationPotsingLoading()); 
  
   const authToken = loadAuthToken(); 
@@ -196,10 +195,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   }).then(res => { 
     return res.json(); 
   }).then(calibrationData => { 
-    //THIS NEEDS TO BE LOOKED AT
-    console.log('ajax calibration val', calibrateVal); 
     dispatch(calibrationPostingSuccess())
-
   }).catch(error => { 
     dispatch(calibrationPostingError())
     console.error('Error post calibration data to backend', error); 
