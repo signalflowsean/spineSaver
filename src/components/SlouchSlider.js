@@ -37,8 +37,11 @@ export class SlouchSlider extends React.Component{
     this.isSlouching = ''; 
   }
 
-  componentDidMount(){
+  componentWillMount() { 
     this.props.dispatch(resetValues()); 
+  }
+
+  componentDidMount(){
     
     posenet.load()
       .then(posenet => {
@@ -72,6 +75,7 @@ export class SlouchSlider extends React.Component{
   isEverythingLoaded = () => { 
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
       && !this.captureInterval && this.props.screenCapHTML !== null) { 
+      console.log('loaded')
       this.props.dispatch(setupLoaded()); 
       this.captureInterval = setInterval(
       () => this.capture(), Constants.frameRate); 
@@ -186,7 +190,10 @@ export class SlouchSlider extends React.Component{
             </Link>
           </section>
         </header>
+
+      
         <main>
+          {/* MAKE OWN COMPONENT */}
           <Stage 
             className={'calibration-stage'} 
             width={Constants.width} 
@@ -211,6 +218,9 @@ export class SlouchSlider extends React.Component{
             onUserMedia={() => this.onWebcamLoaded()}
             ref={this.setWebcamRef}
           />
+          {/* END */}
+
+          {/* MAKE OWN COMPONENT */}
           <div className="feedback">
             <p>{this.props.feedback}</p>
             <p>{this.props.instructions}
@@ -229,6 +239,7 @@ export class SlouchSlider extends React.Component{
               >
               </input>
           </div>
+          {/* END */}
           <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
         </main>
       </div>

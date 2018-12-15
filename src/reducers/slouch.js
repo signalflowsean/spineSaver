@@ -85,7 +85,7 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
   }
   else if (action.type === RESET_VALUES){ 
-    return Object.assign({}, state, {calibrateButtonCount :0, feedback : 'Loading...', isLoaded: false}); 
+    return Object.assign({}, state, {calibrateButtonCount :0, isLoaded: false, feedback :'Loading...'}); 
   }
   else if (action.type === WEBCAM_LOADED) { 
     return Object.assign({}, state, {isWebcamLoaded : true}); 
