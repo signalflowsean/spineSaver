@@ -5,8 +5,8 @@ import {
   POSENET_SUCCESS, 
   POSENET_ERROR,
   POST_SLOUCH_DATA_ERROR, 
-  CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL,
-  SET_SCREENSHOT_FRAME_RATE_INTERVAL,
+  // CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL,
+  // SET_SCREENSHOT_FRAME_RATE_INTERVAL,
   SET_WEB_CAM_REF, 
   SET_SCREENSHOT_REF,
   TAKE_SCREENSHOT,
@@ -28,7 +28,6 @@ import {
 } from '../actions/display'; 
 
 const initialState = { 
-  interval : null,
   isSlouching : '', 
   HTMLImage : null, 
   screenCap : null, 
@@ -51,7 +50,8 @@ const initialState = {
   pose: null,
   calibrateButtonCount: 0,
   hasCalibValUpdatedThisSession : false, 
-  isCalibrationPosted : false
+  isCalibrationPosted : false, 
+  slouchContainer : []
 }; 
 
 export default function reducer(state = initialState, action){ 
@@ -83,12 +83,12 @@ export default function reducer(state = initialState, action){
   else if (action.type === POST_SLOUCH_DATA_ERROR){ 
     return Object.assign({}, state, {error : action.error});
   }
-  else if (action.type === CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL){ 
-    return Object.assign({}, state, {interval: clearInterval(state.interval)}); 
-  }
-  else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
-    return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
-  }
+  // else if (action.type === CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL){ 
+  //   return Object.assign({}, state, {interval: clearInterval(state.interval)}); 
+  // }
+  // else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
+  //   return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
+  // }
   else if (action.type === RESET_VALUES){ 
     return Object.assign({}, state, {calibrateButtonCount :0, 
       isLoaded: false, feedback :'Loading...', isCalibrationPosted : false}); 
@@ -103,7 +103,8 @@ export default function reducer(state = initialState, action){
   else if (action.type === SPINE_SAVER_IS_CALIBRATING) { 
     return Object.assign({}, state, {feedback : 'Calibrating...'}); 
   }
-  else if (action.type === NEW_SLOUCH_DATA_POINT) { 
+  else if (action.type === NEW_SLOUCH_DATA_POINT) {
+    //add a new slouch item to container 
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 

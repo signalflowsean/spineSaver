@@ -10,6 +10,12 @@ import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
+/*
+  user logs in -> sets interval
+  component unmounts -> clear interval
+
+
+*/
 
 import {
   handleCalibrateButtonClick,
@@ -52,7 +58,13 @@ export class SlouchSlider extends React.Component{
   }
 
   setWebcamRef = webcam => { 
+    if (!webcam){
+      console.log('getting a null value for webcam');  
+      return; 
+    }
+    console.log('webcam', webcam)
     this.props.dispatch(setWebCamRef(webcam)); 
+    this.isEverythingLoaded(); 
   };
   
   setScreenShotRef = screenCapHTML => { 
@@ -64,37 +76,39 @@ export class SlouchSlider extends React.Component{
     this.props.dispatch(handleCalibrateButtonClick()); 
   } 
 
-  isEverythingLoaded = () => { 
+  isEverythingLoaded = () => {
+
+    console.log('posenetLoaded', this.props.isPosenetLoaded, 'isWebcamLoaded', this.props.isWebcamLoaded, 
+    'captureInterval',this.captureInterval, 'screenCapHTML', this.props.HTMLImage ); 
+
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
-      && !this.captureInterval && this.props.screenCapHTML !== null) { 
-      console.log('loaded')
+      && !this.captureInterval && this.props.HTMLImage !== null) { 
+      console.log('is everything loaded'); 
       this.props.dispatch(setupLoaded()); 
+
+
       this.captureInterval = setInterval(
-      () => this.capture(), Constants.frameRate); 
+        () => this.capture(), Constants.frameRate); 
     }
   }
 
   capture = () => {
+    // console.log('webcam', this.props.webcam); 
     const screenShot = this.props.webcam.getScreenshot(); 
     this.props.dispatch(takeScreenShot(screenShot));  
 
     //If we're calibrated or we have calibrated find pose
-    if (this.props.hasCalibValUpdatedThisSession|| this.props.hasUserEverCalibrated) { 
-
+    if (this.props.hasCalibValUpdatedThisSession|| this.props.hasUserEverCalibrated) {
       this.props.posenet.estimateSinglePose(this.props.HTMLImage, 
         Constants.imageScaleFactor, Constants.flipHorizontal, Constants.outputStride)
           .then(pose => { 
-            // console.log('estimating pose'); 
-            //if we're calibrating draw the bounding box
             if (this.props.isCalibrating) { 
-              console.log('drawing boudningBox')  
               this.drawBoundingBox(  
                 pose.keypoints[1].position, 
                 pose.keypoints[2].position, 
                 pose.keypoints[5].position, 
                 pose.keypoints[6].position);  
             }
-            //has calibrated on the settings page
             else if (!this.props.isCalibrating) { 
               this.calculateSlouch(pose); 
             }
@@ -119,22 +133,22 @@ export class SlouchSlider extends React.Component{
   
     //DO THIS IN ONE OPERATION
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-    this.tempDataContainer.push(slouch); 
+    // this.tempDataContainer.push(slouch); 
 
     //Reached packet size - post to backend
-    if (this.tempDataContainer.length === Constants.packetSize){
-      if (slouch !== 0) { 
-        //Action digestable format
-        const slouchDataObj = {
-          id:  this.props.currentUser.id, 
-          slouch : this.tempDataContainer
-        }
-        this.props.dispatch(postSlouchData(slouchDataObj)); 
-        this.tempDataContainer = []; 
-      }
-      //is this in the right spot
-      this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
-    } 
+    // if (this.tempDataContainer.length === Constants.packetSize){
+    //   if (slouch !== 0) { 
+    //     //Action digestable format
+    //     const slouchDataObj = {
+    //       id:  this.props.currentUser.id, 
+    //       slouch : this.tempDataContainer
+    //     }
+    //     this.props.dispatch(postSlouchData(slouchDataObj)); 
+    //     this.tempDataContainer = []; 
+    //   }
+    //   //is this in the right spot
+    //   this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
+    // } 
 
     this.alert(); 
   } 
@@ -165,9 +179,9 @@ export class SlouchSlider extends React.Component{
   }
 
   componentWillUnmount(){ 
-    if (!this.captureInterval) { return; }
-      console.log('hi')
-      clearInterval(this.captureInterval); 
+    // if (!this.captureInterval) { return; }
+    console.log('clearing interval')
+    clearInterval(this.captureInterval); 
   }
   
   render() {
@@ -175,7 +189,7 @@ export class SlouchSlider extends React.Component{
     if (this.props.isCalibrationPosted){ 
       return <Redirect to="/home"></Redirect>; 
     }
-
+  
     return ( 
       <div>
         <header className="header">
