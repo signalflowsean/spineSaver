@@ -10,13 +10,6 @@ import {fetchDisplayData} from '../actions/display';
 import '../Styles/camCalibStack.css'; 
 import Constants from '../Utils/constants'; 
 
-/*
-  user logs in -> sets interval
-  component unmounts -> clear interval
-
-
-*/
-
 import {
   handleCalibrateButtonClick,
   setWebCamRef, 
@@ -35,6 +28,10 @@ import {
 } from '../actions/slouch'; 
 
 export class SlouchSlider extends React.Component{
+  constructor(props){ 
+    super(props); 
+    this.tempDataContainer = []; 
+  }
 
   componentWillMount() { 
     this.props.dispatch(resetValues()); 
@@ -120,28 +117,29 @@ export class SlouchSlider extends React.Component{
   
     //DO THIS IN ONE OPERATION
     this.props.dispatch(newSlouchDataPoint(slouch)); 
-    // this.tempDataContainer.push(slouch); 
 
-    //Reached packet size - post to backend
-    // if (this.tempDataContainer.length === Constants.packetSize){
-    //   if (slouch !== 0) { 
-    //     //Action digestable format
-    //     const slouchDataObj = {
-    //       id:  this.props.currentUser.id, 
-    //       slouch : this.tempDataContainer
-    //     }
-    //     this.props.dispatch(postSlouchData(slouchDataObj)); 
-    //     this.tempDataContainer = []; 
-    //   }
-    //   //is this in the right spot
-    //   this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
-    // } 
+    this.tempDataContainer.push(slouch); 
+
+    // Reached packet size - post to backend
+    if (this.tempDataContainer.length === Constants.packetSize){
+      console.log('packet size reached'); 
+      if (slouch !== 0) { 
+        //Action digestable format
+        const slouchDataObj = {
+          id:  this.props.currentUser.id, 
+          slouch : this.tempDataContainer
+        }
+        this.props.dispatch(postSlouchData(slouchDataObj)); 
+        this.tempDataContainer = []; 
+      }
+      //is this in the right spot
+      this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
+    } 
 
     this.alert(); 
   } 
 
   drawBoundingBox = (leftEye, rightEye, leftShoulder) => {  
-    console.log('drawing bounding box'); 
     const boundingBox = { 
       width : (rightEye.x - leftEye.x), 
       height : (leftEye.y - leftShoulder.y), 
@@ -156,7 +154,6 @@ export class SlouchSlider extends React.Component{
   componentDidUpdate(prevProps) { 
     //IF WE JUST CALIBRATED GET THE CALIBRATION VALUE AND POST IT TO THE BACKEND
     if(prevProps.feedback === 'Calibrating...' && this.props.feedback === 'Calibrated') { 
-
       const calibrationObj = { 
         id : this.props.currentUser.id, 
         calibrateVal : this.props.tempSlouch

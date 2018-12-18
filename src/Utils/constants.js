@@ -14,7 +14,7 @@ const Constants =  {
     facingMode: 'user'
   }, 
   threshold : 0.42, 
-  packetSize: 100
+  packetSize: 20
 }; 
 
 export default Constants; 
