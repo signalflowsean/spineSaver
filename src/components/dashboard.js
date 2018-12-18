@@ -14,7 +14,6 @@ export class Display extends React.Component {
   }
 
   componentDidUpdate(prevProps) { 
-    //NO LONGER LOGGED IN: CLEAR AUTH
     if(prevProps.loggedIn && !this.props.loggedIn) {    
       this.props.dispatch(clearAuth()); 
     }
@@ -32,6 +31,8 @@ export class Display extends React.Component {
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
       return (<Redirect to="/settings" />); 
     }
+
+    console.log(this.props.calibVal); 
    
     return (
       <div>

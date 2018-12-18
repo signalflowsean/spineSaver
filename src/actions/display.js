@@ -68,7 +68,6 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
 }
 
 export const fetchCalibrationData = (id) => (dispatch, getState) => { 
-  console.log('calibration loading'); 
   dispatch(fetchCalibrationDataLoading()); 
 
   const authToken = loadAuthToken(); 
