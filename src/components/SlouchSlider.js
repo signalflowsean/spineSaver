@@ -58,11 +58,6 @@ export class SlouchSlider extends React.Component{
   }
 
   setWebcamRef = webcam => { 
-    if (!webcam){
-      console.log('getting a null value for webcam');  
-      return; 
-    }
-    console.log('webcam', webcam)
     this.props.dispatch(setWebCamRef(webcam)); 
     this.isEverythingLoaded(); 
   };
@@ -77,23 +72,15 @@ export class SlouchSlider extends React.Component{
   } 
 
   isEverythingLoaded = () => {
-
-    console.log('posenetLoaded', this.props.isPosenetLoaded, 'isWebcamLoaded', this.props.isWebcamLoaded, 
-    'captureInterval',this.captureInterval, 'screenCapHTML', this.props.HTMLImage ); 
-
     if (this.props.isPosenetLoaded && this.props.isWebcamLoaded 
       && !this.captureInterval && this.props.HTMLImage !== null) { 
-      console.log('is everything loaded'); 
       this.props.dispatch(setupLoaded()); 
-
-
       this.captureInterval = setInterval(
         () => this.capture(), Constants.frameRate); 
     }
   }
 
   capture = () => {
-    // console.log('webcam', this.props.webcam); 
     const screenShot = this.props.webcam.getScreenshot(); 
     this.props.dispatch(takeScreenShot(screenShot));  
 
@@ -179,13 +166,10 @@ export class SlouchSlider extends React.Component{
   }
 
   componentWillUnmount(){ 
-    // if (!this.captureInterval) { return; }
-    console.log('clearing interval')
     clearInterval(this.captureInterval); 
   }
   
   render() {
-
     if (this.props.isCalibrationPosted){ 
       return <Redirect to="/home"></Redirect>; 
     }
@@ -200,8 +184,6 @@ export class SlouchSlider extends React.Component{
             </Link> */}
           </section>
         </header>
-
-      
         <main>
           {/* MAKE OWN COMPONENT */}
           <Stage 

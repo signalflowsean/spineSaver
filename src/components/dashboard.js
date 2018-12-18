@@ -54,7 +54,7 @@ export class Display extends React.Component {
           <input 
             type="range" 
             name="slouchSlider" 
-            value={this.props.slouch} 
+            value={(this.props.slouch) ? this.props.slouch : 0} 
             step=".01" 
             min="0" 
             max="1"

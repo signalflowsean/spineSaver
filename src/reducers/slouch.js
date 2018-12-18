@@ -1,12 +1,8 @@
-import Constants from '../Utils/constants'; 
-
 import { 
   POSENET_LOADING, 
   POSENET_SUCCESS, 
   POSENET_ERROR,
   POST_SLOUCH_DATA_ERROR, 
-  // CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL,
-  // SET_SCREENSHOT_FRAME_RATE_INTERVAL,
   SET_WEB_CAM_REF, 
   SET_SCREENSHOT_REF,
   TAKE_SCREENSHOT,
@@ -83,12 +79,6 @@ export default function reducer(state = initialState, action){
   else if (action.type === POST_SLOUCH_DATA_ERROR){ 
     return Object.assign({}, state, {error : action.error});
   }
-  // else if (action.type === CLEAR_SCREENSHOT_FRAME_RATE_INTERVAL){ 
-  //   return Object.assign({}, state, {interval: clearInterval(state.interval)}); 
-  // }
-  // else if (action.type === SET_SCREENSHOT_FRAME_RATE_INTERVAL){ 
-  //   return Object.assign({}, state, {interval : setInterval(action.capture, Constants.frameRate), })
-  // }
   else if (action.type === RESET_VALUES){ 
     return Object.assign({}, state, {calibrateButtonCount :0, 
       isLoaded: false, feedback :'Loading...', isCalibrationPosted : false}); 
@@ -122,7 +112,6 @@ export default function reducer(state = initialState, action){
       tempSlouch : action.boundingBox.tempSlouch
     }); 
   }
-
   else if (action.type === HANDLE_CALIBRATE_BUTTON_CLICK) { 
     let bBoxX = state.bBoxX; 
     let bBoxY = state.bBoxY; 
