@@ -18,7 +18,7 @@ const initialState = {
   calibVal: null, 
   isDisplayLoading : true, 
   isCalibLoading : true, 
-  hasUserEverCalibrated : false, 
+  hasUserEverCalibrated : true, 
   loggedIn : false, 
 };
 
@@ -36,18 +36,19 @@ export default function reducer(state = initialState, action) {
     })
   }
   else if (action.type === RESET_VALS_ON_LOG_OUT){ 
-    return Object.assign({}, state, {hasUserEverCalibrated : false,  loggedIn: false}); 
+    return Object.assign({}, state, {hasUserEverCalibrated : true,  loggedIn: false}); 
   }
   else if (action.type === FETCH_DISPLAY_DATA_ERROR) { 
      return Object.assign({}, state, { isDisplayLoading : false, error: action.error}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_LOADING) { 
-    return Object.assign({}, state, { isCalibLoading : true, loggedIn : true}); 
+    return Object.assign({}, state, { isCalibLoading : true, loggedIn : true, hasUserEverCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_PAYLOAD){  
     return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, hasUserEverCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
+    console.log('calibration data payload empty')
     return Object.assign({}, state, { isCalibLoading: false, hasUserEverCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 

@@ -57,7 +57,8 @@ export default function reducer(state = initialState, action){
   else if (action.type === UPDATE_SLOUCH_BEHAVIOR) { 
     return Object.assign({}, state, { instructions: action.behavior }); 
   }
-  else if (action.type === RESET_VALS_ON_LOG_OUT){ 
+  else if (action.type === RESET_VALS_ON_LOG_OUT){
+    console.log('did we make it 2') 
     return Object.assign({}, state, {
       hasCalibValUpdatedThisSession:false}); 
   }

@@ -24,11 +24,13 @@ export class Display extends React.Component {
   }
 
   render(){ 
+    console.log(this.props.hasCalibValUpdatedThisSession)
     if (this.props.isCalibLoading ){
       return (<p>Loading...</p>); 
     }
-    
+
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
+      console.log('yolo')
       return (<Redirect to="/settings" />); 
     }
    
