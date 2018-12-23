@@ -48,7 +48,6 @@ export default function reducer(state = initialState, action) {
     return Object.assign({}, state, { isCalibLoading: false, calibVal : action.calibration, hasUserEverCalibrated: true}); 
   }
   else if (action.type === FETCH_CALIBRATION_DATA_SUCCESS_EMPTY){ 
-    console.log('calibration data payload empty')
     return Object.assign({}, state, { isCalibLoading: false, hasUserEverCalibrated : false, feedback: 'Welcome you\'re new here', instructions: 'Please calibrate'}); 
   }
   return state; 
