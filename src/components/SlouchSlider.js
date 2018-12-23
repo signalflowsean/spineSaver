@@ -176,11 +176,6 @@ export class SlouchSlider extends React.Component{
       <div>
         <header className="header">
           <h2>Spine Saver</h2>
-          <section >
-            {/* <Link className="icon" to="/home">
-              <img src="https://image.flaticon.com/icons/svg/25/25694.svg" alt="dashboard"></img>
-            </Link> */}
-          </section>
         </header>
         <main>
           {/* MAKE OWN COMPONENT */}

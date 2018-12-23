@@ -48,7 +48,7 @@ export class Display extends React.Component {
           <p>You've slouched for {this.props.slouchedHours} minutes.</p>
           <p>This is a {this.props.improvement}% improvement.</p>
           
-          {/* <p>{this.isSlouching}</p> */}
+          <p>{this.isSlouching}</p>
           <p>Slouch Amount:  </p>
           <input 
             type="range" 
