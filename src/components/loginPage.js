@@ -13,7 +13,9 @@ export function SignUpPage(props) {
 
   return (
     <div>
-      <h2>Login</h2>
+      <header className="header">
+        <h2 className="header-title">Login</h2>
+      </header>
       <Link to="/">Home</Link>
       <Login></Login>
     </div>

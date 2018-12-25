@@ -175,45 +175,47 @@ export class SlouchSlider extends React.Component{
     return ( 
       <div>
         <header className="header">
-          <h2>Spine Saver</h2>
-        </header>
+          <h2 className="header-title">Spine Saver</h2>
+        </header>π
         <main>
-          {/* MAKE OWN COMPONENT */}
-          <Stage 
-            className={'calibration-stage'} 
-            width={Constants.width} 
-            height={Constants.height}>
-            <Layer>
-              <Rect
-                x={this.props.bBoxX}
-                y={this.props.bBoxY}
-                width={this.props.bBoxWidth}
-                height={this.props.bBoxHeight}
-                stroke={'red'}
-              />
-            </Layer>  
-          </Stage>
-          <Webcam 
-            className={'webcam'}
-            audio={false}
-            height={Constants.height}
-            width={Constants.width}
-            screenshotFormat="image/png"
-            videoConstraints={Constants.videoConstraints}
-            onUserMedia={() => this.onWebcamLoaded()}
-            ref={this.setWebcamRef}
-          />
-          {/* END */}
+          <section className="calib-container">
+            {/* MAKE OWN COMPONENT */}
+            <Stage 
+              className={'calibration-stage'} 
+              width={Constants.width} 
+              height={Constants.height}>
+              <Layer>
+                <Rect
+                  x={this.props.bBoxX}
+                  y={this.props.bBoxY}
+                  width={this.props.bBoxWidth}
+                  height={this.props.bBoxHeight}
+                  stroke={'red'}
+                />
+              </Layer>  
+            </Stage>
+            <Webcam 
+              className={'webcam'}
+              audio={false}
+              height={Constants.height}
+              width={Constants.width}
+              screenshotFormat="image/png"
+              videoConstraints={Constants.videoConstraints}
+              onUserMedia={() => this.onWebcamLoaded()}
+              ref={this.setWebcamRef}
+            />
+            {/* END */}
 
-          {/* MAKE OWN COMPONENT */}
-          <div className="feedback">
-            <p>{this.props.feedback}</p>
-            <p>{this.props.instructions}
-              <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
-            </p>
-          </div>
-          {/* END */}
-          <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+            {/* MAKE OWN COMPONENT */}
+            <div className="feedback">
+              <p>{this.props.feedback}</p>
+              <p>{this.props.instructions}
+                <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
+              </p>
+            </div>
+            {/* END */}
+            <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
+          </section>
         </main>
       </div>
     ); 

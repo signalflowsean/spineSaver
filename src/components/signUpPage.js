@@ -14,9 +14,8 @@ export function SignUpPage(props) {
 
   return (
     <div>
-      <header>
-        <h2>SignUp</h2>
-   
+      <header className="header">
+        <h2 className="header-title">SignUp</h2>
       </header>
       <SignUpForm className="signup"></SignUpForm>
     </div>

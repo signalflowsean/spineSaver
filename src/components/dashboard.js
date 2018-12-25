@@ -6,7 +6,7 @@ import requiresLogin from './requires-login';
 import SlouchSlider from './SlouchSlider'; 
 import {fetchCalibrationData, resetValsOnLogOut} from '../actions/display'; 
 import { clearAuth } from '../actions/auth';
-
+import gear from './gear.png'; 
 export class Display extends React.Component { 
 
   componentWillMount() { 
@@ -35,22 +35,29 @@ export class Display extends React.Component {
     return (
       <div>
         <header className="header">
-          <h2>Spine Saver</h2>
-          <section>
-            <Link className="icon" to="/settings">
-              <img src="https://banner2.kisspng.com/20180211/xje/kisspng-gear-data-icon-ppt-design-gear-icon-5a80761ca95662.7998225215183682846936.jpg" alt="settings"></img>
-            </Link>
-          </section>
+            <ul className="header-ul">
+            <li className="header-li">
+              <h2 className="header-title">Spine Saver</h2>
+            </li>
+            <li  className="header-li">  
+              <Link className="header-nav-link" to="/settings">
+                <img className="header-nav-icon" src={gear} alt="settings"></img>
+              {/* <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-f26fdc994165c65bf7022fa71599b292-gear.png" alt="settings"></img> */}
+              </Link>
+            </li>
+          </ul>
         </header>
-        <main>
-          <p>Hi {this.props.name}!</p>
-          <p>You've logged {this.props.loggedHours} minutes.</p>
-          <p>You've slouched for {this.props.slouchedHours} minutes.</p>
-          <p>This is a {this.props.improvement}% improvement.</p>
+        <main className="display-data-container">
+          <section className="display-data-section">
+          <p className="display-text">Hi {this.props.name}!</p>
+          <p className="display-text">You've logged {this.props.loggedHours} minutes.</p>
+          <p className="display-text">You've slouched for {this.props.slouchedHours} minutes.</p>
+          <p className="display-text"> This is a {this.props.improvement}% improvement.</p>
           
           <p>{this.isSlouching}</p>
-          <p>Slouch Amount:  </p>
+          <p className="display-text">Slouch Amount:  </p>
           <input 
+            className="slouch-slider" 
             type="range" 
             name="slouchSlider" 
             value={(this.props.slouch) ? this.props.slouch : 0} 
@@ -59,9 +66,14 @@ export class Display extends React.Component {
             max="1"
             onChange={() => console.log('')} >
           </input>
-          
-          <input type="button" value="Log Out" onClick={() => this.logOut()}></input>
-          <div className="slouchSlider">
+          <input
+            className="log-out" 
+            type="button" 
+            value="Log Out" 
+            onClick={() => this.logOut()}>
+          </input>
+          </section>
+          <div className="slouch-slider-component">
             <SlouchSlider calibValBeckEnd={this.props.calibVal}/>
           </div>
         </main>
