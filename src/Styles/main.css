@@ -49,7 +49,7 @@
   display: flex;  
   flex-direction: row-reverse;
   position: relative; 
-  top: 140px;   
+  top: 180px;   
 
 }
 .landing-container{ 
@@ -231,7 +231,8 @@ label{
   user-select: none; 
   width: 500px;
   height: 500px; 
-  left: 20%; 
+  left: 500px; 
+  margin-top:6%; 
   z-index: 1;  
 }
 

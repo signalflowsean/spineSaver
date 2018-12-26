@@ -1,5 +1,7 @@
 .webcam{ 
-    margin-top: 12%; 
+    position: relative; 
+    left: 500px; 
+    margin-top: 6%; 
     border: 5px solid black; 
 }
 
@@ -7,7 +9,7 @@
     display: flex; 
     align-content: center; 
     flex-direction: column; 
-    margin-top: 20%; 
+    margin-top: 16%; 
 }
 
 .calibration-stage{ 
