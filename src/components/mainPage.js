@@ -26,13 +26,17 @@ export function MainPage(props) {
       </header>
       <main>
         <section className="main-page-container">
-          <h3 className="header-landing landing-page">REALTIME SLOUCH TRACKING</h3>
-          <p className="landing-page">Tracks how much you are slouching 
-          using a webcam. Notifies you when you need to sit up straight.</p>
-          <h3 className="header-landing landing-page">SLOUCHING ANALYTICS</h3>
-          <p className="landing-page">View your slouch data over time 
-          see if you are improving.</p>
-          <img className="spine-image" src="https://santispilates.files.wordpress.com/2009/11/fotolia_9063035_s-spine1.jpg" alt="Spine"></img>
+          <img className="spine-image" src="https://openclipart.org/image/2400px/svg_to_png/248723/353.png" alt="Spine"></img>
+          <div className="landing-container">
+            <h3 className="header-landing ">REALTIME SLOUCH TRACKING</h3>
+          
+            <p className="landing-page">Tracks how much you are slouching 
+            using a webcam. Notifies you when you need to sit up straight.</p>
+            <h3 className="header-landing ">SLOUCHING ANALYTICS</h3>
+            <p className="landing-page">View your slouch data over time 
+            see if you are improving.</p>
+            <p className="demo-account">Demo Account: Username: demo, Password: password123 </p>
+          </div>
         {/* DEMO ACCOUNT GOES HERE */}
         </section>
       </main>

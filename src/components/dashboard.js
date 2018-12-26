@@ -42,7 +42,6 @@ export class Display extends React.Component {
             <li  className="header-li">  
               <Link className="header-nav-link" to="/settings">
                 <img className="header-nav-icon" src={gear} alt="settings"></img>
-              {/* <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-f26fdc994165c65bf7022fa71599b292-gear.png" alt="settings"></img> */}
               </Link>
             </li>
           </ul>
