@@ -81,8 +81,8 @@
 .header-nav-icon{  
   max-width:  90px;
   min-width: 90px;
-  max-height: 100%;  
-  min-height: 100%
+  max-height: 76px;  
+  min-height: 76px; 
 }
 
 .account{ 
@@ -174,10 +174,6 @@
   top:12%; 
   width: 100%; 
 }
-.calibration-stage{ 
-  /* margin-left: auto;  */
-
-}
 
 .display-text, p{ 
   font-family: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif' ; 
@@ -191,10 +187,11 @@ form{
 
 button { 
   margin-left: 20%; 
-  margin-top: 15%; 
   background-color: #5f8dd8; 
-  font-size: 30px; 
+  font-size: 80px; 
   border-radius: 5px; 
+  height: 100%;
+  padding: 80px;  
 }
 
 button:hover{ 
@@ -209,8 +206,18 @@ button:hover{
   height: 40%; 
 }
 
+.form-input label{ 
+  font-size: 50px; 
+}
+.form-input input{ 
+  border-radius: 7px; 
+  background-color: #a5b2c6; 
+  font-size: 80px;  
+}
+
 label{
   margin-left: 20%; 
+  font-size: 80px; 
 }
 
 .konvajs-content{ 
@@ -221,3 +228,4 @@ label{
   left: 20%; 
   z-index: 1;  
 }
+

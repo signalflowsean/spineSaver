@@ -1,28 +1,24 @@
 .webcam{ 
-    /* width: 100%;  */
+    margin-top: 12%; 
     margin-left: auto; 
     margin-right: auto; 
     border: 5px solid black; 
     position: relative; 
-    right: 20%; 
 }
 
 .calib-container{ 
     display: flex; 
     align-content: center; 
     flex-direction: column; 
-    margin-top: 12%; 
+    margin-top: 20%; 
 }
 
 .calibration-stage{ 
     height: 0px; 
+    
 }
 
 .calibrate{ 
-    /* position: relative; 
-    right: 260%; 
-    margin-top: 125%;  
-    min-height: 100px; */
     font-size: 50px; 
     width: 50%; 
     border-radius: 20px;
