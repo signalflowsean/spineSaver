@@ -21,15 +21,17 @@ export class Login extends React.Component{
           {error}
           <label htmlFor="username">Username</label>
           <Field 
+            className="login-form"
             component={Input} 
             type="text" 
-            placeholder="urUsername" 
+            placeholder="username" 
             name="username"
             id="username"
             validate ={[required, nonEmpty]}>
           </Field>
           <label htmlFor="password">Password</label>
           <Field 
+            className="login-form"
             component={Input}
             type="password" 
             placeholder="urPassword" 

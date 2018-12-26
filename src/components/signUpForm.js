@@ -22,6 +22,7 @@ export class SignUpForm extends React.Component{
       <form onSubmit={this.props.handleSubmit(values => this.onSubmit(values))}>
         <label htmlFor="fullName">Full Name</label>
         <Field 
+          className="signup-form"
           component={ Input } 
           type="text" 
           placeholder="Jane Doe" 
@@ -30,6 +31,7 @@ export class SignUpForm extends React.Component{
         </Field>
         <label htmlFor="username">Username</label>
         <Field
+          className="signup-form"
           component={ Input }
           type="text" 
           placeholder="JayD23" 
@@ -38,6 +40,7 @@ export class SignUpForm extends React.Component{
         </Field>
         <label htmlFor="password ">Password</label>
         <Field 
+          className="signup-form"
           component={ Input }
           type="password" 
           placeholder="password123"
