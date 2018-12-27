@@ -82,10 +82,10 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
     .then(res => res.json()) 
     .then((data) => { 
       if (Math.abs(data.calibrationValue) > 0) { 
-        console.log('calibration back from endpoint', data.calibrationValue);  
+        //calibration value back from the endpoint  
         dispatch(fetchCalibrationSucessPayload(data.calibrationValue)); 
       } else { 
-        console.log('user has never calibrated'); 
+        //user have never calibrated
         dispatch(fetchCalilibrationDataSuccessEmpty()); 
       }
     })
