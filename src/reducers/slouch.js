@@ -131,7 +131,7 @@ export default function reducer(state = initialState, action){
     if (state.isCalibrating) { 
       feedback = 'Calibrated'
       hasCalibValUpdatedThisSession = true; 
-      instructions = 'You calibrated! Click the Dashboard link!'
+      instructions = 'You calibrated!'
       bBoxHeight = 0;  
       bBoxWidth = 0; 
       bBoxY = 0;

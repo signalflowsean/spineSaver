@@ -62,12 +62,10 @@
 
 .log-out:hover{ 
   font-weight: bolder; 
-  font-size: 65px; 
+  font-size: 52px; 
   text-shadow: 2px 2px silver; 
   background-color: #ded08d; 
 }
-
-
 
 .landing-page{ 
   padding-bottom: 100px; 
@@ -195,10 +193,10 @@ form{
 button { 
   margin-left: 20%; 
   background-color: #5f8dd8; 
-  font-size: 80px; 
+  font-size: 70px; 
   border-radius: 5px; 
   height: 60%;
-  padding: 40px;  
+  padding: 12px;  
 }
 
 button:hover{ 
