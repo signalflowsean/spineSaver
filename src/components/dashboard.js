@@ -31,8 +31,9 @@ export class Display extends React.Component {
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
       return (<Redirect to="/settings" />); 
     }
-   
+    console.log(this.props.isSlouching, 'poop')
     return (
+
       <div>
         <header className="header">
             <ul className="header-ul">
@@ -55,6 +56,7 @@ export class Display extends React.Component {
           
           <p>{this.isSlouching}</p>
           <p className="display-text">Slouch Amount:  </p>
+          <p className="display-text">{this.props.isSlouching}</p>
           <input 
             className="slouch-slider" 
             type="range" 
@@ -94,7 +96,8 @@ const mapStateToProps = state => ({
     loggedIn : state.display.loggedIn, 
     hasUserEverCalibrated : state.display.hasUserEverCalibrated, 
     hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession, 
-    slouch : state.slouch.slouch
+    slouch : state.slouch.slouch,
+    isSlouching: state.slouch.isSlouching
   }); 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

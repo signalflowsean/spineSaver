@@ -105,6 +105,7 @@ export class SlouchSlider extends React.Component{
 
   alert(){ 
       if (this.props.slouch > Constants.threshold ){ 
+      
         this.props.dispatch(updateSlouchBehavior('Sit up straight!')); 
       }
       else {

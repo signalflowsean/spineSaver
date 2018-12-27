@@ -55,7 +55,9 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, { isLoaded: false}); 
   }
   else if (action.type === UPDATE_SLOUCH_BEHAVIOR) { 
-    return Object.assign({}, state, { instructions: action.behavior }); 
+    // console.log(cons)
+
+    return Object.assign({}, state, { isSlouching: action.behavior }); 
   }
   else if (action.type === RESET_VALS_ON_LOG_OUT){
     console.log('did we make it 2') 
