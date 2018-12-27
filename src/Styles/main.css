@@ -33,8 +33,10 @@
 }
 
 .spine-image{ 
-  max-width: 50%; 
-  min-width: 50%;
+  position:relative; 
+  top: -55px; 
+  max-width: 70%; 
+  min-width: 70%;
   float: right; 
 }
 

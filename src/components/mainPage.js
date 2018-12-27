@@ -26,7 +26,7 @@ export function MainPage(props) {
       </header>
       <main>
         <section className="main-page-container">
-          <img className="spine-image" src="https://openclipart.org/image/2400px/svg_to_png/248723/353.png" alt="Spine"></img>
+          <img className="spine-image" src="https://static.thenounproject.com/png/1043916-200.png" alt="Spine"></img>
           <div className="landing-container">
             <h3 className="header-landing ">REALTIME SLOUCH TRACKING</h3>
           
