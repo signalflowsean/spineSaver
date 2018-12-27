@@ -55,12 +55,9 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, { isLoaded: false}); 
   }
   else if (action.type === UPDATE_SLOUCH_BEHAVIOR) { 
-    // console.log(cons)
-
     return Object.assign({}, state, { isSlouching: action.behavior }); 
   }
   else if (action.type === RESET_VALS_ON_LOG_OUT){
-    console.log('did we make it 2') 
     return Object.assign({}, state, {
       hasCalibValUpdatedThisSession:false}); 
   }
@@ -97,7 +94,6 @@ export default function reducer(state = initialState, action){
     return Object.assign({}, state, {feedback : 'Calibrating...'}); 
   }
   else if (action.type === NEW_SLOUCH_DATA_POINT) {
-    //add a new slouch item to container 
     return Object.assign({}, state, {slouch : action.slouch})
   }
   else if (action.type === CALIBRATION_POSTING_SUCCESS) { 

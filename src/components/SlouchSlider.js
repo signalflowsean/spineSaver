@@ -123,7 +123,6 @@ export class SlouchSlider extends React.Component{
 
     // Reached packet size - post to backend
     if (this.tempDataContainer.length === Constants.packetSize){
-      console.log('packet size reached'); 
       if (slouch !== 0) { 
         //Action digestable format
         const slouchDataObj = {

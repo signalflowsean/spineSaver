@@ -42,7 +42,6 @@
   font-size: 40px; 
   padding: 0px; 
   margin: 0px; 
-  /* margin-top: 50px;  */
 }
 
 .main-page-container{ 
@@ -196,8 +195,8 @@ button {
   background-color: #5f8dd8; 
   font-size: 80px; 
   border-radius: 5px; 
-  height: 100%;
-  padding: 80px;  
+  height: 60%;
+  padding: 40px;  
 }
 
 button:hover{ 
@@ -209,21 +208,21 @@ button:hover{
   background-color: #96cfff; 
   margin-left: 20%; 
   margin-bottom: 10%; 
-  height: 40%; 
+  height: 30%; 
 }
 
 .form-input label{ 
-  font-size: 50px; 
+  font-size: 30px; 
 }
 .form-input input{ 
   border-radius: 7px; 
   background-color: #a5b2c6; 
-  font-size: 80px;  
+  font-size: 50px;  
 }
 
 label{
   margin-left: 20%; 
-  font-size: 80px; 
+  font-size: 50px; 
 }
 
 .konvajs-content{ 

@@ -31,7 +31,7 @@ export class Display extends React.Component {
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
       return (<Redirect to="/settings" />); 
     }
-    console.log(this.props.isSlouching, 'poop')
+    
     return (
 
       <div>
