@@ -65,7 +65,7 @@ export class Display extends React.Component {
             step=".01" 
             min="0" 
             max="1"
-            onChange={() => console.log('')} >
+            onChange={() => console.log(' ')} >
           </input>
           <input
             className="log-out" 
