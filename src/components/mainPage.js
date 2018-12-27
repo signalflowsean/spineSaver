@@ -37,7 +37,6 @@ export function MainPage(props) {
             see if you are improving.</p>
             <p className="demo-account">Demo Account: Username: demo, Password: password123 </p>
           </div>
-        {/* DEMO ACCOUNT GOES HERE */}
         </section>
       </main>
     </div>
