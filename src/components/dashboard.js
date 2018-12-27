@@ -31,7 +31,7 @@ export class Display extends React.Component {
     if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
       return (<Redirect to="/settings" />); 
     }
-    
+
     return (
 
       <div>
@@ -49,14 +49,14 @@ export class Display extends React.Component {
         </header>
         <main className="display-data-container">
           <section className="display-data-section">
-          <p className="display-text">Hi {this.props.name}!</p>
-          <p className="display-text">You've logged {this.props.loggedHours} minutes.</p>
-          <p className="display-text">You've slouched for {this.props.slouchedHours} minutes.</p>
-          <p className="display-text"> This is a {this.props.improvement}% improvement.</p>
-          
-          <p>{this.isSlouching}</p>
+          <p className="display-text">Hi <b>{this.props.name}!</b></p>
+          <p className="display-text">You've logged <b>{this.props.loggedHours}</b> minutes.</p>
+          <p className="display-text">You've slouched for <b>{this.props.slouchedHours}</b> minutes.</p>
+          <p className="display-text"> This is a <b>{this.props.improvement}%</b> improvement.</p>
+          <p className="display-text">
+            <b>{this.props.isSlouching}</b></p>
           <p className="display-text">Slouch Amount:  </p>
-          <p className="display-text">{this.props.isSlouching}</p>
+       
           <input 
             className="slouch-slider" 
             type="range" 
