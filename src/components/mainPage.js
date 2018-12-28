@@ -35,7 +35,7 @@ export function MainPage(props) {
             <h3 className="header-landing ">SLOUCHING ANALYTICS</h3>
             <p className="landing-page">View your slouch data over time 
             see if you are improving.</p>
-            <p className="demo-account">Demo Account: Username: demo, Password: password123 </p>
+            <p className="landing-page">Demo Account: Username: demo, Password: password123 </p>
           </div>
         </section>
       </main>
