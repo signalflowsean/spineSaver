@@ -26,7 +26,7 @@
   margin-top: 30px; 
   width: 50%; 
   min-height: 100px;
-  font-size: 50px; 
+  font-size: 30px; 
   border-radius: 20px;
   background-color: #6f8bb7; 
   font-weight: bold; 
@@ -35,13 +35,14 @@
 .spine-image{ 
   position:relative; 
   top: -55px; 
-  max-width: 70%; 
-  min-width: 70%;
+  max-width: 50%; 
+  min-width: 50%;
   float: right; 
 }
 
 .header-landing{ 
-  font-size: 40px; 
+  margin-left: 330px; 
+  font-size: 22px; 
   padding: 0px; 
   margin: 0px; 
 }
@@ -62,15 +63,16 @@
 
 .log-out:hover{ 
   font-weight: bolder; 
-  font-size: 52px; 
+  font-size: 32px; 
   text-shadow: 2px 2px silver; 
   background-color: #ded08d; 
 }
 
 .landing-page{ 
+  padding-left: 100px; 
   padding-bottom: 100px; 
   margin: 0px; ;
-  font-size: 40px; 
+  font-size: 20px; 
   width: 100%; 
 }
 
@@ -91,13 +93,13 @@
 
 .account{ 
   height: 100%; 
-  width: 200px; 
+  width: 160px; 
   border: 2px black solid; 
-  font-size: 35px;
+  font-size: 25px;
   background-color: grey;
-  color: black; 
+  color:whitesmoke; 
   padding: 14px 0px; 
-  text-align: center; 
+  text-align: left; 
   text-decoration: none;
   display: block; 
 }
@@ -110,11 +112,11 @@
 
 .header-title {
   margin: 0px; 
-  font-size: 50px;
+  font-size: 36px;
   font-family: 'Courier New', Courier, monospace; 
   text-transform: uppercase; 
   text-rendering: optimizeLegibility; 
-  text-shadow: 5px 5px #bec6d3; 
+  text-shadow: 3px 3px #bec6d3; 
 }
 
 .display-data-section { 
@@ -212,17 +214,19 @@ button:hover{
 }
 
 .form-input label{ 
-  font-size: 30px; 
+  font-size: 20px; 
 }
 .form-input input{ 
   border-radius: 7px; 
   background-color: #a5b2c6; 
-  font-size: 50px;  
+  font-size: 30px;  
 }
 
 label{
+  color: whitesmoke; 
+  /* font-weight: bold;  */
   margin-left: 20%; 
-  font-size: 50px; 
+  font-size: 30px; 
 }
 
 .konvajs-content{ 
