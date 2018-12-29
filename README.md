@@ -1,7 +1,7 @@
 # Spine Saver
 Spine saver is a web app the helps users slouch less.
 
-[Deployed Link](https://spine-saver-client.herokuapp.com/settings)
+[Deployed Link](https://dashboard.heroku.com/apps/spine-saver-client-side)
 
 ## Installation
 Use the package manager [npm] to install the dependencies
@@ -43,8 +43,7 @@ To start the app run
   passport-local
 
 ## Screenshots
-[Screenshots](https://drive.google.com/open?id=1QwxdwigI14OX9cmHUv7S1fAbPxwLHjZq)
-
+[Screenshots]
 ## Main Components
 ### Frontent
 Dashboard 

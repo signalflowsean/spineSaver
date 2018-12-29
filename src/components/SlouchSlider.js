@@ -132,7 +132,7 @@ export class SlouchSlider extends React.Component{
         this.props.dispatch(postSlouchData(slouchDataObj)); 
         this.tempDataContainer = []; 
       }
-      //is this in the right spot
+      //is this in the right spo
       this.props.dispatch(fetchDisplayData(this.props.currentUser.id)); 
     } 
 
