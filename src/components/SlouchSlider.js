@@ -209,14 +209,8 @@ export class SlouchSlider extends React.Component{
             {/* MAKE OWN COMPONENT */}
             <div className="feedback">
               <p><b>{this.props.feedback}</b></p>
-<<<<<<< HEAD
-              <p><br>{this.props.instructions}</br>
-                <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
-              </p>
-=======
               <p><b>{this.props.instructions}</b></p>
               <input className="calibrate " type="button" value={!this.props.isCalibrating ? 'CALIBRATE' : 'STOP CALIBRATING'} onClick={() => this.handleCalibrateButtonClick()}></input>
->>>>>>> 44b06fbdd5f7a8ea8fbf6e4b4f08ad375cf0ce82
             </div>
             {/* END */}
             <img className="screen-shots" src={this.props.screenCap} alt="pose" ref={this.setScreenShotRef} width={Constants.width} height={Constants.height}></img>
