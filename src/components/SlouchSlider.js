@@ -116,7 +116,6 @@ export class SlouchSlider extends React.Component{
   calculateSlouch = pose => {
     const slouch = Math.abs((this.props.calibValBeckEnd / CalculateSlouch(pose))-1);   
   
-    //DO THIS IN ONE OPERATION
     this.props.dispatch(newSlouchDataPoint(slouch)); 
 
     this.tempDataContainer.push(slouch); 
