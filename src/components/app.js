@@ -10,8 +10,6 @@ import LoginPage from './loginPage';
 
 import {refreshAuthToken} from '../actions/auth'; 
 
-import '../Styles/app.css'
-
 export class App extends React.Component { 
 
   componentDidUpdate(nextProps) { 

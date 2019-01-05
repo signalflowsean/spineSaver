@@ -1,5 +1,4 @@
 import React from 'react'; 
-import '../Styles/signup.css'; 
 import {Field, reduxForm, focus } from 'redux-form'; 
 import { signUpUser } from '../actions/signup'; 
 import {login} from '../actions/auth'; 
