@@ -11,7 +11,9 @@
     flex-direction: column; 
     margin-top: 16%; 
 }
-
+.feedback{ 
+    font-size: 50px; 
+}
 .calibration-stage{ 
     position: relative; 
     left: -500px;
@@ -20,7 +22,7 @@
 }
 
 .calibrate{ 
-    font-size: 40px; 
+    font-size: 20px; 
     width: 85%; 
     border-radius: 20px;
     background-color: #6f8bb7; 
@@ -28,7 +30,7 @@
 }
 .calibrate:hover{ 
   font-weight: bolder; 
-  font-size: 52px; 
+  font-size: 22px; 
   text-shadow: 2px 2px silver; 
   background-color: #ded08d; 
 }
