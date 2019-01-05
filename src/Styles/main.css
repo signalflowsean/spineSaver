@@ -173,6 +173,12 @@
   visibility: hidden;
 }
 
+.home{
+  float:right; 
+  max-height: 50px; 
+  max-width: 50px;
+}
+
 .display-data-container{
   position: absolute; 
   top:12%; 
@@ -219,8 +225,7 @@ button:hover{
 }
 
 label{
-  color: whitesmoke; 
-  /* font-weight: bold;  */
+  color:  #09285b; 
   margin-left: 20%; 
   font-size: 30px; 
 }
@@ -255,5 +260,11 @@ main{
   }
   .landing-page{ 
     font-size: 10px; 
+  }
+
+  button { 
+    height: 50px; 
+    font-size: 20px; 
+    width: 80%; 
   }
 }

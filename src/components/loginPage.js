@@ -15,8 +15,12 @@ export function SignUpPage(props) {
     <div>
       <header className="header">
         <h2 className="header-title">Login</h2>
+        <Link to="/">
+          <img className="home" alt="home" src="https://cdn2.iconfinder.com/data/icons/web-application-icons-part-i/100/Artboard_43-512.png"></img>
+        </Link>
       </header>
-      <Link to="/">Home</Link>
+    
+     
       <Login></Login>
     </div>
   ); 
