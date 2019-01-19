@@ -279,4 +279,17 @@ b{
   .form-input{ 
     margin-left: 0%;
   }
+ 
+}
+
+@media only screen and (max-width: 321px) {
+  .header-nav-icon{ 
+    height: 2%; 
+    width: 2%; 
+    /* max-width: 5px; 
+    max-height: 5px;
+    position: relative; 
+    right: 500%;   */
+  }
+
 }
