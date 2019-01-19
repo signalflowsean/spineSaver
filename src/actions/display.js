@@ -50,7 +50,7 @@ export const fetchDisplayData = (id) => (dispatch, getState) => {
   
   const authToken = loadAuthToken(); 
   
-  return fetch(`${API_BASE_URL}/display/${id}`, { 
+  return fetch(`${API_BASE_URL}/display`, { 
     method: 'GET', 
     headers: { 
       Authorization: `Bearer ${authToken}`
@@ -72,7 +72,7 @@ export const fetchCalibrationData = (id) => (dispatch, getState) => {
 
   const authToken = loadAuthToken(); 
 
-  return fetch(`${API_BASE_URL}/slouch/calibration/${id}`, { 
+  return fetch(`${API_BASE_URL}/slouch/calibration`, { 
     method: 'GET', 
     headers: { 
       Authorization: `Bearer ${authToken}`
