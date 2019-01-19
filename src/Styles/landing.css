@@ -1,0 +1,138 @@
+.centerTitle{
+  margin-top: 5%;
+  text-align: center;
+  line-height: 0;
+}
+
+.navBar{
+  width: 100%;
+  height: 60px;
+  background-color: grey;;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.navBarLeft{
+  width: 15%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navBarLeft > img{
+  height: 90%;
+  border-radius: 10%;
+}
+
+.navBarMiddle{
+  width: 55%;
+}
+
+.navBarRight{
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+.mediumSignUp{
+  background-color: transparent;
+  padding: 10px;
+  padding-right: 3%;
+  padding-left: 3%;
+  border: 1px solid gray;
+  border-radius: 15%;
+  cursor: pointer;
+}
+
+.largeSignUp{
+  margin-top: 5%;
+  background-color: transparent;
+  padding: 10px;
+  padding-right: 7.5%;
+  padding-left: 7.5%;
+  border: 1px solid gray;
+  border-radius: 15%;
+  cursor: pointer;
+  margin-bottom: 5%;
+}
+
+.center{
+  text-align: center;
+}
+
+.smallSignUp{
+  background-color: transparent;
+  padding: 6%;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 1px solid gray;
+  border-radius: 15%;
+  cursor: pointer;
+}
+
+
+.centerMainImageContainer{
+  margin-top: 3%;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+}
+
+.descriptionBox{
+  margin-top: 0;
+  width: 40%;
+  margin-left: 30%;
+  text-align:center;
+}
+
+.title{
+  color: #777777;
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.featureImages{
+  border-radius: 50%;
+  height: 100px;
+}
+
+.background{
+  background-color: pink;
+  overflow: hidden;
+}
+
+.featureContainer{
+  width: 85%;
+  margin-left: 7.5%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.featureBox{
+  width: 33.33%;
+  text-align: center;
+}
+
+.featureText{
+  width: 80%;
+  margin-left: 10%;
+}
+
+.nav-links{
+  text-align: right;
+  margin-right: 10%;
+}
+
+.nav-link {
+  margin: 10px;
+}
+
+.footer{
+  height: 60px;
+  background-color: gray;
+}

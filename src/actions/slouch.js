@@ -152,7 +152,7 @@ export const zeroOutCalibrationButtonCount = () => ({
 }); 
 
 export const postSlouchData = (slouchDataObj) => (dispatch) => { 
-  const {id, slouch} = slouchDataObj; 
+  const {slouch} = slouchDataObj; 
   const authToken = loadAuthToken(); 
   
   if (!Array.isArray(slouch)){ 
@@ -180,7 +180,7 @@ export const postCalibrationData = (calibrationData) => (dispatch) => {
   dispatch(calibrationPotsingLoading()); 
  
   const authToken = loadAuthToken(); 
-  const {id, calibrateVal} = calibrationData; 
+  const {calibrateVal} = calibrationData; 
   
   fetch(`${API_BASE_URL}/slouch/calibration`, { 
     method: 'post', 
