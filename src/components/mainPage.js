@@ -25,10 +25,6 @@ export function MainPage(props) {
         </div>
     </div>
 
-
-    <div className="centerTitle" >
-        {/* <h1 className="title" >Spine Saver</h1> */}
-    </div>
     <div className="descriptionBox">
         <p>Having trouble with your posture while you work on your computer? Try Spine Saver. 
           An web application that tracks your posture and your progress. All you need is a webcam!
@@ -40,7 +36,7 @@ export function MainPage(props) {
     </div>
 
     <div className="centerTitle">
-        {/* <h3 className="title">Billable</h3> */}
+        <p><b>Demo Account</b>Username: demo, Password: password123</p>
     </div>
     <div className="featureContainer">
         <div className="featureBox">
