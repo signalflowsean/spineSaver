@@ -37,7 +37,7 @@ export function MainPage(props) {
     </div>
 
     <div className="centerTitle">
-        <p><b>Demo Account</b>Username: demo, Password: password123</p>
+        <p>Demo Account: Username: demo, Password: password123</p>
     </div>
     <div className="featureContainer">
         <div className="featureBox">
