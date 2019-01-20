@@ -189,6 +189,13 @@
   font-size: 20px; 
 }
 
+.main-description{ 
+  font-size: 33px; 
+  font-weight: bolder; 
+  color: black;
+  text-shadow: 1px 1px lightgrey;
+}
+
 form{ 
   position: absolute; 
   top: 20%; 

@@ -26,10 +26,11 @@ export function MainPage(props) {
     </div>
 
     <div className="descriptionBox">
-        <p>Having trouble with your posture while you work on your computer? Try Spine Saver. 
+        {/* <p>Having trouble with your posture while you work on your computer? Try Spine Saver. 
           A web application that tracks your posture and your progress. All you need is a webcam!
           No additional sensors are required! Click the login button to try the demo account. 
-        </p>
+        </p> */}
+        <p className="main-description">Track your slouching. All you need is a webcam!</p>
     </div>
     <div className="centerMainImageContainer">
         {/* <img alt="slouch" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOiE-imcOYvIEw873KeBSFIJy9lNFLjUu6WXzqLJFdm-GAfzjW"></img> */}
