@@ -33,7 +33,7 @@ export function MainPage(props) {
     </div>
     <div className="centerMainImageContainer">
         {/* <img alt="slouch" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOiE-imcOYvIEw873KeBSFIJy9lNFLjUu6WXzqLJFdm-GAfzjW"></img> */}
-        <img className="img"alt="slouch" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6"></img>
+        <img alt="slouch" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6"></img>
     </div>
 
     <div className="centerTitle">
