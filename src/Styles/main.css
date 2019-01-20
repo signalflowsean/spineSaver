@@ -106,10 +106,12 @@
   font-weight: bold; 
 }
 
-
+.login{ 
+  margin-left: auto; 
+}
 .header-title {
   margin: 0px; 
-  font-size: 36px;
+  font-size: 42px;
   font-family: 'Courier New', Courier, monospace; 
   text-transform: uppercase; 
   text-rendering: optimizeLegibility; 

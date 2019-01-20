@@ -13,7 +13,7 @@
 }
 
 .navBarLeft{
-  width: 15%;
+  width: 33%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -26,11 +26,12 @@
 }
 
 .navBarMiddle{
-  width: 55%;
+  width: 33%;
+  text-align: center; 
 }
 
 .navBarRight{
-  width: 30%;
+  width: 33%;
   display: flex;
   justify-content: center;
   align-items: center;

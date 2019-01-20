@@ -20,7 +20,7 @@ export function MainPage(props) {
           <h2 className="header-title">Spine Saver</h2>
         </div>
         <div className="navBarRight">
-            <Link className="account" to="/login">Log In</Link>
+            <Link className="account login" to="/login">Log In</Link>
             <Link className="account" to="/signup">Sign-Up</Link>
         </div>
     </div>
