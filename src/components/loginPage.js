@@ -20,8 +20,9 @@ export function SignUpPage(props) {
         </Link>
       </header>
     
-     
+    
       <Login></Login>
+
     </div>
   ); 
 }

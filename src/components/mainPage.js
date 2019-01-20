@@ -28,23 +28,19 @@ export function MainPage(props) {
     <div className="descriptionBox">
         <p>Having trouble with your posture while you work on your computer? Try Spine Saver. 
           A web application that tracks your posture and your progress. All you need is a webcam!
-          No additional sensors are required! 
+          No additional sensors are required! Click the login button to try the demo account. 
         </p>
     </div>
     <div className="centerMainImageContainer">
         {/* <img alt="slouch" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOiE-imcOYvIEw873KeBSFIJy9lNFLjUu6WXzqLJFdm-GAfzjW"></img> */}
         <img alt="slouch" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6"></img>
     </div>
-
-    <div className="centerTitle">
-        <p>Demo Account: Username: demo, Password: password123</p>
-    </div>
     <div className="featureContainer">
         <div className="featureBox">
             <img alt="tracking" className="featureImages" src="https://static.thenounproject.com/png/30117-200.png"></img>
             <h3>Live Tracking</h3>
             <div className="featureText">
-                <p>Tracks user's souching in realtime. Alerts the user if they are souching. Spine Saver only requires access to your webcam, no additional sensors needed!</p>
+                <p>Tracks user's slouching in realtime. Alerts the user if they are souching. Spine Saver only requires access to your webcam, no additional sensors needed!</p>
             </div>
         </div>
         <div className="featureBox">
