@@ -98,7 +98,7 @@
   padding: 14px 0px; 
   text-align: center; 
   text-decoration: none;
-  display: block; 
+  /* display: block;  */
 }
 
 .account:hover { 
@@ -279,17 +279,19 @@ b{
   .form-input{ 
     margin-left: 0%;
   }
- 
-}
 
-@media only screen and (max-width: 321px) {
+  /* @media only screen and (max-width: 321px) {
   .header-nav-icon{ 
     height: 2%; 
     width: 2%; 
     /* max-width: 5px; 
     max-height: 5px;
     position: relative; 
-    right: 500%;   */
-  }
-
+    right: 500%;   
+  }*/
+ 
 }
+
+
+
+
