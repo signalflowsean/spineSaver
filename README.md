@@ -46,7 +46,7 @@ To start the app run
   passport-local
 
 ## Screenshots
-[Screenshots]
+[Screenshots](https://drive.google.com/drive/folders/1ELgjeBQvTMdappEBht64_8LHTWZdVTtZ)
 ## Main Components
 ### Frontent
 Dashboard 
