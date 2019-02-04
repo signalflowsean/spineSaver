@@ -130,7 +130,7 @@
 }
 
 .slouch-slider{ 
-  width: 100%; 
+  width: 80%; 
   -webkit-appearance: none; 
   background: transparent; 
 }
@@ -176,6 +176,8 @@
 }
 
 .home{
+  position: relative;
+  top:-25px; 
   float:right; 
   max-height: 50px; 
   max-width: 100px;
