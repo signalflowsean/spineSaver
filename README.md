@@ -2,6 +2,9 @@
 Spine saver is a web app the helps users slouch less.
 
 [Deployed Link](https://spine-saver-client-side.herokuapp.com/home)
+Demo Account is
+Username: Demo
+Password: password123
 
 ## Installation
 Use the package manager [npm] to install the dependencies
