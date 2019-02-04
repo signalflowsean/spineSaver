@@ -93,12 +93,12 @@
   border: 2px black solid; 
   font-size: 25px;
   background-color: grey;
-  color: #09285b;  
+  color: white;  
   font-weight: bold; 
   padding: 14px 0px; 
   text-align: center; 
   text-decoration: none;
-  /* display: block;  */
+  
 }
 
 .account:hover { 
@@ -110,6 +110,7 @@
   margin-left: auto; 
 }
 .header-title {
+  color: white; 
   margin: 0px; 
   font-size: 42px;
   font-family: 'Courier New', Courier, monospace; 
@@ -290,16 +291,6 @@ b{
   .form-input{ 
     margin-left: 0%;
   }
-
-  /* @media only screen and (max-width: 321px) {
-  .header-nav-icon{ 
-    height: 2%; 
-    width: 2%; 
-    /* max-width: 5px; 
-    max-height: 5px;
-    position: relative; 
-    right: 500%;   
-  }*/
  
 }
 
