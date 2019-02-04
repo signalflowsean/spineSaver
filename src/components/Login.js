@@ -1,15 +1,27 @@
 import React from 'react'; 
+import { Redirect } from 'react-router-dom'; 
 import {Field, reduxForm, focus} from 'redux-form'; 
 import Input from './input'; 
 import {login} from '../actions/auth'; 
 import {required, nonEmpty} from '../validators'; 
 import '../Styles/login.css'; 
 export class Login extends React.Component{ 
+  constructor(props){
+    super(props) 
+    this.state = { 
+      redirect: false, 
+      error: null
+    }
+  }
   onSubmit(values) { 
-    return this.props.dispatch(login(values.username, values.password)); 
+    this.props.dispatch(login(values.username, values.password))
+    .then(() => this.setState({redirect : true}))
+    .catch(error => this.setState({error}));  
   }
 
   render(){ 
+    if (this.state.redirect) return <Redirect to='home' />; 
+
     let error; 
     if (this.props.error) { 
       error = (<div>{this.props.error}</div>)

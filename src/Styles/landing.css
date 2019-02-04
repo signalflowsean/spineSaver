@@ -76,8 +76,13 @@
   cursor: pointer;
 }
 
+.slouch-img{ 
+  max-width: 90vw;
+}
+
 
 .centerMainImageContainer{
+  max-width: 90vw; 
   margin-top: 3%;
   width: 80%;
   margin-left: 10%;

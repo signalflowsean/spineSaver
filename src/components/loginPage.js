@@ -1,15 +1,10 @@
 import React from 'react'; 
 import {connect} from 'react-redux'; 
-import {Link, Redirect} from 'react-router-dom'; 
+import {Link} from 'react-router-dom'; 
 
 import Login from './Login'; 
 
 export function SignUpPage(props) { 
-
-  //If logged go to home
-  if(props.loggedIn) { 
-    return <Redirect to="/home" />; 
-  }
 
   return (
     <div>

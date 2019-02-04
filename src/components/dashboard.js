@@ -1,6 +1,6 @@
 import React from 'react'; 
 import {connect} from 'react-redux'; 
-import {Link, Redirect} from 'react-router-dom'; 
+import {Link} from 'react-router-dom'; 
 import requiresLogin from './requires-login'; 
 import SlouchSlider from './SlouchSlider'; 
 import {fetchCalibrationData, resetValsOnLogOut} from '../actions/display'; 
@@ -27,15 +27,11 @@ export class Display extends React.Component {
       return (<p>Loading...</p>); 
     }
 
-    if (this.props.hasUserEverCalibrated === false && this.props.hasCalibValUpdatedThisSession === false) {  
-      return (<Redirect to="/settings" />); 
-    }
-
     return (
 
       <div>
         <header className="header">
-            <ul className="header-ul">
+          <ul className="header-ul">
             <li className="header-li">
               <h2 className="header-title">Spine Saver</h2>
             </li>
@@ -55,7 +51,6 @@ export class Display extends React.Component {
           <p className="display-text">
             <b>{this.props.isSlouching}</b></p>
           <p className="display-text">Slouch Amount:  </p>
-       
           <input 
             className="slouch-slider" 
             type="range" 
@@ -82,7 +77,8 @@ export class Display extends React.Component {
   }
 };
 
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => { 
+  return { 
     currentUser : state.auth.currentUser, 
     name : state.auth.currentUser.fullname, 
     error: state.display.error, 
@@ -97,6 +93,7 @@ const mapStateToProps = state => ({
     hasCalibValUpdatedThisSession : state.slouch.hasCalibValUpdatedThisSession, 
     slouch : state.slouch.slouch,
     isSlouching: state.slouch.isSlouching
-  }); 
+    }; 
+  }; 
 
 export default requiresLogin()(connect(mapStateToProps)(Display)); 

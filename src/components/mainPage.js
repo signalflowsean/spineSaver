@@ -14,27 +14,25 @@ export function MainPage(props) {
 
     <div >
     <div className="navBar">
-        <div className="navBarLeft">
-        </div>
-        <div className="navBarMiddle">
-          <h2 className="header-title">Spine Saver</h2>
-        </div>
-        <div className="navBarRight">
-            <Link className="account login" to="/login">Log In</Link>
-            <Link className="account" to="/signup">Sign-Up</Link>
-        </div>
+      <div className="navBarLeft">
+      </div>
+      <div className="navBarMiddle">
+        <h2 className="header-title">Spine Saver</h2>
+      </div>
+      <div className="navBarRight">
+        <Link className="account login" to="/login">Log In</Link>
+        <Link className="account" to="/signup">Sign-Up</Link>
+      </div>
     </div>
 
     <div className="descriptionBox">
-        {/* <p>Having trouble with your posture while you work on your computer? Try Spine Saver. 
-          A web application that tracks your posture and your progress. All you need is a webcam!
-          No additional sensors are required! Click the login button to try the demo account. 
-        </p> */}
-        <p className="main-description">Track your slouching. All you need is a webcam!</p>
+      <p className="main-description">
+        Track your slouching. All you need is a webcam!
+      </p>
     </div>
     <div className="centerMainImageContainer">
-        {/* <img alt="slouch" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOiE-imcOYvIEw873KeBSFIJy9lNFLjUu6WXzqLJFdm-GAfzjW"></img> */}
-        <img alt="slouch" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6"></img>
+    
+        <img className='slouch-img' alt="slouch" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6"></img>
     </div>
     <div className="featureContainer">
         <div className="featureBox">
@@ -67,39 +65,6 @@ export function MainPage(props) {
     </div> */}
 </div>
 );
-    // <div>
-    //   <header className="header">
-    //     <ul className="header-ul">
-    //       <li className="header-li">
-    //         <h2 className="header-title">Spine Saver</h2>
-    //       </li>
-    //       <li className="header-li">
-    //         <Link className="account" to="/signup">Sign Up</Link>
-    //       </li>
-    //       <li className="header-li">
-    //       <Link className="account" to="/login">Login</Link>
-    //       </li>
-    //     </ul>
-    //   </header>
-    //   <main>
-    //     <section className="main-page-container">
-    //       <img className="spine-image" src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6" alt="Spine"></img>
-    //       <div className="landing-container">
-    //       <img src = "https://static.thenounproject.com/png/30117-200.png" alt="tracking"></img>
-    //         <h3 className="header-landing ">REALTIME SLOUCH TRACKING</h3>
-
-    //         <p className="landing-page">Tracks how much you are slouching 
-    //         using a webcam. Notifies you when you need to sit up straight.</p>
-    //         <h3 className="header-landing ">SLOUCHING ANALYTICS</h3>
-    //         <p className="landing-page">View your slouch data over time 
-    //         see if you are improving.</p>
-    //         <p className="landing-page">Demo Account: Username: demo, Password: password123 </p>
-    //       </div> */}
-    //       <img src="https://us.123rf.com/450wm/logo3in1/logo3in11601/logo3in1160100026/51908340-stock-vector-correct-alignment-of-human-body-in-standing-posture-for-good-personality-and-healthy-of-spine-and-bo.jpg?ver=6" alt="Spine"></img>
-    //     </section>
-    //   </main>
-    // </div>
-  // ); 
 }
 
 const mapStateToProps = state => ({ 
