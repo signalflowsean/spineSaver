@@ -8,7 +8,7 @@ export function MainPage(props) {
   
   if(props.loggedIn) { 
     return <Redirect to="/home" />
-}
+  }
   
   return (  
 
