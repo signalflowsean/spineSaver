@@ -1,8 +1,10 @@
 # Spine Saver
 Spine saver is a web app the helps users slouch less.
 
-[Deployed Link](https://spine-saver-client-side.herokuapp.com/home)
-Demo Account is
+[Deployed Link Client](https://spine-saver-client-side.herokuapp.com/home)
+[Deployed Link Server](https://spine-sasaver-server.herokuapp.com/api)
+
+# Demo Account
 Username: Demo
 Password: password123
 
