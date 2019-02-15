@@ -57,7 +57,109 @@ Slouch Slider
 Display
 Slouch
 
+# SPINE SAVER API DOCS
+## DISPLAY
+### GET /api/display
+
+**Purpose**: Recieve slouching metrics back to client and display them on the dashboard. 
+**Place**: Dashboard
+**Protected End Point**
+
+**Response body:** 
+```
+  {
+    "timeElapsed": "20",
+    "slouchElapse": "12",
+    "improvement": "20%",
+  }
+```
+
+## LOGIN
+### POST /api/login
+
+**Purpose**: For a user to login into their account
+**Place**: Login page
+
+**Reqested Body**: 
+```
+  { 
+    "username": "jim jim"
+    "password": "password123"
+  }
+```
+
+**Response Body:**
+```
+  { 
+    "authToken": ""supersecrettoken"
+  }
+```
+
+## REFRESH
+### POST /api/refresh
+
+**Purpose**: to obtain a renewed access token
+
+**Response Body:**
+```
+  { 
+    "authToken": ""supersecrettoken"
+  }
+```
+
+## SIGNUP
+### POST /api/signup
+
+**Purpose**: to signup for a new account
+
+**Request Body:**
+```
+  { 
+    "username": "signalflowsean", 
+    "password": "password123", 
+    "fullname": "Sean Nealon"
+  }
+```
+
+## SLOUCH
+### POST /api/slouch
+
+**Purpose**: Add slouch data from to the database
+**Place**: Any place where the user is logged in
+**Protected End Point**
+
+**Request Body:**
+```
+  { 
+    "slouch": "2.1"  
+  }
+```
+
+### GET /api/slouch/calibration
+**Purpose**: To retrieve user's calibration data
+**Place**: On loggin
+**Protected End Point
+
+**Response Body:**
+```
+  { 
+    "calibrationValue": "2.3"
+  }
+```
+
+### POST /api/slouch/calibration
+**Purpose**: To update user's calibaration data
+**Place**: Settings page, when user clicks the stop calibration button
+**Protected End Point
+
+**Request Body:**
+```
+  { 
+    "calibrateVal": "2.5"
+  }
+```
 ### THIS APP CANNOT BE USED WITHOUT PERMISSION
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
